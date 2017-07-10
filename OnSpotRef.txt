@@ -1,6 +1,9 @@
 https://developers.facebook.com/  richcluo@gmail.com 
 settings:APP ID: 100962613883571  SEC: 3ceeecdd17390abe9bd6131650489b71
-add prod : login, Valid OAuth redirect URIs = https://onspot-24d6b.firebaseapp.com/__/auth/handler (firebase) 
+add prod : login, Valid OAuth redirect URIs = https://onspot-24d6b.firebaseapp.com/__/auth/handler (by  firebase) 
+quickstart-android/auth/app/src/minSdkJellybean/
+FacebookLoginActivity.java : onCreate{setContentView(R.layout.activity_facebook); //bind with activity_facebook.xml
+findViewById(R.id.button_facebook_login) //android:id="@+id/button_facebook_login"
 
 firebase/AndroidChat //old
 open-source-android-apps

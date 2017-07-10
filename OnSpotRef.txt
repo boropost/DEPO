@@ -1,9 +1,33 @@
+quickstart-android/auth/README.md
 https://developers.facebook.com/  richcluo@gmail.com 
 settings:APP ID: 100962613883571  SEC: 3ceeecdd17390abe9bd6131650489b71
 add prod : login, Valid OAuth redirect URIs = https://onspot-24d6b.firebaseapp.com/__/auth/handler (by  firebase) 
+app/src/main/res/values/ids.xml <string name="facebook_app_id">100962613883571</string> 
+
+quickstart-android/auth/app/src/main/AndroidManifest.xml
+<activity android:name=".ChooserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+<activity
+            android:name=".FacebookLoginActivity"
+ChooserActivity.java
+startActivity(new Intent(this, FacebookLoginActivity.class));
+
 quickstart-android/auth/app/src/minSdkJellybean/
 FacebookLoginActivity.java : onCreate{setContentView(R.layout.activity_facebook); //bind with activity_facebook.xml
 findViewById(R.id.button_facebook_login) //android:id="@+id/button_facebook_login"
+
+quickstart-android/database/app/src/main/res/menu/menu_main.xml
+<menu  tools:context=".MainActivity">
+    <item
+        android:id="@+id/action_logout"
+quickstart-android/database/app/src/main/java/com/google/firebase/quickstart/database/MainActivity.java        
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, SignInActivity.class));
 
 firebase/AndroidChat //old
 open-source-android-apps

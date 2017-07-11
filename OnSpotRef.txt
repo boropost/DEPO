@@ -4,6 +4,12 @@ settings:APP ID: 100962613883571  SEC: 3ceeecdd17390abe9bd6131650489b71
 add prod : login, Valid OAuth redirect URIs = https://onspot-24d6b.firebaseapp.com/__/auth/handler (by  firebase) 
 app/src/main/res/values/ids.xml <string name="facebook_app_id">100962613883571</string> 
 
+https://apps.twitter.com/  richcluo@gmail.com
+https://onspot-24d6b.firebaseapp.com/__/auth/handler
+app/src/main/res/values/ids.xml
+    <string name="twitter_consumer_key">nXn7XRtIkSC5dck6P7dhDYbiQ</string>
+    <string name="twitter_consumer_secret">PWBifquvOTJS3it3JzEV9pJL0JW3dJpzRSnYUVfAV9NIs67WeA</string>
+
 quickstart-android/auth/app/src/main/AndroidManifest.xml
 <activity android:name=".ChooserActivity">
             <intent-filter>
@@ -28,6 +34,8 @@ quickstart-android/database/app/src/main/java/com/google/firebase/quickstart/dat
         if (item.getItemId() == R.id.action_logout) {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, SignInActivity.class));
+            
+https://developer.android.com/guide/topics/ui/layout/relative.html            
 
 firebase/AndroidChat //old
 open-source-android-apps

@@ -35,7 +35,51 @@ quickstart-android/database/app/src/main/java/com/google/firebase/quickstart/dat
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, SignInActivity.class));
             
-https://developer.android.com/guide/topics/ui/layout/relative.html            
+database/NewPostActivity.java .writeNewPost            
+        String key = mDatabase.child("posts").push().getKey(); //get next uid
+        Post post = new Post(userId, username, title, body);
+        Map<String, Object> postValues = post.toMap(); //post key-value pairs as map 
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/posts/" + key, postValues);
+        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+
+        mDatabase.updateChildren(childUpdates); //update 2 
+
+database/PostDetailActivity.java
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_post_detail);//res/layout/activity_post_detail.xml
+public void onStart() {
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Post post = dataSnapshot.getValue(Post.class); //latest
+mPostReference.addValueEventListener(postListener);
+
+    private void postComment() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {//stops listening after exec onDataChange, auto remove 
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        
+https://developer.android.com/guide/topics/ui/layout/relative.html
+<include
+        android:id="@+id/post_text_layout"
+        layout="@layout/include_post_text" //reusable layout/include_post_text.xml
+        android:layout_below="@+id/post_author_layout"  //related pos to another android:id 
+        
+https://developer.android.com/guide/topics/ui/layout/recyclerview.html
+        mAdapter = new CommentAdapter(this, mCommentsReference);
+        mCommentsRecycler.setAdapter(mAdapter);
+public CommentAdapter(final Context context, DatabaseReference ref) {
+            ChildEventListener childEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) { //onChildChanged ...
+                Comment comment = dataSnapshot.getValue(Comment.class);
+         ref.addChildEventListener(childEventListener);       
+<android.support.v7.widget.RecyclerView
+tools:listitem="@layout/item_comment" />
 
 firebase/AndroidChat //old
 open-source-android-apps

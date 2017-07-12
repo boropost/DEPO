@@ -1,14 +1,15 @@
 quickstart-android/auth/README.md
+spotcast-45e35.firebaseapp.com //domain
+
 https://developers.facebook.com/  richcluo@gmail.com 
-settings:APP ID: 100962613883571  SEC: 3ceeecdd17390abe9bd6131650489b71
-add prod : login, Valid OAuth redirect URIs = https://onspot-24d6b.firebaseapp.com/__/auth/handler (by  firebase) 
-app/src/main/res/values/ids.xml <string name="facebook_app_id">100962613883571</string> 
+AppId/sec at settings basic
+add prod : login, Valid OAuth redirect URIs = https://auth/handler (by  firebase) 
+app/src/main/res/values/ids.xml <string name="facebook_app_id">151027222121181</string> 
 
 https://apps.twitter.com/  richcluo@gmail.com
-https://onspot-24d6b.firebaseapp.com/__/auth/handler
 app/src/main/res/values/ids.xml
-    <string name="twitter_consumer_key">nXn7XRtIkSC5dck6P7dhDYbiQ</string>
-    <string name="twitter_consumer_secret">PWBifquvOTJS3it3JzEV9pJL0JW3dJpzRSnYUVfAV9NIs67WeA</string>
+    <string name="twitter_consumer_key">jf1QXxq65V5gM6sTlJjw5m7Ow</string>
+    <string name="twitter_consumer_secret">mPI3b5Yk20woNnta9kwTnIRFVPoykYGgN98k1tpoVeuENXRUcu</string>
 
 quickstart-android/auth/app/src/main/AndroidManifest.xml
 <activity android:name=".ChooserActivity">
@@ -81,6 +82,31 @@ public CommentAdapter(final Context context, DatabaseReference ref) {
 <android.support.v7.widget.RecyclerView
 tools:listitem="@layout/item_comment" />
 
+mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {task.getResult().getUser()
+https://developers.google.com/android/reference/com/google/android/gms/tasks/Continuation
+
+fragment has its own layout and lifecycle closely related to the lifecycle of its host activity. add or remove fragments in an activity while the activity is running. fragment can implement a behavior has no user interface (return null from onCreateView)
+Activity's onAttachFragment() ->  
+Fragment's onCreate(non-graphical initialisations: assign variables, get Intent extras,except access View hierarchy not ready before Activity's onCreate()) ->
+Fragment's onCreateView(graphical initialisations and assign View variables). 
+Activity's onCreate() ->
+Fragment's onActivityCreated() to final initialisations (for example, modifying UI elements).
+
+<FrameLayout tools:context=".MainActivity">
+<android.support.v7.widget.RecyclerView 
+    android:id="@+id/messages_list"
+    tools:listitem="@layout/item_post" />
+fragment/PostListFragment.java
+public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);//res/layout/fragment_all_posts.xml
+        mRecycler = (RecyclerView) rootView.findViewById(R.id.messages_list);
+public void onActivityCreated((Bundle savedInstanceState) {
+        mManager = new LinearLayoutManager(getActivity());//(this, LinearLayoutManager.VERTICAL|HORIZONTAL, false); (reverseLayout)             mManager.setReverseLayout|.setStackFromEnd(true);//displayed new from the bottom
+        mRecycler.setLayoutManager(mManager);//LayoutManager for laying out each item in the view specifiying orientation/order
+        
 firebase/AndroidChat //old
 open-source-android-apps
 http://www.parallelcodes.com/android-using-stored-procedure-ms-sql-server/

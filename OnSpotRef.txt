@@ -11,6 +11,14 @@ app/src/main/res/values/ids.xml
     <string name="twitter_consumer_key">jf1QXxq65V5gM6sTlJjw5m7Ow</string>
     <string name="twitter_consumer_secret">mPI3b5Yk20woNnta9kwTnIRFVPoykYGgN98k1tpoVeuENXRUcu</string>
 
+build.gradle of top level
+buildscript {
+    dependencies {
+        classpath "com.android.databinding:dataBinder:1.0-rc1"
+build.gradle of application level
+dependencies {
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+
 quickstart-android/auth/app/src/main/AndroidManifest.xml
 <activity android:name=".ChooserActivity">
             <intent-filter>
@@ -25,6 +33,12 @@ quickstart-android/auth/app/src/minSdkJellybean/
 FacebookLoginActivity.java : onCreate{setContentView(R.layout.activity_facebook); //bind with activity_facebook.xml
 findViewById(R.id.button_facebook_login) //android:id="@+id/button_facebook_login"
 
+mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {task.getResult().getUser()
+https://developers.google.com/android/reference/com/google/android/gms/tasks/Continuation
+
 quickstart-android/database/app/src/main/res/menu/menu_main.xml
 <menu  tools:context=".MainActivity">
     <item
@@ -36,6 +50,7 @@ quickstart-android/database/app/src/main/java/com/google/firebase/quickstart/dat
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, SignInActivity.class));
             
+https://firebase.google.com/docs/database/admin/retrieve-data            
 database/NewPostActivity.java .writeNewPost            
         String key = mDatabase.child("posts").push().getKey(); //get next uid
         Post post = new Post(userId, username, title, body);
@@ -82,12 +97,6 @@ public CommentAdapter(final Context context, DatabaseReference ref) {
 <android.support.v7.widget.RecyclerView
 tools:listitem="@layout/item_comment" />
 
-mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {task.getResult().getUser()
-https://developers.google.com/android/reference/com/google/android/gms/tasks/Continuation
-
 fragment has its own layout and lifecycle closely related to the lifecycle of its host activity. add or remove fragments in an activity while the activity is running. fragment can implement a behavior has no user interface (return null from onCreateView)
 Activity's onAttachFragment() ->  
 Fragment's onCreate(non-graphical initialisations: assign variables, get Intent extras,except access View hierarchy not ready before Activity's onCreate()) ->
@@ -106,6 +115,20 @@ public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle s
 public void onActivityCreated((Bundle savedInstanceState) {
         mManager = new LinearLayoutManager(getActivity());//(this, LinearLayoutManager.VERTICAL|HORIZONTAL, false); (reverseLayout)             mManager.setReverseLayout|.setStackFromEnd(true);//displayed new from the bottom
         mRecycler.setLayoutManager(mManager);//LayoutManager for laying out each item in the view specifiying orientation/order
+        
+
+Firebase ref = new Firebase("https://dinosaur-facts.firebaseio.com/dinosaurs");
+Query queryRef = ref.orderByChild("height");
+
+postsQuery.addChildEventListener(new ChildEventListener() {
+    @Override
+    public void onChildAdded(DataSnapshot snapshot, String previousChild) {
+        System.out.println(snapshot.getKey() + " was " + snapshot.getValue().get("height") + " meters tall");
+    }
+    // ....
+});
+msgRef.orderByChild("date").endAt(3)
+http://cliffordhall.com/2017/04/using-firebase-cloud-functions-manage-compound-key-index/
         
 firebase/AndroidChat //old
 open-source-android-apps

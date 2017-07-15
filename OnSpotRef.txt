@@ -140,8 +140,9 @@ keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias
 //[Storing C:/Users/holly/.android/debug.keystore]
 keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -list -v -storepass android 
 //Valid from: Sat Jul 08 12:04:40 EDT 2017 until: Fri Oct 06 12:04:40 EDT 2017 SHA1: FB:F1:49:00:44:C9:EF:A9:53:39:72:25:37:5E:34:F0:8C:5F:B5:D3 
+shared by many proj debug
 
-download google-services.json and drag to app in AV, 
+download google-services.json and drag to app dir in AV or filesys, 
 classpath 'com.google.gms:google-services:3.1.0' to proj level build.gradle
 apply plugin: 'com.google.gms.google-services'  to app level build.gradle if not auto added
 sync gradle (upgrade if need) then app repoint to src/main dir
@@ -156,3 +157,6 @@ W — Warning
 E — Error
 A — Assert 
 
+Tools > Android > SDK Manager > SDK platform (android)| tools (emulator,playsvc...) selecct > apply
+                > AVD Manager
+run> edit config > 

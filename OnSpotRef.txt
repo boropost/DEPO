@@ -164,7 +164,9 @@ Tools > Android > SDK Manager > SDK platform (android)| tools (emulator,playsvc,
 run> edit config > 
 VCS > check out from version control: github
 File=>Project Structure=>app(i.e left pannel)=>Properties=>SDK loc proj gradle/android version 
-app>SDK|Build Tools Version,Flavor:min/targetSDK Version 19 (change to 16 =phone), dependencies
+app>SDK|Build Tools Version,sign,Flavor default|minSDKJellyBean:min/targetSDK Version 19 (change to 16 =phone), build type:debug|relese dependencies
+Build > Select Build Variant from the menu bar (or btn tool window bar to select minSdkJellyBeanDebug vs minSdkIncs
+
 run app second time to see app on phone
 
 Enable USB debugging on your device by going to Settings > Developer options

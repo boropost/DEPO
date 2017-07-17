@@ -1,6 +1,8 @@
 quickstart-android/auth/README.md
 spotcast-45e35.firebaseapp.com //domain
 
+add anfroid Enter the codelab's package name: com.google.firebase.codelab.friendlychat.
+
 https://developers.facebook.com/  richcluo@gmail.com 
 AppId/sec at settings basic
 add prod : login, Valid OAuth redirect URIs = https://auth/handler (by  firebase) 
@@ -16,8 +18,17 @@ buildscript {
     dependencies {
         classpath "com.android.databinding:dataBinder:1.0-rc1"
 build.gradle of application level
-dependencies {
+dependencies {//match proj struct > dependencies
     compile 'com.android.support:recyclerview-v7:23.0.0'
+    // Facebook Android SDK (only required for Facebook Login)
+    compile 'com.facebook.android:facebook-android-sdk:4.9.0'
+    / Twitter Android SDK (only required for Twitter Login)
+    compile('com.twitter.sdk.android:twitter-core:1.6.6@aar') {
+        transitive = true
+    }
+    compile('com.twitter.sdk.android:twitter:1.13.1@aar') {
+        transitive = true
+    }
 
 quickstart-android/auth/app/src/main/AndroidManifest.xml
 <activity android:name=".ChooserActivity">
@@ -166,7 +177,9 @@ VCS > check out from version control: github
 File=>Project Structure=>app(i.e left pannel)=>Properties=>SDK loc proj gradle/android version 
 app>SDK|Build Tools Version,sign,Flavor default|minSDKJellyBean:min/targetSDK Version 19 (change to 16 =phone), build type:debug|relese dependencies
 Build > Select Build Variant from the menu bar (or btn tool window bar to select minSdkJellyBeanDebug vs minSdkIncs
-
+      >rebuild (if unused import)
+      >sel variant : debug|release
+Analyze > dependency | stacktrace      
 run app second time to see app on phone
 
 Enable USB debugging on your device by going to Settings > Developer options

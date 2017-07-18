@@ -191,6 +191,7 @@ open-source-android-apps
 http://www.parallelcodes.com/android-using-stored-procedure-ms-sql-server/
 
 https://developer.android.com/training/location/retrieve-current.html
+https://developer.android.com/guide/topics/location/strategies.html
 
 keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"
 //[Storing C:/Users/holly/.android/debug.keystore]
@@ -221,7 +222,7 @@ run> edit config >
 VCS > check out from version control: github
 File>Project Structure=>app(i.e left pannel)=>Properties=>SDK loc proj gradle/android version 
 app>SDK|Build Tools Version,sign,Flavor default|minSDKJellyBean:min/targetSDK Version 19 (change to 16 =phone), build type:debug|relese dependencies
-     Settings > Plugins (built-in Image Asset Studio, Theme and Layout Editor ) >Browse repositories 
+     Settings > Plugins (built-in Image Asset Studio, Theme and Layout Editor ) >Browse repositories  ADB, Codota
 Right-click the res folder and select New > Image Asset (res/mipmap launcher icon, res/drawable other types of icons, can access image from the main thread only.refer to image as @drawable in XML or Drawable in Java)
 <ImageView    android:src="@drawable/myimage" />
 Resources res = getResources();// Context.getResources class applies to UI objects, such as activities, fragments, layouts, views,
@@ -231,8 +232,17 @@ imageView.setImageResource(R.drawable.myimage);//reset image
 //android.R.layout.xxx standard/system resources @android:color/xxx
 getWindow().setBackgroundDrawableResource(R.drawable.my_background_image) ;
 setContentView(R.layout.main_screen);
-mFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.hyperspace_in));
-<EditText id="text"   android:textColor="?android:textColorSecondary" //apply value from android:textColorSecondary style
+mFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.hyperspace_in));//view anim (old)
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"    android:oneshot="true"> //drawable anim
+    <item android:drawable="@drawable/rocket_thrust1" android:duration="200" />
+<EditText id="text"   android:textColor="?android:textColorSecondary" //apply attr:val defined in std android:textColorSecondary style
+style="@style/CodeFont" //apply all attr:val defined in CodeFont style
+res/values/A theme is styles applied to an entire Activity or app, rather than an individual View
+<application android:theme="@style/CustomTheme">//apply to whole app in AndroidManifest.xml 
+<activity android:theme="@android:style/Theme.Translucent">//only std theme (tranparent) to the act
+<resources>
+    <style name="CodeFont" parent="@android:style/TextAppearance.Medium">//<style name="CodeFont.Red.Big"> inheritance Big:Red:CodeFont
+        <item name="android:textColor">#00FF00</item>
 Build > Select Build Variant from the menu bar (or btn tool window bar to select minSdkJellyBeanDebug vs minSdkIncs
       >rebuild (if unused import) | clean proj
       >sel variant : debug|release

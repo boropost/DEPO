@@ -127,6 +127,51 @@ public void onActivityCreated((Bundle savedInstanceState) {
         mManager = new LinearLayoutManager(getActivity());//(this, LinearLayoutManager.VERTICAL|HORIZONTAL, false); (reverseLayout)             mManager.setReverseLayout|.setStackFromEnd(true);//displayed new from the bottom
         mRecycler.setLayoutManager(mManager);//LayoutManager for laying out each item in the view specifiying orientation/order
         
+        Query postsQuery = getQuery(mDatabase);//databaseReference.child("posts").limitToFirst(100);
+        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
+        PostViewHolder.class, postsQuery) {
+            @Override
+            protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
+                final DatabaseReference postRef = getRef(position);
+                final String postKey = postRef.getKey();
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {//click post item to display detail
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), PostDetailActivity.class);//intent move from one activity to another 
+                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey); //getIntent().getExtras().getString("AnyKeyName");
+                        startActivity(intent);
+                 
+                viewHolder.bindToPost(model, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View starView) {
+                        DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
+                        DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
+                        onStarClicked(globalPostRef);
+                        onStarClicked(userPostRef);
+                    }
+                }); 
+        mRecycler.setAdapter(mAdapter);      
+        private void onStarClicked(DatabaseReference postRef) {
+        postRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Post p = mutableData.getValue(Post.class);
+                if (p.stars.containsKey(getUid())) {//FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    p.starCount = p.starCount - 1;
+                    p.stars.remove(getUid());
+                } else {
+                    p.starCount = p.starCount + 1;
+                    p.stars.put(getUid(), true);
+                }
+                mutableData.setValue(p);
+                return Transaction.success(mutableData);
+            }
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
+            }
+        });
 
 Firebase ref = new Firebase("https://dinosaur-facts.firebaseio.com/dinosaurs");
 Query queryRef = ref.orderByChild("height");

@@ -212,19 +212,31 @@ I — Info
 W — Warning
 E — Error
 A — Assert 
-
+Android Monitor: device being monitored=ADB enabled > memory|cpu|network monitor 
 Tools > Android > SDK Manager > SDK platform (android)| tools (emulator,playsvc,google USB driver...) selecct > apply
                 > AVD Manager
                 >enable ADB int (for run on phone)
         firebase>auth/database         
 run> edit config > 
 VCS > check out from version control: github
-File=>Project Structure=>app(i.e left pannel)=>Properties=>SDK loc proj gradle/android version 
+File>Project Structure=>app(i.e left pannel)=>Properties=>SDK loc proj gradle/android version 
 app>SDK|Build Tools Version,sign,Flavor default|minSDKJellyBean:min/targetSDK Version 19 (change to 16 =phone), build type:debug|relese dependencies
+     Settings > Plugins (built-in Image Asset Studio, Theme and Layout Editor ) >Browse repositories 
+Right-click the res folder and select New > Image Asset (res/mipmap launcher icon, res/drawable other types of icons, can access image from the main thread only.refer to image as @drawable in XML or Drawable in Java)
+<ImageView    android:src="@drawable/myimage" />
+Resources res = getResources();// Context.getResources class applies to UI objects, such as activities, fragments, layouts, views,
+Drawable drawable = res.getDrawable(R.drawable.myimage);
+ImageView imageView = (ImageView) findViewById(R.id.myimageview);
+imageView.setImageResource(R.drawable.myimage);//reset image
+//android.R.layout.xxx standard/system resources @android:color/xxx
+getWindow().setBackgroundDrawableResource(R.drawable.my_background_image) ;
+setContentView(R.layout.main_screen);
+mFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.hyperspace_in));
+<EditText id="text"   android:textColor="?android:textColorSecondary" //apply value from android:textColorSecondary style
 Build > Select Build Variant from the menu bar (or btn tool window bar to select minSdkJellyBeanDebug vs minSdkIncs
-      >rebuild (if unused import)
+      >rebuild (if unused import) | clean proj
       >sel variant : debug|release
-Analyze > dependency | stacktrace      
+Analyze > dependency | stacktrace  | Inspect Code (Lint find issues such as deprecated elements, or API calls that aren't supported by your target API.)    
 run app second time to see app on phone
 
 Enable USB debugging on your device by going to Settings > Developer options

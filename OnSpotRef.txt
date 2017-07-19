@@ -193,12 +193,31 @@ http://www.parallelcodes.com/android-using-stored-procedure-ms-sql-server/
 https://developer.android.com/training/location/retrieve-current.html
 https://developer.android.com/guide/topics/location/strategies.html //android.location.LocationManager 
 https://developer.android.com/training/location/retrieve-current.html //FusedLocationProviderClient depend on Google Play Services SDK  AV SDK Manager: click SDK Tools, expand Support Repo, select Google Repository    dependencies { compile 'com.google.android.gms:play-services:11.0.2'    }//device that runs Android 4.0 or higher and includes Google Play Store.
+https://github.com/googlesamples/android-play-location/tree/master/BasicLocationSample
+https://github.com/googlesamples/android-play-location/tree/master/LocationUpdates
 request the user's permission by declaring either the 
 ACCESS_COARSE_LOCATION NETWORK_PROVIDER (street block level)
 or ACCESS_FINE_LOCATION NETWORK_PROVIDER and GPS_PROVIDER
 <manifest ... >
     <uses-permission android:name="android.permission.ACCESS_COARSE|FINE_LOCATION" />    
     <uses-feature android:name="android.hardware.location.network|gps" /><!-- app targets Android 5.0 (API level 21) or higher. -->
+LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+String locationProvider = LocationManager.NETWORK_PROVIDER;//LocationManager.GPS_PROVIDER
+Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+LocationListener locationListener = new LocationListener() {
+    public void onLocationChanged(Location location) {
+      // Called when a new location is found by the network location provider.
+      makeUseOfNewLocation(location);
+    }
+
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+    public void onProviderEnabled(String provider) {}
+
+    public void onProviderDisabled(String provider) {}
+  };
+locationManager.requestLocationUpdates(locationListener, 0, 0, locationListener);  
+locationManager.removeUpdates(locationListener);
 
 keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"
 //[Storing C:/Users/holly/.android/debug.keystore]

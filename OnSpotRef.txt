@@ -51,16 +51,34 @@ mAuth.signInWithEmailAndPassword(email, password)
 https://developers.google.com/android/reference/com/google/android/gms/tasks/Continuation
 
 quickstart-android/database/app/src/main/res/menu/menu_main.xml
-<menu  tools:context=".MainActivity">
+<menu  tools:context=".MainActivity">//diff menu per act
     <item
         android:id="@+id/action_logout"
-quickstart-android/database/app/src/main/java/com/google/firebase/quickstart/database/MainActivity.java        
-    @Override
+quickstart-android/database/app/src/main/java/com/google/firebase/quickstart/database/MainActivity.java   
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, SignInActivity.class));
-            
+activity_main.xml            
+   <android.support.design.widget.TabLayout        android:id="@+id/tabs"
+   <android.support.v4.view.ViewPager        android:id="@+id/container"        android:layout_below="@id/tabs" />
+//TabLayout {ViewPager{FragmentPagerAdapter{Fragment[]{RecentPostsFragment,MyPostsFragment,MyTopPostsFragment}}
+        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            private final Fragment[] mFragments = new Fragment[] {
+                    new RecentPostsFragment(),
+                    new MyPostsFragment(),
+                    new MyTopPostsFragment(),
+            };
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mPagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager)
+        findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {//FloatingActionButton for new post
+                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
+        
 https://firebase.google.com/docs/database/admin/retrieve-data            
 database/NewPostActivity.java .writeNewPost            
         String key = mDatabase.child("posts").push().getKey(); //get next uid
@@ -78,7 +96,6 @@ database/PostDetailActivity.java
         setContentView(R.layout.activity_post_detail);//res/layout/activity_post_detail.xml
 public void onStart() {
         ValueEventListener postListener = new ValueEventListener() {
-            @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Post post = dataSnapshot.getValue(Post.class); //latest
 mPostReference.addValueEventListener(postListener);
@@ -86,7 +103,6 @@ mPostReference.addValueEventListener(postListener);
     private void postComment() {
         FirebaseDatabase.getInstance().getReference().child("users").child(uid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {//stops listening after exec onDataChange, auto remove 
-                    @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         User user = dataSnapshot.getValue(User.class);
                         
@@ -101,7 +117,6 @@ https://developer.android.com/guide/topics/ui/layout/recyclerview.html
         mCommentsRecycler.setAdapter(mAdapter);
 public CommentAdapter(final Context context, DatabaseReference ref) {
             ChildEventListener childEventListener = new ChildEventListener() {
-                @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) { //onChildChanged ...
                 Comment comment = dataSnapshot.getValue(Comment.class);
          ref.addChildEventListener(childEventListener);       
@@ -119,7 +134,7 @@ Fragment's onActivityCreated() to final initialisations (for example, modifying 
 <android.support.v7.widget.RecyclerView 
     android:id="@+id/messages_list"
     tools:listitem="@layout/item_post" />
-fragment/PostListFragment.java
+fragment/PostListFragment.java vs https://github.com/prathmeshranaut/skooterapp/blob/master/app/src/main/java/com/skooterapp/PostAdapter.java
 public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);//res/layout/fragment_all_posts.xml
         mRecycler = (RecyclerView) rootView.findViewById(R.id.messages_list);
@@ -130,19 +145,16 @@ public void onActivityCreated((Bundle savedInstanceState) {
         Query postsQuery = getQuery(mDatabase);//databaseReference.child("posts").limitToFirst(100);
         mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
         PostViewHolder.class, postsQuery) {
-            @Override
             protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
                 final DatabaseReference postRef = getRef(position);
                 final String postKey = postRef.getKey();
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {//click post item to display detail
-                    @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), PostDetailActivity.class);//intent move from one activity to another 
                         intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey); //getIntent().getExtras().getString("AnyKeyName");
                         startActivity(intent);
                  
                 viewHolder.bindToPost(model, new View.OnClickListener() {
-                    @Override
                     public void onClick(View starView) {
                         DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
                         DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
@@ -153,7 +165,6 @@ public void onActivityCreated((Bundle savedInstanceState) {
         mRecycler.setAdapter(mAdapter);      
         private void onStarClicked(DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {
-            @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Post p = mutableData.getValue(Post.class);
                 if (p.stars.containsKey(getUid())) {//FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -166,7 +177,6 @@ public void onActivityCreated((Bundle savedInstanceState) {
                 mutableData.setValue(p);
                 return Transaction.success(mutableData);
             }
-            @Override
             public void onComplete(DatabaseError databaseError, boolean b,
                                    DataSnapshot dataSnapshot) {
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError);
@@ -177,7 +187,6 @@ Firebase ref = new Firebase("https://dinosaur-facts.firebaseio.com/dinosaurs");
 Query queryRef = ref.orderByChild("height");
 
 postsQuery.addChildEventListener(new ChildEventListener() {
-    @Override
     public void onChildAdded(DataSnapshot snapshot, String previousChild) {
         System.out.println(snapshot.getKey() + " was " + snapshot.getValue().get("height") + " meters tall");
     }

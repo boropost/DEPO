@@ -30,15 +30,17 @@ dependencies {//match proj struct > dependencies
         transitive = true
     }
 
-quickstart-android/auth/app/src/main/AndroidManifest.xml
-<activity android:name=".ChooserActivity">
+skooterapp/app/src/main/AndroidManifest.xml
+<activity android:name=".LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
 <activity
-            android:name=".FacebookLoginActivity"
-ChooserActivity.java
-startActivity(new Intent(this, FacebookLoginActivity.class));
+            android:name=".MainActivity"
+LoadingActivity.java
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_loading);//res/layout/activity_loading.xml
+startActivity(new Intent(this, MainActivity.class));
 
 quickstart-android/auth/app/src/minSdkJellybean/
 FacebookLoginActivity.java : onCreate{setContentView(R.layout.activity_facebook); //bind with activity_facebook.xml

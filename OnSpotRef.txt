@@ -3,16 +3,16 @@ spotcast-45e35.firebaseapp.com //domain
 
 add anfroid Enter the codelab's package name: com.google.firebase.codelab.friendlychat.
 
-https://developers.facebook.com/docs/facebook-login/android/  richcluo@gmail.com 
+https://developers.facebook.com/docs/facebook-login/android/  richcluo@gmail.com  same eamil can not be used for email/pwd auth acct 
 facebook login> get start SDK choose platform > android >[download Facebook SDK] > project structure | new project  : Select API 15/Android 4.0.3
-proj build.gradle : repositories {    mavenCentral()
+proj build.gradle : repositories {    mavenCentral() //search mavenLocal() on machine  %USER_HOME% or %M2_HOME%\conf\settings.xml then mavenCentral() http://repo1.maven.org/maven2/
 app  build.gradle : dependencies {   compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 Package:com.google.firebase.quickstart.database
 Default Activity:com.google.firebase.quickstart.database.SignInActivity
 [Enable Single Sign On]
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-layout.xml <com.facebook.login.widget.LoginButton
+layout.xml <com.facebook.login.widget.LoginButton //auto update status 
 manifest    
 <uses-permission android:name="android.permission.INTERNET"/>
 <meta-data  android:name="com.facebook.sdk.ApplicationId"
@@ -34,6 +34,17 @@ https://apps.twitter.com/  richcluo@gmail.com
 app/src/main/res/values/ids.xml
     <string name="twitter_consumer_key">jf1QXxq65V5gM6sTlJjw5m7Ow</string>
     <string name="twitter_consumer_secret">mPI3b5Yk20woNnta9kwTnIRFVPoykYGgN98k1tpoVeuENXRUcu</string>
+https://dev.twitter.com/twitterkit/android/installation
+proj build.gradle : repositories {  jcenter() 
+app build.gradle : dependencies { compile 'com.twitter.sdk.android:twitter:3.0.0'//all
+compile 'com.twitter.sdk.android:twitter-core:3.0.0'//login only
+import com.twitter.sdk.android.core.Twitter;    
+TwitterConfig config = new TwitterConfig.Builder(this)
+                .logger(new DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(new TwitterAuthConfig(getString(R.string.twitter_consumer_key),getString(R.string.twitter_consumer_secret)))
+                .debug(true)
+                .build();
+        Twitter.initialize(config);    
 
 build.gradle of top level
 buildscript {

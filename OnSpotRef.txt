@@ -9,7 +9,7 @@ proj build.gradle : repositories {    mavenCentral()
 app  build.gradle : dependencies {   compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 Package:com.google.firebase.quickstart.database
 Default Activity:com.google.firebase.quickstart.database.SignInActivity
-Enable Single Sign On
+[Enable Single Sign On]
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 layout.xml <com.facebook.login.widget.LoginButton
@@ -26,7 +26,9 @@ misssing .ApplicationId java.lang.NullPointerException at java.util.concurrent.C
 add prod : login, Valid OAuth redirect URIs = https://auth/handler (from  firebase) 
 app domain : database-748b1.firebaseapp.com (from  firebase)//facebook err:Given URL is not allowed by the App config
 add platform>web >url :https://database-748b1.firebaseapp.com //match above
-keyhash: tUw2F8+ETK5kjylFABKlr5QLrBk=//keytool -exportcert -alias androiddebugkey -keystore debug.keystore | openssl sha1 -binary | openssl base64
+keyhash: +/FJAETJ76lTOXIlN1408IxftdM=
+//cd ~/.android : keytool -exportcert -alias androiddebugkey -keystore debug.keystore | openssl sha1 -binary | openssl base64
+password: android, wont prompt pwd if not at ~/.android, pwd gen diff key, 
 
 https://apps.twitter.com/  richcluo@gmail.com
 app/src/main/res/values/ids.xml

@@ -79,6 +79,14 @@ LoadingActivity.java
         setContentView(R.layout.activity_loading);//res/layout/activity_loading.xml
 startActivity(new Intent(this, MainActivity.class));
 
+getApplicationContext() (lifecycle of current Application:Context) or this (=getContext() life cycle of current activity class : Context) 
+Creating New objects: Creating new views(every view needs the context to access the right resources (e.g. the theme, strings etc.), adapters, listeners
+TextView tv = new TextView(getContext()); ListAdapter adapter = new SimpleCursorAdapter(getApplicationContext(), ...);
+Accessing Standard Common Resources: [intent] Services :Context like LAYOUT_INFLATER_SERVICE, SharedPreferences:
+context.getSystemService(LAYOUT_INFLATER_SERVICE) getApplicationContext().getSharedPreferences(name, mode);
+Accessing Components Implicitly: Regarding content providers, broadcasts, intent
+getApplicationContext().getContentResolver().query(uri, ...);
+
 quickstart-android/auth/app/src/minSdkJellybean/
 FacebookLoginActivity.java : onCreate{setContentView(R.layout.activity_facebook); //bind with activity_facebook.xml
 findViewById(R.id.button_facebook_login) //android:id="@+id/button_facebook_login"

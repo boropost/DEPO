@@ -230,6 +230,10 @@ public void onActivityCreated((Bundle savedInstanceState) {
             }
         });
 
+skooterapp/common/view/SlidingTabLayout.java //constant feedback as to * the user's scroll progress.
+
+skooterapp/AppController.java{ com.android.volley.RequestQueue; //asynchronous RESTful HTTP requests, no need if use firebase 
+
 Firebase ref = new Firebase("https://dinosaur-facts.firebaseio.com/dinosaurs");
 Query queryRef = ref.orderByChild("height");
 

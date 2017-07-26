@@ -231,9 +231,10 @@ public void onActivityCreated((Bundle savedInstanceState) {
         });
 
 skooterapp/common/view/SlidingTabLayout.java //constant feedback as to * the user's scroll progress.
-
 skooterapp/AppController.java{ com.android.volley.RequestQueue; //asynchronous RESTful HTTP requests, no need if use firebase 
 
+
+Firebase end node must name:val, mid node name(key) must be unique, click parent node to its detail page to del/modify child (type in and return) wont impact upper nodes 
 Firebase ref = new Firebase("https://dinosaur-facts.firebaseio.com/dinosaurs");
 Query queryRef = ref.orderByChild("height");
 
@@ -245,10 +246,8 @@ postsQuery.addChildEventListener(new ChildEventListener() {
 });
 msgRef.orderByChild("date").endAt(3)
 http://cliffordhall.com/2017/04/using-firebase-cloud-functions-manage-compound-key-index/
-        
-firebase/AndroidChat //old
-open-source-android-apps
-http://www.parallelcodes.com/android-using-stored-procedure-ms-sql-server/
+    
+
 
 https://developer.android.com/training/location/retrieve-current.html
 https://developer.android.com/guide/topics/location/strategies.html //android.location.LocationManager 
@@ -287,9 +286,25 @@ Latitudes [-90,90]. Longitudes [-180,180]  http://andrew.hedges.name/experiments
 0.01km(10m)|0.005ml(30ft) /0.0001 (close)
 0.001km(1m)|0.001ml(4ft) /0.00001
 (38.898556 -77.037852)
-latitudes> -77> 38> 8> 9> 8> 5:"OmYPbTLDq1TOt4GZnUHbKS2G5S92"
-longitudes> 38> -77> 0> 3> 7> 8:"OmYPbTLDq1TOt4GZnUHbKS2G5S92"
-
+(38.897147 -77.043934)
+latitudes> -77> 38> 8> 9> 8> 5> "nNosBR5IaoXNnSsubByOnM1BIgM2":2
+                              > "14ytGxFYAOdnUP8wrzdwOz03mGw1":0   
+                          7> 1> "OmYPbTLDq1TOt4GZnUHbKS2G5S92":1
+longitudes> 38> -77> 0> 3> 7> 8> "OmYPbTLDq1TOt4GZnUHbKS2G5S92":1
+                        4> 3> 8> "14ytGxFYAOdnUP8wrzdwOz03mGw1":0
+                              9> "nNosBR5IaoXNnSsubByOnM1BIgM2":2
+Query.equalTo limitToFirst|last orderByChild(String path)|Key|value() start|endAt getRef() keepSynced(auto download)  add|removeChild|ValueEventListener|addListenerForSingleValueEvent                             
+mDatabase.child("latitudes").child(-77).child(38).child(8).child(9).child(8).child(5).setValue(user); //DatabaseReference.setValue push getKey() child(String pathString) getParent|root() return DatabaseReference  updateChildren(Map) removeValue() runTransaction
+https://firebase.googleblog.com/2013/10/queries-part-1-common-sql-queries.html http://jsfiddle.net/kyu2u/422/
+enable firebase anonymous auth, rules remove ".read": "auth != null", test simulator turn on auth select anonymous provider  
+new Firebase("https://database-1ab1b.firebaseio.com/latitudes/-77/38/8/9/7").once('value', show);//listen one reponse 
+function show(snap) {
+   $('pre').text(JSON.stringify(snap.val(), null, 2));
+}                              
+                              
+firebase/AndroidChat //old
+open-source-android-apps
+http://www.parallelcodes.com/android-using-stored-procedure-ms-sql-server/
 
 keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"
 //[Storing C:/Users/holly/.android/debug.keystore]

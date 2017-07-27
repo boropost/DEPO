@@ -249,8 +249,21 @@ http://cliffordhall.com/2017/04/using-firebase-cloud-functions-manage-compound-k
     
 Query.equalTo limitToFirst|last orderByChild(String path)|Key|value() start|endAt getRef() keepSynced(auto download)  add|removeChild|ValueEventListener|addListenerForSingleValueEvent 
 //DatabaseReference.setValue push getKey() child(String pathString) getParent|root() return DatabaseReference  updateChildren(Map) removeValue() runTransaction
-https://firebase.googleblog.com/2013/10/queries-part-1-common-sql-queries.html http://jsfiddle.net/kyu2u/422/
-enable firebase anonymous auth, rules remove ".read": "auth != null", test simulator turn on auth select anonymous provider  
+https://firebase.googleblog.com/2013/10/queries-part-1-common-sql-queries.html 
+".read": "auth == null",test simulator turn off auth
+or enable firebase anonymous auth, rules ".read": "auth != null", test simulator turn on auth select anonymous provider which gen anonymous auth token
+https://jsfiddle.net/katowulf/eypydqjn/ (settting jQuery 3.1.1) Auth API Key=firebase setting:Web API Key
+ url=database-1ab1b Path=latitudes/-77/38/8/9/7
+https://database-1ab1b.firebaseio.com/latitudes/-77/38/8/9/7.json?print=pretty //CURL request
+let config = {
+  "apiKey": "AIzaSyAMs6eu3EO0z_PJ-TwA8ctI7-KBXEVJgHg",
+  "authDomain": "database-1ab1b.firebaseapp.com",
+  "databaseURL": "https://database-1ab1b.firebaseio.com"
+};
+firebase.initializeApp(config);
+let db = firebase.database().ref();
+let query = db.child("latitudes/-77/38/8/9/7");
+query.once('value').then(snap => {	this.out.log(snap.val()); }).catch(e => this.out.error(e));//.then(function(snap) {
 
 https://developer.android.com/training/location/retrieve-current.html
 https://developer.android.com/guide/topics/location/strategies.html //android.location.LocationManager 
@@ -299,17 +312,7 @@ longitudes> 38> -77> 0> 3> 7> 8> "OmYPbTLDq1TOt4GZnUHbKS2G5S92":1
                             
 mDatabase.child("latitudes").child(-77).child(38).child(8).child(9).child(8).child(5).setValue(user); 
 
-new Firebase("https://database-1ab1b.firebaseio.com/latitudes/-77/38/8/9/7").once('value', show);//listen one reponse, js version of addListenerForSingleValueEvent  
-function show(snap) {
-   $('pre').text(JSON.stringify(snap.val(), null, 2));
-}   
-
-var rootRef = firebase.database().ref("https://database-1ab1b.firebaseio.com/latitudes/-77/38/8/9/7");
-rootRef.once('value')
-  .then(function(dataSnapshot) {
-     $('pre').text(JSON.stringify(dataSnapshot.val(), null, 2));
-  });
-                              
+                    
 firebase/AndroidChat //old
 open-source-android-apps
 http://www.parallelcodes.com/android-using-stored-procedure-ms-sql-server/

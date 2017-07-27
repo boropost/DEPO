@@ -252,9 +252,10 @@ Query.equalTo limitToFirst|last orderByChild(String path)|Key|value() start|endA
 https://firebase.googleblog.com/2013/10/queries-part-1-common-sql-queries.html 
 ".read": "auth == null",test simulator turn off auth
 or enable firebase anonymous auth, rules ".read": "auth != null", test simulator turn on auth select anonymous provider which gen anonymous auth token
-https://jsfiddle.net/katowulf/eypydqjn/ (settting jQuery 3.1.1) Auth API Key=firebase setting:Web API Key
+https://jsfiddle.net/katowulf/eypydqjn/ (external resources+https://www.gstatic.com/firebasejs/3.6.5/firebase.js) Auth API Key=firebase setting:Web API Key
  url=database-1ab1b Path=latitudes/-77/38/8/9/7
 https://database-1ab1b.firebaseio.com/latitudes/-77/38/8/9/7.json?print=pretty //CURL request
+<pre/>//html or settting jQuery edge + firebug
 let config = {
   "apiKey": "AIzaSyAMs6eu3EO0z_PJ-TwA8ctI7-KBXEVJgHg",
   "authDomain": "database-1ab1b.firebaseapp.com",
@@ -262,8 +263,13 @@ let config = {
 };
 firebase.initializeApp(config);
 let db = firebase.database().ref();
-let query = db.child("latitudes/-77/38/8/9/7");
-query.once('value').then(snap => {	this.out.log(snap.val()); }).catch(e => this.out.error(e));//.then(function(snap) {
+let query = db.child("latitudes/-77/38/8/9/7/1");
+query.once('value').then(snap => {	$('pre').text(JSON.stringify(snap.val(), null, 2)); }).catch(e => this.out.error(e)); //same as .then(function(snap) {
+query.orderByValue().limitToLast(2).on("value", function(snapshot) {
+  snapshot.forEach(function(data) {
+  	console.log(JSON.stringify(data.key, null, 2) + "|" + JSON.stringify(data.val(), null, 2));
+  });
+});
 
 https://developer.android.com/training/location/retrieve-current.html
 https://developer.android.com/guide/topics/location/strategies.html //android.location.LocationManager 
@@ -311,7 +317,8 @@ longitudes> 38> -77> 0> 3> 7> 8> "OmYPbTLDq1TOt4GZnUHbKS2G5S92":1
                               9> "nNosBR5IaoXNnSsubByOnM1BIgM2":2
                             
 mDatabase.child("latitudes").child(-77).child(38).child(8).child(9).child(8).child(5).setValue(user); 
-
+latitudes/-77/38/8/9/7
+longitudes/38/-77/0/4/3
                     
 firebase/AndroidChat //old
 open-source-android-apps

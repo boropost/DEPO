@@ -1,0 +1,482 @@
+A process is an executing program contain code, memory,open files and other resources.A thread is unit, within process, to which OS allocates CPU time to executed any part of the process code,Threads share same memory space (but own stack and registers) so easier inter communication and cheaper, Processes default not unless via shared memory, A process has a fixed security token. A thread can impersonate different users/tokens.
+
+Static vs. Dynamic Data Structures : ARRAY vs LINKEDLIST, Linear (array,list,stack,queue) vs tree Data Structures
+
+O(logn)<(n)<(n^2)<(2^n)
+Binary Search Tree: left <= root <= right, heap:  left <= root >= right (PriorityQueue highest priority item is at the root)
+balanced tree: the depth of the left and right subtrees of every node differ by 1 or less.
+Perfect Binary Tree: a full binary tree (every node other than the leaves has two children) in which all leaves are at the same depth or same level.total number of nodes in a perfect binary tree of height h: 2^(h+1)-1
+Complete Binary Tree: every level, except possibly the last, is completely filled, and all nodes are as far left as possible
+
+TreeMap object keys are sorted using Red-Black tree algorithm (Root node must be Black in color. Red node can not have a red color neighbor node. All paths from root node to the null should consist the same number of black nodes )
+
+BST O(M * log N) where M is maximum string length and N is number of keys in tree. 
+trie (pronounced “try”) search the key in O(M) with more storage.Each node represents a single character, trie can be searched by prefix (ca), returning a list of words (car cat) which begin with the same prefix 
+heap and binary tree: search and insert O(logn)
+
+Algorithm	Average Time	Worst Time	Space
+Bubble sort	n^2		n^2		1
+Selection sort	n^2		n^2		1
+Insertion sort	n^2		n^2	
+Quick sort	n log(n)	n^2	
+Merge sort	n log(n)	n log(n)	depends: Additional space complexity can be O(n) in arrays and O(1) in linked list
+Heap sort	n log(n)	n log(n)
+Bucket sort	n+k		n^2
+
+Quick|Merge Sort on array is in-place | requires O(N) extra storage, use more random | sequential access suit for array | linked list. Merge sort with insert in O(1) extra space for linked lists. 
+stable sort if two objects with equal keys appear in the same order in sorted output as unsorted input: Insertion sort, Merge Sort, Bubble Sort.
+instable : Heap Sort, Quick Sort.
+sort by first name then by last name, the stable sorting ensure same last name are sorted by first name.
+mergesort quicksort Heapsort BinarySearch based on recursion: divide-and-conquer : div to sub - cnq recurse - Combine,
+unlikely, Insertion sort based on comparison of elements, stable complexity O(n^2). Generalized version is Shell sort.  if there are only few unsorted elements, the complexity will close to O(n) outperforms divide-and-conquer O(nlogn), also faster for small n<10
+public static void insertionSort(int[] array) {
+for (int i = 0; i < array.length - 1; i++) {//8 3 2 7 6
+  int j = i + 1;
+  int tmp = array[j];//7
+  while (j > 0 && tmp > array[j-1]) {//compare 7 to every num on left
+	array[j] = array[j-1];//shift 3 2 to right
+	j--;
+  }
+  array[j] = tmp;//insert 7: 8 7 3 2 6
+}
+}
+
+stack for recursion
+
+DFS (pre|in|post order) may go unnecessary depths requires space O(max depth) in stack, BFS (level order) requires space O(max width) memory in queue.
+DFS:
+(a) Inorder (Left, Root, Right) : 2 3 4 (5) 6 7 8
+(b) Preorder (Root, Left, Right) : (5) 3 2 4 7 6 8
+(c) Postorder (Left, Right, Root) : 2 4 3 6 8 7 (5)
+BFS : 5 3 7 2 4 6 8
+
+implement a priority queue using 2 queues: 2 4 3 1
+[2 4] [] //if cur:4>q1.back():2 q1.push(cur) 
+[] [2 3 4] //if cur<q1.back() while(!q1.empty()){if(cur<q1.front() && !curPushed) {q2.push(cur) curPushed=True} else q2.push(q1.pop()) } //curPushed ensure only push cur once
+[1 2 3 4] [] //pop all > 1 from q2, push to q1 after 1
+
+deque by circular array with capactity
+pop_back()|pop_front(){a[back|front]}
+push_back(val){if (front == back+1%cap){front=front+1%cap} a[back]=val back=back+1%cap
+push_front(val){if (front == back+1%cap){back=back-1<0?back-1+cap} a[front]=val front=front-1<0?front-1+cap
+
+A spanning tree is a subset of Graph, cover all vertices/graphnode connected by minimum edges/directs. A complete undirected graph can have 1 to maxi n^(n-2) spanning trees,
+
+min moves for Tower of Hanoi: 2^n - 1
+dynamic programming > recursion on tower of hanoi,Fibonacci Series,Dijkstra shortest path
+
+Infix A + B * C	   Prefix(POLISH)  + A * B C	Postfix  A B C * +
+
+Round Robin Scheduling time slices are assigned  to each process in circular order without any priority, starvation free.
+matches cross 6 teams: round robin keep 1 and circle clock-wise rest, teams number even then completed, odd will have one team idle each round 
+1 4    1 5   1 6   1 3   1 2
+2 5    4 6   5 3   6 2   3 4
+3 6    2 3   4 2   5 4   6 5
+    public static void scheduleGames(int nmb) {
+        int rounds = (nmb % 2 == 0) ? nmb -1 : nmb;//5 rounds=even 6-1 or odd 5 teams,  
+        for (int i=0; i<rounds; i++) {
+            for (int j=0; j<nmb/2; j++) {//complete even 6/2 matches or odd 5/2 + 1 idle per round 
+                int t1 = (j+i) % nmb + 1;//+ 1 over 0-based
+                int t2 = ((nmb - j -1) + i) % nmb + 1;
+
+given i in [a,b], if i%3=0 output fizz, if i%5=0 output buzz, if both output fizzbuzz: first skip 0, then check if i%15=0 output fizzbuzz then check rest
+
+n numbers has 1|2 number appears more than n/2|3 times, find it: compare any 2|3 numbers, if not equal then discard then, the target num will still appears more than rest n-2|3/2|3 time, if equal then save the 1|2 num and count (till > rest/2) and compare with rest 
+
+Find Next Higher Number With Same Digits 12543 => 13245
+starting from tenths digit (4), if current >= right keep going left, 4>=3 move to 5, 5>=4 move to 2, 2<5 stop and find the smallest num on right =3, swap 2 and 3 => 13542, sort all right digits in ascending order= 13245.
+
+find leading number (bigger than all elments after it) of array 1 4 8 5 3 4: 8 5 
+for (int i=len-1; i>=0; i--){if (a[i]>prev) {cout<<a[i]; prev=a[i];}//prev (init=0) store only the max after cur
+
+if (n & (n - 1)) == 0,  n is 0 or a power of 2, n = (32) 100000, n - 1 = 011111; n = (6) 110, n - 1 = 101;
+if (x & 1) or (x % 2) //odd
+
+find if val has 4 decimal .xxxx: double val=val*10000; int t = val; if(t==val)
+
+find the greatest continuous 4 digit out of number 
+while (num > 1000) {long rem = num % 10000;//mod 98119723%10000=9723 9811%10000=9811 maxval = max(rem,maxval);num /= 10;}
+
+Given (0 <= a, b, c, d <= 9) form 2 numbers sum close to 100: same as minimize |10a'+b'+10c'+d'-100|=|9(a'+c')-100+a'+b'+c'+d'|, constant a'+b'+c'+d'=a+b+c+d=sum, find a'+c' close to (100-sum)/9, return 10a'+b'|d' and 10c'+d'|d', fxp 3, 6, 7, 9, the sum = 25, a'+c' to match is round(100-25/9)=8. Best {3, 6}, so {37, 69} or {39, 67}.
+for (i=0 to n-1){ for(j=i+1 to n){ if abs(a[i]+a[j] - (100-sum)/9) > min 
+
+all num repeats 3 times except one num once= sum MOD 3
+
+only 1 num appears once, other multiple time, find the single without extra space by sort first, if prev!=cur!=next
+
+firstUniqueChar one pass by hashset set and vector list, if !set.count(c){list.push_back(c)} else {set.insert(c)} return list[0]
+ 
+find the first unique integer from array. if input byte|char[] JAVA|C++ or int[](0,1000) but limited mem 1KB, use another byte|char[255 or 1000] array to count, because bool|char|byte[] to store unsigned int as index and use less mem than hashmap<int,count>
+similiar put each value (within a range) from unsorted array to range sized array count[value]++ per occurrence, output thru its index (sorted), 0 no output, dup output -- till 0
+
+big int array > mem, hash item to smaller and store in hashset can fitin mem, to find given big int if exists in it
+
+average of big list which size can't be computedInstead : calc mean of each 2 elements (a[i]=avg(a[i],a[i+1]); i+=2;) and recurse on result list until 1 left, also avoid sum all num may overflow 
+
+find number of unique|duplicated elements in array O(1): loop thru a[i] 
+if(!hashset2.contains(a[i])){//continue if hashset2 had it
+	if(hashset1.contains(a[i])){hashset1.remove(a[i]);hashset2.add(a[i]);}
+	else{hashset1.add(a[i]);} //X X -> 1 X, 1 X -> X 2, X 2 remain, never 1 2
+return hashset1|2.size();//hashset1|2 store element appear once|twice+
+Remove common | find unique characters from two strings//k strings: similar in hashset1 
+int[256] letters; loop s1:letters[s1[i]]++;  loop s2:if (letters[s2[i]]>0) letters[s1[i]]=-1;//common 
+int index = 0;for(int i = 0; i < s1|2.length; i++){
+		if(letters[s1|2[i]] != -1) s1|2[index++] = s1|2[i];//index<=i, change s[index] wont impact s[i] 
+
+find all num having 1st 3 digits sum=last 3 digits sum btw 100000 to 999999: go thru 1 to 999 and store unrodered_map<digits sum,vector<num>> fxp 2:101,110,011, return all comb of two 3digits per each sum (1-27)
+for (auto entry : map) 
+{ vector& elements = entry.second; 
+  for (int i = 0; i < elements.size(); i++) 
+  { for (int j = 0; j < elements.size(); j++) 
+    { int num = elements[i] * 1000 + elements[j]; if (num >= 100000) { result.push_back(num);//remove num begin with 0
+
+allocate cakes{size} to kids{hungry}: sort both, from small to large size of candy to binary search in kids for kid.hungry<=candy.size 
+
+generate 64bit base on random() 32bit:  (random()<<32|random())<<32
+
+int rand7(0~7){ int sum;//4 * rand5(0~5) + rand5() make rand 1-25 with equal probability by 4*row+col in 4x6 grid, similar rand6=2*rand2(0~2)+rand2() in 2x3 grid not 3*rand2()
+  while (sum > 21){ sum = 4 * rand5() + rand5();} ;  //remake till get 1-21 % 7 to get [1-7] with equal probability
+  return sum % 7;}
+
+given random(min,max) that generates a num btw min and max with equal prob, to return unique numbers from an array: max=arr.len-1; i=random(0,max), if
+hashtable.contain(arr[i]){ redo} else{hashtable.add(arr[i]);swap(arr{i],arr[arr.len-1]), max--;}, 
+same as shuffle cards:  for (int i=size; i > 1; i--) swap(arr, i-1, rnd.nextInt(i));//random within [0,i]
+
+Map(char,int freq), convert to array with freq dup of char, ('a',1) ('b',2) ('c',2) -> a|b|c/(a+b+c)=1|2|2/5, add 5 number of {a,b,b,b,c}, random num between 0-4, return a[num] 
+probablity 20|40|40% of a|b|c 
+given hashmap<country,popualtion>, getCountry() to return a country with same probablity as its population
+sum of all population, random a numbet btw 1 and sum, go thru map, number=number-population of country, if number<0 return country
+fxp: A:2 B:3 C:1, array{AABBBC}|{223331} random index i btw 1 and 6, 3/6 prob a[i]=B so if i=4, 4-2-3<0 return B|3
+similar:getNumber() to return one from list of number that larger means more chance to be returned)
+
+public void enforceJump(){ int count = 0; while (count <= 0){ if (jump()) count++; else count–; } }//jump() randomly return T(up)/F(down), this
+enforce 1 up, or recusive: enforceJump(){if (!jump()) enforceJump();}
+
+//flip() 40|60% return 1|0, make filp2() 50% return 1|0
+int flip2(){ do{ int x = flip(), y = flip(); }while(!( x xor y)); return x; }//1^1=0 0^0=0, return when 1^0=0^1=1
+
+move all item=val (0) to end of array while keep rest orignal order 100203 > 123000
+int i = 0;
+for ( int j = 0; j < arr.length; j++) {//i j both move to val 0, then i stay and j keep move to first pos!=val, swap 
+  if (arr[j] != val) {if (i < j) {  swap(arr, i, j);  }  //when swap: i at left most val, j at right most nonval  
+                      i++;}
+100203 > 000123 i j from len-1 to 0, i--, if(i>j)
+
+find if big array contains small array
+by elements: hashmap<Integer:item,Integer:count> on each item of small array, dup count++, go thru big array count-- for each contained item, if count=0 remove the entry, return hashmap.isEmpty()  
+by elements and order: return the first index position | num of occurance if source string contains target string, otherwise return -1
+        for (i = 0; i < source.length() - target.length() + 1; i++){//no need to go source.length()-1
+          if (source.charAt(i)==target.charAt(0)){boolean=true;
+            for (j = 0; j < target.length(); j++){
+                if (source.charAt(i+j) != target.charAt(j)){ break; mat=false;} if(mat) return i; | count++; //num of occurance
+strStr() find index of the first occurance of substring B[n] in A[m] (m>n) by KMP O(m) better than loop thru both string O(mn) 
+base on A[i-j..i]==B[0..j] if(A[i+1]==B[j+1]){ i++;j++; till j=m then return i} else {j-- till A[i-j..i]==B[0..j] and A[i+1]==B[j+1]}, if (j=0)
+{i++;j++; till A[i]==B[j]}
+preprocess P[j] that if B[j] match but B[j+1] not, what is the max next j (<cur j) make B[0..P[j]]=A|B[j-P[j]..j], since prev section in A match
+B, it can be decided only by B self matching
+j=-1;//int strStr(char A[], char B[]) | vector<int> preprocess(char B[]) or char *B
+P=preprocess(B)|vector<int> P(n,-1);
+for (int i=0|1; i<m|n; i++;){
+   while (j>0 && B[j+1]!=A|B[i]) {j=P[j];}
+   if (B[j+1]=A|B[i]) j++;
+   if (j=n-1) return (i-n+1); | P[i]=j;
+}
+http://bangbingsyb.blogspot.com/2014/11/leetcode-implement-strstr-kmp.html
+
+ABCDEFG OPQDRSTFWUV > ABCOPQDERSTFGWUV //find index where str1=str2, insert/remove part of st2 before the common letter to st1 before the pos, 
+while(i<str1.size() && j<str2.size()){if str1[i]==str2[j] {str1.insert(i-1,str2.substr(0,j)); i=i+j; str2.erase(0,j);j=0} else i++;j++; 
+
+replace repeat letter with the next alphabet aabbc --> abbcc
+hashmap<char,count> if hashmap.contains(c){ replace with c+count%26; count++;}else{hashmap.add(c,1);}
+
+Find a word in the dictionary that has most given letters a,c.
+index[a]=1;[b]=0;[c]=1;[d]=0;...
+foreach(word : dictionary[i])
+{   sum=0;
+    foreach(letter : word) {  sum += index[letter];   }
+    if(sum > max)    {  max = sum;   max_index = i; }
+
+number of distinct substring: a trie store all the suffixes aba (aba,ba,a), any substring (ab|b) is prefix of a suffix (aba|ba), return count of nodes. node count > 1 means duplicate 
+
+Char shift 3: a:d z:c by encode (char-'a'+3)%26+'a'  decode:  if (char-'a'-3)<=0 +=26 (not 25)
+
+find if s1 (abcd) is rotated equivalent of s2 (cdab) by substring func strStr(s1, s2 + s2) 
+
+Given int array, find sum of elements between indices i and j (i = j) inclusive,if this func is called frequently, instead of iterate nums[i to
+j] each time, precompute dp[i]=sum [0 to i], sum[i to j]=dp[j]-dp[i]
+vector<int> dp;
+    precompute(vector<int> &nums) {
+        dp[0] = nums[0];
+        for (int i = 1; i < nums.size(); ++i) {dp[i] += dp[i - 1];}
+    }
+    int sumRange(int i, int j) {return i == 0? dp[j] : dp[j] - dp[i - 1];} //sum[0 to j] = dp[j], dp[i - 1] to include dp[i]
+expand to 2D sum of rectangle sum[(r1,c1),(r2,c2)], sum[(0,0),(r2,c2)]=dp[r2][c2] = dp[r2][c1 - 1] + dp[r1 - 1][c2] - dp[r1 - 1][c1 - 1]+matrix
+[r2][c2]//dp[r1 - 1][c1 - 1] is dup area in dp[r2][c1 - 1] and dp[r1 - 1][c2]
+vector<vector<int> > dp;//can use matrix itself by shift index by 1
+    NumMatrix(vector<vector<int> > &matrix) {
+        dp[0][0]=matrix[0][0];
+        for (int i = 1; i <= matrix.size(); ++i) {
+            for (int j = 1; j <= matrix[0].size(); ++j) {dp[i][j] = dp[i][j - 1] + dp[i - 1][j] - dp[i - 1][j - 1] + matrix[i][j];}
+        }
+    }
+    int sumRegion(int row1, int col1, int row2, int col2) {return dp[row2][col2] - dp[row1-1][col2] - dp[row2][col1-1] + dp[row1-1][col1-1];}
+ 
+?sprinkler covers surrounding 2x2 area of lawn that is matrix[i,j] represent the level of draught, find the best cross point [i,j] for sprinkler 
+similar find max of sum 2x2 rectangle dp[0,0]=matrix[0,0] (if place at left up conner will cover 1 square), store the max 2x2 sum can get in
+(0,0) to (i,j) area: dp[i][j]=dp[i-1][j]+dp[i][j-1]-dp[i - 1][j - 1]+ matrix[i][j]//dp[i - 1][j - 1] is dup in dp[i-1][j]+dp[i][j-1]
+for(int r|c=1; r|c<n|m; r|c++){ dp[0][c] = max(dp[0][c-1], matrix[0][c-1] + matrix[0][c]); | dp[r][0] = max(dp[r-1][0], matrix[r-1][0] + matrix
+[r][0]); }//top row and left col
+for(int r=1; r<n; r++) for(int c=1; c<m; c++){dp[r][c]=max(matrix[r-1][c-1] + matrix[r][c-1]+ matrix[r-1][c]+ matrix[r][c]
+
+Valid Sudoku : Each row|col have 1-9 just once
+        for (int i = 0; i < n; i++) {
+		row|col= new HashSet<Character>();
+			for (int j = 0; j < n; j++) { 	if (!row|col.contains(board[i|j][j|i]))(row|col.add(board[i|j][j|i])else(return false;) //switch i/j for row/col
+
+remove duplicates from an unsorted linked list: if HashSet<Integer> set.contains(node.next.val) {node.next = node.next.next;}else{set.add(node.val);}//single link list can simply remove next instead of cur node which need prev node
+
+Find the nth to last node of a singly linked list: move pointer to nth node, then move both head and that pointer synchronously till it=null, return head because n between head and pointer which is last node now.
+https://github.com/shawnfan/LintCode/blob/master/Java/Nth%20to%20Last%20Node%20in%20List.java
+
+swap singly linked list node (prefer swap the value than node)
+need to get the prev while(current->next!=node1|2){current=current->next;}prev1|2=current; prev1|2->next=node2|1;temp=node1->next;node1->next=node2->next;node2->next=temp;
+
+1->2->3->4->5->NULL,return 1->3->5->2->4->NULL
+ListNode odd = head;  ListNode even = head.next;  ListNode evenHead = even;        
+while (even != null && even.next != null) {
+            odd.next = even.next; //1->3
+            odd = odd.next;             
+            even.next = odd.next;//2->4
+            even = even.next;
+        }        
+        odd.next = evenHead;//5->2
+
+given 2 values to find if they are parent-child in tree (no dup): BFS till node.value== v1 (any of 2 values), so another value v2 can not be ancestor over v1 
+{ if (v1>v2) {if (node.left.value==v2) return true; else false
+  else {if (node.right.value==v2) return true; else false
+
+Segment (Interval) Tree, store intervals, find interval contains a given point, O(n logn) build time(added/deleted in O(logn)), O(k+logn) query time, O(n logn) space 
+SegmentTreeNode node = new SegmentTreeNode(start, end);  //leaf node has start=end    
+node.left = buildSegmentTree(start, (start + end)/2);//The left child of node A has start=A.left, end=(A.left + A.right) / 2.
+node.right  = buildSegmentTree((start + end)/2 + 1, end);//The right child of node A has start=(A.left + A.right) / 2 + 1, end=A.right
+https://github.com/shawnfan/LintCode/blob/master/Java/Segment%20Tree%20Build.java
+
+Range tree stores points, find points fall within a given interval, O(n logn) build time(added/deleted in O(logn)), O(k+logn) query time, O(n) space, k : number of reported results
+fxp store event by inttime in tree, find all events occur btw window [begin end] 
+void FindRange(ArrayList<Integer> result, TreeNode root, int k1, int k2) {//Find all of tree nodes within range k1 to k2
+        if (root.val < k1 | > k2) {  FindRange(result, root.left|right, k1, k2); }
+        if (root.val >= k1 && root.val <= k2) {  result.add(root.val); }
+https://github.com/shawnfan/LintCode/blob/master/Java/Search%20Range%20in%20Binary%20Search%20Tree%20.java
+https://github.com/shawnfan/LintCode/blob/master/Java/Search%20for%20a%20Range.java //similar to sorted array
+
+total ways to paint n fence with k color paints that adjacent fence can not be in the same color  
+dp[0]=k; (i=0 to n){dp[i]=dp[i-1]*(k-1);} //ways of previous fence * k except the color of previous fence, n=2 k=3 dp[0]=3 dp[1]=3*(3-1)=6 
+
+?ways to put n indistinct object to k indistinct box 4 obj to 3 box 400 310 211 
+dp(n,k)=dp(n-1,k-1)+dp(n-k,k), dp(n,n)=1, dp(n,0)=0
+http://math.stackexchange.com/questions/278596/number-of-ways-to-put-n-indistinct-objects-into-m-indistinct-boxes
+
+stack push a val must delete if existing val first: similar to LRU : hashmap<val,*listNode>, new node/val addto head
+
+order people by card{prevname,curname}, load into hashmap<name,*listNode> 
+if (hm.count(prevname)>0)
+	hm[prevname]->next==hm[curname];//set next
+else{
+	ln=new listNode(prevname);
+	if (!hm.count(curname)>0){lnd=new listNode(curname); hm[curname]=lnd;}//leave next null
+	ln->next=hm[curname];
+	hm[prevname]=ln;
+
+n most freq|violatile stock from stream quotes: hashmap<sym,count|(var,prev)> count++|(var=cur-prev/prev,prev=cur) per sym and offer Quote(sym,count|var) to n size priority queue(heap duplicable) <Quote(sym,count|var)> order by new Comparator<Quote>() {public int compare(Quote x, Quote y) { return X.count|var - y.count|var; poll head if size>=n after push,
+queue<(time,price)> if (front().time-curtime>window){ popfront; pushback curtime,price;} avg(prices during last time window)
+hashmap<sym,(hashmap<price,count>, (price,maxCount),ArrayList<client>)> increment on stream quote(sym,price), use price to find and update prev count, if count>maxCount update the most freq price, inform subscribing clients about updated price 
+hashmap<sym,list<rules,client>> check each rule if (IBM>50) notify client TOM, 
+GetChange|AverageFromOpening(company) first time sym add hashmap with (curprice, open|max|min|avgprice) as same, later update curprice, avgprice=avgprice+curprice/2 or sum+=curprice/count++ by sym, max|minPrice =curprice if cur>|<max|min, max-min in maxheap for top K fluctuate/volatile  
+prevQty+hashmap<sym,mean> Qty weighted mean= (mean*prevQty+price*curQty)/(prevQty+curQty) prevQty=prevQty+curQty
+2 max|minheap+hashmap<sym,median> keep median on price stream
+hashmap<userid,hashmap>-hashmap<tradeid,trade>-trade{tradeid,queue<msg>,trade* next> to store sequential msg{userid,tradeid,fillqty}, so they can be processed without blocking other user or trade, i.e. user1|trade1 having lot msg wont block user2|trade2 having few msg by loop thru hashmap|hashset 
+
+Top K Frequent Elements : HashMap<T,count>, pair{T,count} and priorityqueue<pair> order by pair.int, HM[T]++, pair(T).count++, if PQ.size()>K
+PQ.poll(); PQ.push(pair)
+similar LFU (least frequently used cache) use HashMap<key,T*>, priorityqueue to store pair{T*,count} order by count, new T{value,0}, if PQ.size
+()>K t=PQ.poll(); HM.erase(t->key); PQ.push(t);
+
+max freq num (value btw 1-100) in array
+char ct[100]; (i=0 to size-1){mx=max(++ct[a[i]],mx); if(mx>=size-i) return mx;}//return if even all num left are same wont exceed mx
+ 
+sort by freq: Cls{val,freq} hashmap<val,cls> | Cls[val]=freq (if val in certain range)  cls.freq++ priority queue<cls,comp by freq>
+  
+VendingMachine{int[1,5,10,25]=count coins; HashMap<itemid,(price,count)> items;
+buy(itemid, inputCoins int[1,5,10,25]=count)//bill or credit card payment are simpler as int
+{for (i=0 to 25){
+  if (inputCoins[i]>0){//array less mem than hashmap, only care about coin>0
+   coins[i]+=inputCoins[i];//increase inventory coins must have matching i
+   payment+=inputCoins[i]*i;}
+ if (payment=items[itemid].price){items[itemid].count--;}
+ else if(payment>items[itemid].price){ 
+   diff= payment-items[itemid].price;
+   for (i=25 to 0){//start from big coin
+    if (coins[i]>0 && diff>0 && diff>=coins[i]){
+     change=min(coins[i],diff/i);//may 
+     coins[i]-=change;//decrease inventory coins 
+     diff=diff%i;}
+   }
+   if (diff>0) //not have enough coin to cover diff
+
+class Vehicle {string lisense;enum.small|medium|large size;
+park() {switch (size) slot=small|medium|largeSlots.poll();lot.occupiedSlots.put(this.lisense, slot);[slot.occupy(this);]//small size can park in medium if no smallslots left 
+leave() {slot = lot.occupiedSlots.remove(this.lisense); small|medium|largeSlots.offer(slot);[slot.release();]}
+class Lot {public HashMap<Integer, Slot> occupiedSlots; private Queue<Slot> small|medium|largeSlots=LinkedList;//even usage among lots
+Slot find(lisense){return occupiedSlots.get(lisense);}
+class Slot {public LocationId;[private enum.small|medium|large size;Vehicle vehicle;boolean available;]
+[public void occupy(Vehicle v)|release() { this.vehicle = v|null; this.available = false|true;}]
+n ticket stores, each has a[i] tickets at price=a[i] num remaining tickets, find max profit of sell m tks
+priority queue/max heap size n, push all a[i], then for m times {pull one a each time, decrement it and push back}
+
+browser back|forward by 2 stack: s1 push new url, back|for s1|2.pop and push to s2|1, vector to store history among multiple browsers 
+music player: 1 vector|2 stacks store un|played back|fwd pop from prev|next-play-push to next|prev, if prev|next is empty get and remove a random
+i from vector-play- push to next|prev    
+
+each time a racer pass a sensor, will increment count hashmap<racerId,count>, remove racerid of oldcount and add to multimap<newcount,racerId> sorted by count,  racer with higher counts is faster  
+
+multimap<name,phones>(C++) Tree|HashMap<name,linkedList>(JAVA) to store duplocate names to unique phone number, HashMap<phone,name> for lookup name by phone
+<name,skills>similar <skill,names>
+
+parse words thru each page to pouplate HashMap<word,LinkedList> to store index (word and page numbers contains it, treemap if need order by word), HashSet<word> per page to remember if the word has been found in the page, to avoid duplicate entry of same word in the LinkedList (better than contains even for binary search) 
+dist pages to multi threads to process concurrently, each thread has own HashMap<word,LinkedList> and finally merger LinkedList together by word key 
+
+URL shortener: 1.hash long string to short may be collisions (2 long urls map to same short url)
+2.database table row {integer id, long url, shorturl}, convert 10 digit long int id to|from character string shorturl that is at most 6 characters long.
+    while (id){ shorturl=map[id%62]+shorturl; id = id/62;}//int map[62]={a-zA-Z0-9} convert a decimal number to base 62 number mapped char[]
+
+    for (int i=0; i < shortURL.length(); i++){if ('a|A|0' <= shortURL[i] && shortURL[i] <= 'z|Z|9')
+          						id = id*62 + shortURL[i] - 'a|A|0' + 0|26|52; } 
+
+hashmap<empid,mgrid> mgrid=hm.get(empid);print mgrid; while(hm.contains(mgrid){mgrid=hm.get(mgrid); print mgrid} //out put all mgr above given emp
+
+elevator using treemap<inttime1130,(start,dest)> to store request from other floor 
+
+lottery: unordered_map map1<name, num>, unordered_map map2<num,name>, if remove then add new name with the assigned num to old name, use above
+random to generate nums.
+
+class Theatre{HashMap<String,HashSet<Seat>> availableMovies;
+boolean synchronized Buy(Movie, Seat){if(availableMovies.contains(Movie.name)){
+                                      HashSet<Seat> availableSeats = availableMovies.get((Movie.name); if(availableSeats.contains(Seat) {availableSeats.remove(seat);
+class Seat{int row; int col; //hashcode row+col
+
+func can only be call n times within a given timespan: queue of size n, enqueue new call timestamp and dequeue the oldest call if exceed size n, compare current time with the oldest call time stamp, if diff>timespan throw error
+or use array to avoid reallocate memory by STL queue, 
+static a[n]={0}, static int count, func(){++count;count=count%n;a[count]=curtime;if(a[count+1]!=0 && (a[count]-a[count+1])>limit){error;//a[count+1] has oldest if not 0 
+
+find missing num from 4 billion int : bitset<2^32> bs;//>=4B go thru all num b.set(i,1);  bs.test(missing number) still 0, 2^32 take 2^29 bytes
+(1 byte 8 bits), 2^29/1024=524,288 KB/1024=512 MB
+if RAM<512 MB, then  create 2^16 (=65,536) Bucket each cover 65,536 int Bucket0(0-65535) Bucket1(65536,131,071).. go thru all num, increment the
+corresponding bucket count, fxp 9 belong to (0-65535) so Bucket0++, finally Bucketi < 65,536 is the target where missing num, fxp Bucket1, reset
+all Bucketi to 0, go thru all num again, if num btw (65536,131,071) increment Bucketnum-65536, finally the Bucketmissingnum-65536=0
+
+put $1024 (2^10) in 10 envlope 2^0 2^1 2^2 ... 2^9 to form any given number, any num convert to binary 5=101=2^2+ +2^0 
+
+Sort 9GB dataset over 1GB memory
+External Sorting: read 1 GB a time and sort by conventional algor (such as Quicksort). write individually sorted 10 chunks of 1 GB to disk
+read the first 100 MB (1 GB mem /9 chunks+1) of each sorted chunk into 900MB input buffer, and use remain 100MB an output buffer, which can be as less as size of single data unit
+9-way merge and store the results in the output buffer. If the output buffer is full, write it to the final sorted file, and empty it. 
+If any of the 9 input buffers gets empty, fill it with the next 100 MB of its associated 1 GB sorted chunk until no more data from the chunk is available.
+(merge SORT makes one pass sequentially through each chunk being loaded partially)
+sort 9  7  2  6  3  4  8  5  1 only 3 num in memory at a time
+279 346 158 //individually sorted 3 chunks
+231 //read the first value from each chunk
+235 //Output the lowest value 1 and read next value from the same chunk, repeat..
+
+similarly one master computer can only 1M number memory and N slaves which contain 1M number, find median
+Sort numbers on each machine N*Mlog(M), pick smallest/first from each server to form a N sized min heap, remove the min of heap, and add the next number to heap from the same machine as removed element. Repeat for (N*M)/2 + 1 times ((N*M)/2 + 1)log (N). Min/Top  of the heap = median.
+(finding median on each server, finding medians among the medians may not exact)  
+
+search value in large sorted array size unknown
+jump forward with interval double each time, if > current, jump backward with half interval each time, if < current jump forward  with half interval each time 
+
+http://www.programmerinterview.com/index.php/puzzles/
+2 Eggs 100 Floors 
+drop 1 at each 10 floors fxp ok at 30th but break at 40th, drop 2 from 31 to 39 each floor to find break at which floor.    
+
+There are n bulbs that are initially off. first round toggle all the bulbs. second round toggle every second bulb. third round toggle every third bulb ... nth round  toggle the last bulb. sqrt(n) bulbs are on after n rounds. i must be one of 1x1 2x2 3x3 ... so it has odd number of factors (fxp 4 : 1 2 4) and will be toggle odd times eventually be on (toggle even times will be off) 
+0 0 0 0 0 0  0
+1 1 1 1 1 1  1
+1 0 1 0 1 0  2
+1 0 0 0 1 1  3
+1 0 0 1 1 1  4
+1 0 0 1 0 1  5
+1 0 0 1 0 0  6
+
+each time take turns to remove 1 to 3 stones. The one who removes the last stone will be the winner.  n % 4 =|<> 0 first player win|lose
+n=4, second player always win because first player can not take all, 4<n<8,first player can take some to left the second player lose on n=4 senario   
+
+min races to pick the fastest 3 horses out of 25 by 5 horses per race 
+eliminate the slowest 2 horses in each race since they are not in the top 3, but 5 champ from each race of 1st round (5 races) are NOT the 5 fastest horses, 6th race run 5 champ then eliminate the slowest 2 horses and all horses (2x2) slower than them in 1st round,  
+X1   X2   X3   
+X6   X7   X8   
+X11 X12 X13
+x1 is champ of both round, so is fastest, eliminate X8 | X12 X13 becasue if X6 X7|x11 can be 2nd 3rd, 7th race run X2 X3 X6 X7 x11 to find top 2
+
+find min circle to cover all given circles: find 2 far most centers from given circles, distance+radius1+radius2=radius of covering circle, center at mid.  
+
+virus program occupy your disk and clone each 1 second and rerun, if 1 root virus take 10 second to occupy all disk, how long take 2 root virus to do so: 9 seconds
+
+Five people are to be seated randomly around a circular table. What is the probability of two of them sitting next to each other
+5 people can sit around a circular table in 4! ways (given 1st ppl, then 2|3|4|5 have 4|3|2|1 pos to choose), by the same token 3 people + 1 Couple can sit around a round table in 3! ways (consider Couple as 1 ppl with 2 orders),  2*3! / 4! = 1/2 = 50%
+
+White container contains 3 white balls and black container contains 4 black & 1 white ball. transfer one ball from black container to white container. pick one ball from white container, what is the probability that it's a white ball. 4/5*3/4 + 1/5*1 = 4/5
+case1 transfered ball is W C1/1 / C1/5 = 1/5 so W container has 4W, C1/4 / C1/4 = 1
+case2 transfered ball is B C1/4 / C1/5 = 4/5 so W container has 3W 1B, C1/3 / C1/4 = 3/4
+
+A B C wear 3 black hats 2 white hats, A can not tell his hat, B can not tell his hat,  A did not see two white hats otherwise know he has black and B did not see one white hat therwise know he has black based on A statement, blind C can only black hat
+
+cube paint black, cut into 27 subcubes, toss one of them probablity of black face up 1/3
+8/27*1/2 (8 subcubes has 3 side black) + 12/27*1/3 (12 subcubes has 2 side black) + 6/27*1/6 (6 subcubes has 1 side black) +1/27*0 (1 subcubes has 0 side black)
+
+10 x 10 x 10 cube is painted . 8 x 8 x 8 inner cubes are not painted (10-2 sides)=8
+
+expected step for ant to travel from corner a (equal prob on each way) to the opposite d over cube: 10 steps 
+1/3 (a:one of 3 direction to b) 2/3(b:any of 2 direction to c except return to the start a)  1/3(c:one of 3 direction to the dest d)
+Ea|b|c=expected steps from a|b|c to d, Ea=Eb+1; Eb=(Ec+1)*2/3+(Ea+1)*1/3; Ec=(Eb+1)*2/3+1*1/3; Ea=10 Eb=9 Ec=7
+
+many circles to calculate area overlap only count once.
+Monte Carlo simulation: many rand(x, y) with a rect that cover all circles, check the distance between each point and center of circles (x-Xi)^2+(y-Yi)^2<=Ri^2 to find (number of points in any of circles/total)*area of rect=area of circles, because that probablity = circle area/square area, it applied to any irregular area / covering regular area   
+
+Monty Hall problem: 3 doors 1 car 2 goat, choose one (each 1/3 chance to win car), then open one of other 2 doors (2/3 chance have car) is goat, stay orig (1/3), switch to the other door (2/3 because opened door is 0 now)
+
+Linearity of Expectation (expected tosses until 1 head: p=1/2 E=1/p=2) 
+How many lots have to be bought (in expectation) until we have at least one coupon of n type
+1st buy always get new coupon =1; p=(n-1)/n probability that 2nd coupon is collected in next buy. number of buys needed is 1/p = n/(n-1); total buys= 1+n/(n-1)+n/(n-2)+..+n
+
+3 ants start to run on side from corners of the triangle. What is the probability that either 2 of the ants or all of the ants collide 75%
+each ant can move in 2 different directions C1/2C1/2C1/2=8, wont only if they all walking in the same direction count|clockwise 2C1/1C1/1C1/1=2, (8-2)/8
+
+4 ppl cross bridge speed 1 2 5 10 with 1 light, two can cross together. min 17
+1 & 2 Cross	2  //least cross together
+1 Returns	1
+5 & 10 Cross	10 //most cross together
+2 Returns 	2  //least reutrn
+1 & 2 Cross	2
+
+tunnel 1000m, you at 300m to left entrance, heard train from same entrance, train double speed run, run to left better chance to survive
+survive run to left: Tpr=700/Vp < Ttr=(1000+D)/Vt //D=distance train from tunnel entrance  700*2Vp<(1000+D)Vp D>400
+survive run to right: Tpl=300/Vp < Ttr=D/Vt  300*2Vp<D*Vp D>600  
+
+fund a$100 b$50 c$20 allocation to amount 160:
+1.use up a b, left c 10 :100 50 10
+2.porportional 160*(100/170) 160*(50/170) 160*(20/160)
+
+3 tags {man lady empty} to control only same gender can share restroom: empty allows man or lady, man means man already in only allows other man, timer to max 3 consecutive men avoid blocking lady, if exceed max further allowed until empty and reset timer to 0
+
+http://www.cnblogs.com/grandyang/p/4606334.html C++
+http://www.indiabix.com/java-programming/questions-and-answers/
+
+basically I have about 10 years experience working as software developer in financial industry, worked for 3 major investment banks focusing on building and support trading system with commonly used technology such as Java c++ on linux platform as well as c# on windows platform, have strong experience on relational database such as oracle sqlserver and sybase, also have solid capital market business knowledge on equity & derivatives and fixed income. I believe My technical background and professional skillset are very good fit for this role.
+ 
+I am passionate about technology and very motivatated by the lastest inovations, because business operation especially trading is more and more dependant on infrastructure system for quality and performance, technology does make difference and become critical so I bellieve that implement tehcnology to create or enhance system that can make business perform better is very promising field  
+ 
+best achievement
+all incoming trades have to be manually booked by buz users, to improve the efficiency, we created auto booking system that allow user to define criteria for trades to be automatically booked, they are stored in the profile service database, the system scan incoming trades based on the profile setting, if matching predefined condition, it will be  automatically processed, it 70% of trades being booked on daily basis, significantly reduce work load from buz user.
+ 
+difficult task and how to address
+the old system has calculation formulas embed in java code, each time when but user want to make a change, development has to implement it and do a production release, it is not acceptable if it happens very often, so the solution I came up with is to extract calculation formula and schema out of java code into a separate XML definition called policy, so buz user can directly modify policy without involving development, by that way java code base became more generic, the system become more efficient and operable, it can just reload new policy after the change been made.

@@ -1,0 +1,1968 @@
+statically compiled programming languages, such as C++, are compiled into native, machine-specific instructions and saved as an executable file. linking process combines of separately compiled code with shared library code to create an executable application. 
+dynamically compiled programming languages such as Java. code .java files are compiled into binary .class files, which remain as-is until loaded into the Java Virtual Machine (JVM) via ClassLoader per top jar.  linking process is performed by the JVM at runtime. Classes with depenpdency class are loaded into the JVM on an 'as needed' basis
+Just-in-Time  convert source code into assmebly language (intermediate language for C#,ByteCode for java), then compile functionality to machine code when it is called in runtime, reduces burden on cpu and optimised for runtime enviorment.
+bootstrap class loader: java’s core classes like JAVA_HOME/jre/bin\java.dll|exe (java.lang, java.util) lib\rt.jar  
+extensions class loader: packages extends standard core java classes at JAVA_HOME/jre/lib/ext 
+System Class Loader: Java classes in the classpath
+JDK { (run) JRE { JVM }, (dev) Java compiler|debugger|core classes} .java>compiler>.class(byte code)>JVM>bin instanceof = typeof
+Oracle HotSpot JVM VS JRockit
+Modifying the behavior of thirdparty.jar by prepending custom.jar to the bootstrap classloader classpath:
+java -cp thirdparty.jar -Xbootclasspath/p:custom.jar; com.cra.MyApp
+the new class must be prepended to the bootstrap classpath to takes precedence over the same original class found later at runtime in the path in
+rt.jar. custom.jar apply to whole JVM, and its dependencies must also be loaded by same classloader
+
+memory alignment/padding allows for faster memory access at the cost of some space. A processor process 4 bytes a time in 32bit system, If data
+is un|aligned, the processor needs to issue >1|1 memory read cycles to fetch an integer. also the processor needs to do some shifts to access it
+after loading the memory, garbage collection is simplified and faster with larger allocation unit.
+
+protected Object clone() boolean equals(Object obj) protected void finalize()  the runtime Class<?> getClass() int hashCode() toString()notify()wait()
+primitive faster n smaller memory (int 4 bytes) than object (4bytes + 4 bytes padding + header 8 bytes).
+generic NOT support primitive types: List<Integer> not <int>
+primitive type boolean: 1 byte  byte: 1 byte (8 bit) char: 2 bytes (16 bit) reference: 4 bytes regardless of 32 or 64 bit JVM
+Objects: 8 byte Object overhead +size of all primitives and references + pad to multiple of 8, wrapper class Character 16 (8 byte Object + 2 bytes char + 6 byte pad) nullable
+Arrays: 8 byte Object overhead + 4 bytes int field (length) + size of the array times the size of the primitive type
+String has 3 int fields (offset, count and hash) whereas char[] has the single int field length
+String "ABC" = 8 byte Object overhead + 12 bytes 3 int fields + internal char[](8 byte Object overhead + 4 bytes int field + 2X3 bytes data + 2 bytes pad) = 32 bytes for an empty String + 2 bytes for each char + pad to multiple of 8 = 40
+String.indexOf('s') faster than ("s")
+two string literals (String s1|2 = "Hello";)  share the same storage inside the common pool. String objects (String s3|4 = new String("Hello");) are stored seperately in the heap without sharing
+s1 == s2;//true s1.equals(s3);//true s3 == s4;//false
+
+Java integer types: byte 8bit [– 128 to 127] (2^8=256/2=128) short 16 int 32 long 64 (not|atomic on 32|64 bit JVM) are signed (positive and negative value). Java does not support unsigned, positive-only integers
+max array size 120 elements 
+primitive (int) are mutable value unless final, an array of char has mutable elements vs immutable String 
+Wrapper classes (Boolean Integer etc) are final and immutable so i++ would create a new Integer object memory, so runtime have only two Boolean instance (true and false), Integer cache common signed values (-128 to 127), every variable is a reference to one of those (Integer(127|128)==Integer(127|128) true|false). save memory and avoid accidental change value when passing as parameter, so no 'pass by reference' for mutable. 
+Integer i = 99;     // Autoboxing 
+i = i + 1;         // Unboxing
+is equivalent to
+Integer i = new Integer(99);
+int i2 = i.intValue() + 1;
+i = new Integer(i2);
+
+wrapper data of primitive/value type in a new object to be used as reference types, fxp primitive can not be used in collection, wrapper class can have extra method (hashCode, compareTo) on the primitive data type. 
+int i = 1; Integer io = new Integer (i); //int is primitive type (default 0) but Integer is a Java Object (default null), i==io value equal, but if compare two ref types use ref equal== reference, object.equals compare address but most override to compare value
+Integer.valueOf(s) is same as new Integer(Integer.parseInt(s)) 
+1 << 3 == 8 /* 00000001 left shift 3 bit 00001000 */
+
+operators && and || are short-circuiting, on booleans only,will not evaluate their right-hand expression if the value of the left-hand expression is enough to determine the result.
+& and | are bitwise|logical operators on integral | booleans, not short-circuiting
+int x = 0;if (false &|&& (1 == ++x) { ...}System.out.println(x); //1|0 1 == ++x is|not executed 
+
+Java always pass-by-value. objects (as array) are passed via references/pointer that are passed by value.
+public void foo(Dog d) {  d.Name="changed"; //will reflect to caller  d = new Dog("changedAgain")|null;//wont reflect to caller, only change the pointer 
+the new operator allocate memory on heap, call constructor, and return reference/pointer (store thread's stac) to the allocated address. 
+
+Externalizable is better performance use less memory while Serialization are simpler, can compare versions of serialized object by UID. transient (only on field not local var) to mark instance variable not to be serialized automatically unless by y custom serialization writeObject and readObject(),transient to exclude the field when serializing an instance of the class. the contents of a would not be saved to persistent storage, the field will be initialized when deserialized to the default value; i.e. null for a reference type, and zero or false for a primitive type.
+
+no delegate in Java, can be mimiced with reflection and proxy pattern
+
+Reflection (Performance Overhead)inspect or create new objects, invoke of methods, and access class fields (even private:Security exposure) dynamically at run time without knowing its implementation at compile time.
+Method method = obj.getClass().getMethod("method_name", String.class); //b.getClass() runtime type of instance b (if Base b = new Sub(); Sub), Base.class compiler type of type Base
+Object returnValue = method.invoke(null, "parameter-value1");
+Junit uses Reflection especially for testing Private/Protected methods
+Method|Field privatemethod|field = Cls.class.getDeclaredMethod|Field(method|fieldName[, argClasses]);
+privatemethod|field.setAccessible(true);
+privatemethod.invoke(obj, argObjects);|privatefield.set(obj, value);
+Spring uses reflection to create bean instance and set property defined in configuration
+usage with annotations invoke @ method
+java.lang.reflect.Method mFoo = Mlass.getMethod("Foo",...); mFoo.invoke(..); to simulate c# delegate
+public interface EventHandler<T extends Event> {   void handle (T event);}
+public class Move|StopEventHandler implements EventHandler<Move|Stop> {
+    @Override
+    public void handle (final Move|Stop event) {//... handle}
+}
+public class EventDispatcher {
+    private final Map<Class, EventHandler> eventHandlerMap = new HashMap<Class, EventHandler> ();
+    public void sendEvent (final Event event) {eventHandlerMap.get (event.getClass ()).handle (event);}
+    public void registerHandler (final Class eventClass, final EventHandler handler) {eventHandlerMap.put (eventClass, handler);}
+}
+events can be queue first to be handled sequentially
+
+http://www.cubrid.org/blog/dev-platform/understanding-java-garbage-collection/
+The Paths To GC Roots shows the paths in the object reference graph which lead from a GC root to the examined object. unreachable objects will be garbage collected.
+garbage collection roots are the objects that are always reachable, for example
+Class - class loaded by system class loader that can never be unloaded. 
+Thread - live thread
+Stack Local - local variable or parameter of Java method
+Monitor Used - objects used as a monitor for synchronization
+Held by JVM - objects held from garbage collection by JVM
+ 
+Young space(Eden,Survior1,Survior2), Tenured space(old), perm, Minor GC move object from Eden to Survivor 1/2, Major gc move object from young to tenured 
+object created in  (only one) Eden area, after GC move to (two) Survivor area. After one Survivor area is full, surviving objects are moved to the other Survivor area. objects survived these steps a number of times are moved to the Tenured space. 
+large objects created in Eden area and directly passed to Tenured space. The Tenured space basically performs a GC when the data is full.
+Minor Collection is triggered when then JVM is unable to allocate Eden space for a new Object, output gc result: java -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamp, 
+JVM uses TWO different Garbage Collectors for minor/Young (fxp +UseParNewGC paralell) and major/Old Generations (-XX:+UseConcMarkSweepGC|UseParallelOldGC)
+Serial (+UseSerialGC single-threaded, not for server)
+Parallel(-XX:+UseParallelGC multi-threaded, stop application threads: StopTheWorld) default
+
+Concurrent-Mark-Sweep (-XX:+UseConcMarkSweepGC multi GC threads (run concurrently with application threads) to scan heap “mark” for unused objects to be recycled “sweep”, consume more CPU and reduce STW (only occur in Initial Mark and remark phases) in major collections, CMS collector needs to start collecting when there is a still enough (30%) working space left in tenured, may promotion/Concurrent Mode failures :a race condition between collecting the young and old generations: If the collector needs to promote young objects to the tenured, but is unable to free space fast enough in tenured to catchup with the object promotion rates, (CMS  doesn't "defrag" its heap) so trigger a full gc, result in a pause roughly 1 second per GB.
+Initial Mark - Pauses all application threads and marks all objects directly reachable from root objects as live
+Concurrent Mark - Application threads are restarted. All live objects are transitively marked as reachable by following references from the objects marked in the initial mark.
+Concurrent Preclean - looks at objects which have been updated or promoted or new objects that have been allocated during the concurrent mark.
+Remark - Pauses all application threads and revisit objects may have been updated during the preclean phase
+Concurrent Sweep- looks through all dead objects re-adds the memory allocated to those objects to free memory list 
+
+[JAVA 7]The Garbage-First garbage collector a server-style GC targeted for multi-processor machines with large memories with limited GC latency (heap>6GB,pausetime<0.5 second)
+G1 (–XX:+UseG1GC separate the collection pause time from the overall size of the heap by splitting up the heap into different regions (2000). and scan that contain the most garbage objects first) Any object which is bigger than 50% of the size of a regular region (<32MB) is stored in a humongous region
+Concurrent Mark- the application is paused -Remark-Cleanup
+evacuation: compacts and copies live objects from target regions to free (mostly empty) regions, then entire target region are freed. evacuation failure and happens when there aren't any regions which are empty enough to be used as free region
+G1 is not a real-time collector uses a pause prediction model to meet a user-defined pause time target and selects the number of regions to collect based on it.
+
+OutOfMemoryError: PermGen store class definitions (name & method) loaded by class loader and String pool, Internal objects used by JVM.
+1.JVM loaded too many classes: increase -XX:MaxPermSize=64m to 256m and -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC so GC clean unused classes in PermGen
+2. memory leak: Proxy classes (large num of class dynamically created by cglib, Spring and Hibernate) definitions are never discarded 
+
+mem leak: UNUSED objects but still REFERENCED. 
+Static (esp. Collections) are GC roots never garbage-collected, use final to avoid mutable static 
+thread-local variables not be gc as long as the thread (pooled) is alive.
+Circular  References
+
+capture heap dump(snap shot) with a summary of the live objects in a leaky process.
+vm argument -XX:+HeapDumpOnOutOfMemoryError to produce a heap dump whenever an OutOfMemory Error is thrown
+jmap -dump:live,format=b,file=(dumpfile) (pid), VisualVM  load the  dumpfile,  click the Classes tab
+MAT(Memory Analyzer) (http://www.eclipse.org/mat/) Acquire Heap Dump action to choose an existing Java process
+histogram shows the number of instances of a particular class and how much memory each one uses.
+
+trouble shooting application stall: take thread dump  to see which thread under the process at blocking state (waiting is legtimate) causing
+dedlock, cpu usage see if GC pause all application, check disk usage if running out, memory leak by heap dump see unreleased object
+https://dzone.com/articles/how-to-take-thread-dumps-7-options
+Kill -3 <pid>  output to standard error stream like <TOMCAT_HOME>/logs/catalina.out
+JDK_HOME\bin\jstack.exe  jstack -l <pid> > /tmp/dumpOutput.txt 
+JDK_HOME\bin\jvisualvm.exe select the application running on a JVM (local or remmote host) threads tab click thread dump button
+JDK_HOME\bin\jmc.exe on local or remmote host Flight Recorder > Thread Dump: interval to capture, output on “Threads” panel
+or jcmd <pid> Thread.print > /tmp/dumpOutput.txt, also acquiring heap dumps, GC statistics
+
+https://dzone.com/articles/java-performance-tuning
+JVM -Xms|x4g -XX:NewRatio=5 -server: specify ini|max mem for GC,  new to old generations mem at 1:5 (default 2) in heap 
+$JDK_HOME/bin/jstat //–verbosegc generate log, profiling tool VisualVM(+ Visual GC plugin) to monitor GC, HPJMeter analyze log
+E|S0|1C|U Eden|survivor 1|2 area capacity|usage, Y|FGC[T] accumulated times[time] for GC on full|Young(minor), Divide F|YGCT by F|YGC = time per each GC event  
+if time per GC F|Y > 1s|50ms, freq GC F|Y > 1 per 10min|10sec then GC tuning is need http://www.cubrid.org/blog/textyle/428187:
+expand young gen mem if alot of short living objects like in trading system
+
+1 minimize the number of objects passed to the old area
+GC in the Old area takes relatively more time than the GC in the New area. 
+2 decrease Full GC execution time
+3 reduce Full GC to once per day by 
+using primitive instead of wrapper, int[] (no auto boxing) over ArrayList<Integer>, an object with an int|Integer field is GC by one|two object reclaim. 
+allocate lists|maps<T> with enough initial capacity to avoid reallocate memory upon dynamic grow 
+Use Streams instead of in-memory buffers: Java’s native serialization, Google’s Protocol Buffers to deserialize data directly from the incoming file or network stream, without allocate new internal byte arrays memory to hold the data. 
+Object Pooling implemented as factory attampt to get existing recycled instance from queue before creating a new
+avoid method return a new copy of an object String.trim()
+decrease the number of objects created especially in loop (use StringBuilder instead of String).
+JAVA 6 substring() still, with diff count and offset, points to the same array in the heap, the orig string is kept from GC, 
+mem leak if it is very long. use y = x.substring() + ""; instead to point to a real sub string, JAVA 7 resolve it by creat new array on heap
+
+System.gc() is only a suggestion maybe ignored by JVM, full GC + extra CPU
+
+java.net.Socket.set|getSend|ReceiveBufferSize(int) to increase default TCP buffer size 
+
+troubleshoot high CPU usage
+generate a sequence of thread dumps  at high CPU times. Linux cmd top (Shift-H to turn on threads) or prstat to display threads are
+consuming the most CPU and get thread dumps at the same time. maybe GC comsume CPU if memory pressure is high
+vmstat  percentage of time the CPU is executing application code (including GC code), while system time the CPU is executing kernel code. app I/O related to sys access disk/network, Investigating the cause of high system time Oracle Solaris Studio Performance Analyzer to profile
+
+Java allocate off-Heap Memory (large e.g. over 1 TB witout limited by managed heap under GC)
+Memory Mapped Files IO are way faster than standard file Stream IO and  allows to load larger Memory mapped file (MAX 4GB or 2^32 for 32 bit) outside JAVA heap, reside on shared memory which allow two different process to access File, access is done by operating system, even Java Program crash after putting content into memory it will make to disk, can result in page fault if requested page is not in memory, Direct better performance than Non Direct Byte buffer holds the data in JNI |JVM and no cross the JNI boundary, 
+garbage collected like any other object or sun.misc.Cleaner to clear memory mapped file,  if no enough virtual memory to allocate a direct buffer, that will trigger a full collection even if there's plenty of heap memory available.
+
+import java.nio.*//Non-blocking I/O
+RandomAccessFile memoryMappedFile = new RandomAccessFile("largeFile.txt", "rw");
+MappedByteBuffer out = memoryMappedFile.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, count);//getChannel() -> FileChannel
+out.order(ByteOrder.LITTLE_ENDIAN);//Java manages data in Big-Endian, when Java programs run on Intel processors, need to specify
+out.put((byte) 'A')|(char) out.get(i)
+Don't call MappedByteBuffer.force() method to often, it force operating system to write dirty (changed) content of memory pages into disk swap,
+
+http://bobah.net/d4d/source-code/networking/tcp-client-java-nio
+http://rox-xmlrpc.sourceforge.net/niotut/
+http://www.drdobbs.com/jvm/high-performance-io-with-java-nio/184406242?pgno=2
+Channels (like stream ~ "file descriptors" in Unix) low-level bulk data transfers to and from NIO buffers (block of memory), FileChannel establish a buffer directly mapped to file contents using memory-mapped file, SocketChannel data transfer between sockets and NIO buffers
+FileChannel.transferTo|From(position, count, toChannel)
+Future<Integer> op = asynchronousFileChannel.read|write(buffer, position);
+while(!op.isDone()){//wait, or do something else...}; or
+asynchronousFileChannel.read(buffer, position, buffer, new CompletionHandler<Integer, ByteBuffer>() {
+    @Override
+    public void completed(Integer result, ByteBuffer buffer) {//result:how many bytes were read
+	//same code apply after above while
+        buffer.flip();
+        byte[] data = new byte[buffer.limit()];
+        buffer.get(data);
+        System.out.println(new String(data));
+        buffer.clear();
+    }
+    @Override
+    public void failed(Throwable exc, ByteBuffer attachment) {exc.printStackTrace(); }
+});
+
+SocketChannel socketChannel = SocketChannel.open();
+socketChannel.configureBlocking(false);//non-blocking mode. connect(), read() and write() in asynchronous mode.
+socketChannel.connect(new InetSocketAddress("http://jenkov.com", 80));
+while(! socketChannel.finishConnect() ){    //wait, or do something else...}
+
+serverSocketChannel.socket().bind(new InetSocketAddress(9999));//ServerSocketChannel listen for incoming TCP connections
+while(true){SocketChannel socketChannel = serverSocketChannel.accept();//non-blocking mode the accept() method returns immediately
+    if(socketChannel != null){
+
+Selector handle multiple channels with a single thread, Channel must non-blocking mode to be used with a Selector. so no FileChannel
+SelectionKey key = channel.register(selector, SelectionKey.OP_READ|WRITE|CONNECT|ACCEPT|);//Selector events listening for in the Channel
+while(true) {
+  int readyChannels = selector.select([long timeout])|selectNow();//if register one or more channels with a Selector, return how many channels become ready between each select() call, select() blocks until at least one channel become ready for the events registered for, selectNow() doesn't block n returns immediately, when a thread is blocked on select(), a different thread call the Selector.wakeup() to release blocked thread  
+  if(readyChannels == 0) continue;
+
+  Set<SelectionKey> selectedKeys = selector.selectedKeys();
+  Iterator<SelectionKey> keyIterator = selectedKeys.iterator();
+  while(keyIterator.hasNext()) {
+    SelectionKey key = keyIterator.next();
+
+    if(key.isAccept|Connect|Read|Writable()) {//channel succeed|ready on event, cast the channel returned by the SelectionKey.channel() to the channel you need to work with    }
+    keyIterator.remove();
+  }
+}
+
+[Primitive Type except boolean]Buffer and MappedByteBuffer for memory mapped files, ByteBuffer buffer = ByteBuffer.allocate(1024)
+while(buf.hasRemaining()) {chnl.write|read(buf) channel to|from buffer byte= buf.put|get(127);
+flip() switches from writing to reading mode. by sets the position back to 0 sets the limit to where position just was
+clear() switches from reading to writing mode. the position is set back to 0 and the limit to capacity
+compact() copies all unread data to the beginning of the Buffer. Then it sets position to right after the last unread element. The limit property is still set to capacity,
+reset() the position back to the mark() position 
+        while(inChannel.read(buffer) > 0)
+        {   buffer.flip();
+            for (int i = 0; i < buffer.limit(); i++){System.out.print((char) buffer.get());}
+            buffer.clear(); // do something with the data and clear/compact it.
+        }
+
+IO (stream oriented) read one or more bytes at a time, cannot move forth and back in the data in a stream, blocking a thread on read() or write() until some data to read, or the data is fully written, one connection handled by one thread (fewer connections with very high bandwidth)
+NIO (buffer oriented) read into a buffer can move forth and back in the buffer, non-blocking mode enables a thread to request read or write data from a channel but the thread not be blocked until data becomes available or wait for it to be fully written, Selectors manage multiple channels (network connections or files) using  single threads (many open connections simultanously, each send a little data)
+
+not thread-safe, ThreadLocal wrapper
+public class ByteBufferThreadLocal extends ThreadLocal<ByteBuffer>
+{
+    private ByteBuffer _src;
+    public ByteBufferThreadLocal(ByteBuffer src)    {        _src = src;    }
+    @Override
+    protected synchronized ByteBuffer initialValue()    {        return _src.duplicate();    }
+}
+wrap(byte[]) load data into ByteBuffer, slice()|duplicate() creates a new subset buffer that starts at the current position| covers the entire original; duplicate()= position(0) + slice(). changes to orignal buffer will be visible in the new buffer, and vice versa
+
+Arrays (fixed size) can contain primitive or Objects whereas ArrayList|Vector<T> (dynamic size) can contain only Objects, allow dup and null.
+Arrays are fixed size whereas ArrayList|Vector size is dynamic. memory for 10 elements will be init, if exceed, a new array (OldCapacity*3/2+1 = 16) is created and the old one are copied over using System.arrayCopy(old, startposold, new, startposnew, Len); which better perf than for (i=0 to Len){new[i]=old[i]}, if insert exceed init size, bulk copy prior and after section to new allocated mem 
+ArrayList is implemented using resizable back-to-back array while LinkedList is implemented using doubly LinkedList.
+ArrayList support random access with O(1) while LinkedList does not and iterate to retrieve element with O(n).
+ArrayList|Vector is not|synchronized result in better|worse perf. Properties and Stack (subclass of Vector) are synchronized
+Insertions and Removal of LinkedList are O(1) operations but O(n) for ArrayList in worst case for resizing array.
+LinkedList consumes more memory overhead than ArrayList because of extra adress pointer.
+string pool (interning) storing only one copy of distinct immutable string value in heap to save space, immutable to avoid risk where one reference change on it will  affect all another reference
+String class is final (immutable) Read more: http://javarevisited.blogspot.com/2010/10/why-string-is-immutable-or-final-in-java.html#ixzz4BU8UyfOY
+String s1 = "Cat";String s2 = "Cat";//first looks for String with same value in the String pool, if found it just returns the reference else it creates a new String in the pool, s1==s2 
+String s3 = new String("Cat");//force to create a new String s1!=s3, final String s4 = s3.intern();//put it into the pool, s4!=s3 s4==s1, they all equals()
+compare internalized strings by == is a lot faster than equals() So intern() if comparing strings more than a time or three. but must intern() all of the strings to compare.
+util.Properties.load(new io.FileInputStream("file.properties")).getProperty("key");//file.properties{ key=val }
+
+Java uses static|dynamic binding for overloaded|overridden methods at compile|run time.
+Sup s = new Sub(); s.foo();//@override foo
+composition (implements @overide) over inheritance (extends)
+no multiple inheritance (is=a),  super class behavior changes may broke sub class func: composition easy inject (has=a) & mock
+interface  A {public void MethodA();}
+interface  B {public String MethodA();}
+class AB implements A,B{
+    @Override
+    public String MethodA() {...}//throw compile error
+default constructor of the parent class is automatically called, but must use super to call parametrized constructor  
+[default modifier] accessible from any other class in the same package (package private=internal c#), methods are virtual by default, fields|methods in an interface are implicitly public static final|public as contract without any behavior or state (if not final then can be changed become implementation,static belong to the interface instead object), final para not qualify signature, Outer classes can access inner classes private instance member, and verse versa
+A final class|method|variable cannot be inherited|overridden|modified after constructed, FINAL variable hint for the compiler to potenitally performance optimizations.
+like constant pointer final primitive and immutable object reference can not be changed to new value and address (both ref & obj unchangable),  for final mutable object reference always point to the same memory head where stored object can be modified (ref unchangable but obj changable)
+final String s="a"; s="b";//compile-time error
+final StringBuilder sb=new StringBuilder("a"); sb.append("b");//ok
+  
+finally block is not executed only when System.exit(0); 
+protected void finalize() is auto called before garbage collection to clean up resources like open files handles(descriptor), network port or database connections, while GC release memory occupied by the object
+NOT predictable|guarantee when|if object become eligible for GC by JVM and finalize() will be called, unhandled exception in finalizer() will be ignored
+ @Override
+    protected void finalize() throws Throwable {
+        try{//release resources, perform cleanup ;//Having no catch is equivalent to not having a catch able to catch the given Throwable.
+        }finally{ super.finalize();  }
+no all catch() in java, instead catch(Exception|Throwable)
+
+Un|checked exceptions:Runtime|Exception represent defects|anticipated invalid conditions enforce caller to handle checked exception, method must specify foo() throws checked exceptions foo doesn't catch  
+annotation = .net attribute, @Override
+Checked|Unchecked exceptions extend Exception|RuntimeException class (RuntimeException : Exception), has|not to be catched or declare throws(verified  at compile-time)
+ONLY throw checked exception when the application can recover. caller must catch those exceptions and do what it needs to recover.Anything else should be unchecked
+Exception|Error extend throwable : error are unchecked and servere problem thrown out of JVM not suppose to be handled, like outofmemoryerror
+NullPointerException IndexOutOfBoundsException is unchecked because it is extremely common, if checked then every method would have to declare throwing it.
+SQLException, IOException, InterruptedException, ClassNotFoundException is checked
+ClassNotFoundException:Exception  when explicit ClassLoader.loadClass|findSystemClass, Class.forName by reflect at run-time
+The class is missing from the CLASSPATH or is trying to be loaded from another class which was loaded by different classloader (visibility problem among classloader hierarchy).
+NoClassDefFoundError:LinkageError:Error when implicit loading of class upon new(), means the class is available at compilation but not runtime, 
+fxp application is using a class A uses class B either as static variable or in static method. A is in classpath but not B or an exception occurs in static initializer block.
+
+statics are NOT inherited. same name static method in subclass wont override but hide the base.
+can|not call static|non-static method from a non-static|static method,  static|non-static methods are available when the class|object is loaded|created, Class loading always happens before object creation. 
+Static member one copy per class-loader ~ per-process,allocated on the heap along with the class definition when the class is loaded at run time, can be accessed by static or instance methods; instance member one copy each per object, allocated at compile time,can be accessed only by the instance methods.
+static { }initializer block : run only once at the first time the Constructor is called, No access to this or super, called to initialise the class prior to main().
+
+public class Employee implements Cloneable{
+@Override
+protected Object clone() throws CloneNotSupportedException {//or public
+    Employee cloned = (Employee)super.clone();/default shallow copy, mutable reference member refer to the same instance
+    //deep copy mutable reference object (not primitive type (non reference) or immutable object like String and Integer wrapper class)
+    //clone() member classes support cloning, new() member class does not support cloning and copy all fields value	
+    cloned.setDepartment((Department)cloned.getDepartment().clone());// Department{int id,String name} only have members of primitive and string type, can make it support cloning by override clone(){ return super.clone();}
+    return cloned;
+}
+use clone() of array of primitive or immutables instead of loop copy each item
+
+public class Base{
+  private Integer a;
+  public  Base(Base v){ this.a=v.a;}
+//copy constructor on inherentance
+public class Sub extends Base{
+  private Integer b:
+  public Sub(Sub v){
+    super(v);
+    this.b=v.b}
+
+List<T> members = new Array|LinkedList<T>(); for(T member : members){//List(duplicate) Set(unique)|Map(key-value) for class Hash|TreeSet|Map 
+Set|Map<[TKey,]TValue> keyvalues = new HashSet|Map<[TKey,]TValue>(); for(TKey|TValue key|value : keyvalues.keyset|values()){TValue value =  keyvalues.get(key);} 
+.add[put](return true|false[prev value|null] if key not|exist]|contains[key|value]|remove([key,]value)|putAll(copy in another map has key value extend to current TKey TValue)
+Queue<T> is interface = new LinkedList|PriorityQueue<T>(); offer() returning false if fail (expected when exceed capacity) better than add throwing an unchecked exception, if empty poll() method returns null while remove() throws an exception, Stack<T> is class 
+generics: cast to subtype ((sub))(super) can compile but runtime error, List<T> not extends List<S> even if T extends S
+Jv|Csharp generics use type erasure|reification:  information about a generic type is removed|retained upon compile obj.getClass() return same for diff (T)
+Erasure: Generic only check type at compile time, Compile remove all the generics type checking code in byte code so incur no runtime overhead. so a HashMap<Character, Integer> is really a HashMap<Object, Object> at runtime, Generic parameters can only bind to reference types, not primitive types
+hashset1.retainAll|removeAll(hashset2) get instersect|difference by Retains|remove only hashset1 elements contained in hashset2
+hashset1.addAll|containsAll(hashset2) combine or if subset
+for (T t : hashset<T>) SAME AS Iterator<T> iter = hashset<T>.iterator(); while (iter.hasNext()) { System.out.println(iter.next());}
+public class Test<T extends Comparable<T>> {//E – Element used Java Collections 
+private T data;
+public T getData() { return this.data; }   
+//key value pair than single T type parameters 
+public class OrderedPair<K, V> implements Pair<K, V> {
+    private K key;
+    private V value;
+    public OrderedPair(K key, V value) {
+	this.key = key;
+	this.value = value;
+    }
+    public K getKey()	{ return key; }
+    public V getValue() { return value; }
+}
+Pair<String, Integer> p1 = new OrderedPair<String, Integer>("Even", 8);
+
+Hashing convert a string or object into a 32-bit integer number, fxp: int key % array size. default toString() method shows the object class name and its hash code
+hashmap is array each element point to a linkedlist store Map.Entry<key,val> having key.hashCode() equals() eachother, hashmap|hashtable is not|syncronized(lock whole table),can|not have null values and one null key. if ArrayList for the buckets, with most lists being empty or having exactly one element, this would be a waste of resources, and insert delete O(n), Java 8 using binary tree to improve perf over linkedlist. Iterating hashtable is random order.LinkedHashMap as fast as HashMap but also maintains the insertion order with extra linkedlist.
+DEFAULT_INITIAL_CAPACITY = 16, must be 2^n because mapping an int to internal table index in the range [0, length]. When length is a power of 2, that can be done really cheaply by
+static int indexFor(int h, int length) {return h & (length-1);} //only keep 1s lower then length bytes 2^2=4 -1=3[11] & 5[101]=1 
+or use prime numbers for length to avoid clustering of many keys in a few hash buckets when imperfect func generated hashCodes are multiples of another hashCode {x, 2x, 3x, 4x,...} are going to be clustered in just m number of buckets = table_length/GreatestCommonFactor(table_length, x),  table_length=prime number make GreatestCommonFactor(table_length, x)=1, so m optimize to table_length, fxp length 4|5 for 2 4 6 8.. will cluster on slot 2 4 | will dist on slot 2 4 1 3 
+if with same key.hashcode, Map.Entries (key and value) store in LinkededList at the same bucket location, traverse thru the list and use keys.equals() to identify correct node
+MUST override hashcode() if overriding equals(), Otherwise violate the general contract : hashCode of the two equal objects mustreturn the same integer, if add them to hashtable as key, latter overwrite prpevious.
+default equals() compares the memory addresses of the objects, default hashCode() converting the internal address of the object into an integer, so is not based on the data values of instance fields
+if overridden equals() based on the values of instance variables, two objects stored at different memory addresses may still be equal base on their instance variable.
+  public boolean equals(Object obj) {
+    if((obj == null) || (obj.getClass() != this.getClass())) //meet if obj is a subclass of this, if (!(obj instanceof CustomerID)) wont
+      return false:
+    if (obj == this)
+      return true:
+    CustomerID custId=(CustomerID) obj
+    return  this.ID == (custId.ID &&
+            (this.DOB == custId.DOB || (this.DOB!=null && this.DOB.equals(custId.DOB));//either value or ref 
+  }
+when it is used as key in hashtable, default hashCode() returns two diff numbers for 2 instances
+override hashCode() based on value of instace fields to return same int for same instance value
+  public int hashCode() {
+    return ID+(null == DOB ? 0 : DOB.hashCode());
+If unsure how to implement hashCode(), just always return 0, all objects into one linked=list, but not violate the contract
+  Map m = new HashMap():
+    m.put(new CustomerID(1234,"foo"),CustomerA)://override only hashCode|equals each put in same|diff bucket, same element wont overwrite as suppose|
+    m.get(new CustomerID(1234,"foo"))://return null can not find right element using equals|bucket using hashCode
+hashmap init 16 bucket, if buggy equals always true, only 16 objects will be inserted and keep being override
+List<String> setList = new ArrayList<String>(myHashSet);//convert set to list withorder Collections.sort(setList[,comparer]);
+
+public class MapKey {
+	private Object key1;
+	private Object key2;
+	@Override
+	public boolean equals(Object object) {
+		if (((MapKey) object).key1 == null && ((MapKey) object).key2 == null) {	return true;}
+		if (((MapKey) object).key1 == null && ((MapKey) object).key2.equals(this.key2)) {return true;}
+		if (((MapKey) object).key1.equals(this.key1)&& ((MapKey) object).key2 == null) {return true;}
+		if (((MapKey) object).key1.equals(this.key1)&& ((MapKey) object).key2.equals(this.key2)) {return true;}
+		return false;
+	}	
+	@Override
+	public int hashCode() {
+		int hashCode = this.key1 == null ? 0 : this.key1.hashCode();
+		hashCode = hashCode + (this.key2 == null ? 0 : this.key2.hashCode());
+		return hashCode;
+	}
+	public Object getKey1() {return key1;}
+	public void setKey1(Object key1) {this.key1 = key1;}
+	public Object getKey2() {return key2;}
+	public void setKey2(Object key2) {this.key2 = key2;}
+}
+Map<MapKey, Object> mapWithTwoKeys = new HashMap<MapKey, Object>();
+ 
+if exceeds load-factor (fxp 75%) HashMap resize/rehsah by creating a new bucket array of size twice of previous, and move old elements over, potential race condition
+Hashmap slow down when  filled up and need to copy all the key/values into a new array. TreeMaps never have to allocate more space and copy over to it 
+Immutable is required for key type (fxp String, wrapper classes Integer), always same hashCode,  wrapper classes double is immutable but not good for key due to precision and compare
+
+Race conditions occur only if multiple threads write (not read) to shared resource.
+to avoid that by make shared object immutable: no set only get, all fields final and private, class final no override or private ctr with factory, when get() return or ctr() pass in fields that is mutable object, make a defensive copy instead, so caller can not change the orignal via refence
+public final class Person {
+private final Date BirthDate;
+public Person(Date birthDate){this.BirthDate = new Date(birthDate);}
+public Date getBirthDate(){ return new Date(this.BirthDate);//Date in java is mutable
+public Person Update(Date birthDate){return new Person(Date birthDate);}
+
+public class MyInt{//immutable, int copy value not reference
+    private [final] int x;
+    public MyInt(int y){this.x = y; }
+    public int getValue(){ return x;}
+}
+reorderings: the compiler reorder instructions with same effect to improve performance with in one thread, including in synchronized block.  final
+ locality: reads/writes to variables can be grouped to increase the chance of cache hit
+ dynamic scheduling: to prevent that a CPU has to wait (idle) for instructions in the pipeline (maybe memory access is delaying), it can execute unrelated instructions first.
+visibility: no guarantees changes made by a thread to a variable, are visible in another thread. volatile 
+MyInt mi = new MyInt(1);//compiler run it as 2 steps: 1.allocate mem for mi 2. mi.x=1,    fixed by making x final prevents reordering write to x. 
+if (mi!=null){int i=mi.getValue();//reorder within same thread or race condition from another thread may run read after step 1 (mi is no longer null after mem allocated) before step 2 from write, return 0 instead of 1.
+
+The unmodifiable map (vs ImmutableMap) only prevents modifications to the backing map via 'view', changes in the backing map will be visible through it:
+Map<String, StringBuilder> unmodifiableMap = Collections.unmodifiableMap(realMap);
+realMap.put("E", "F");
+StringBuilder sb=unmodifiableMap.get("E"); // Will return "F", and still can modify referenced mutable sb. 
+class UnmodifiableMap extends HashMap {
+    private final HashMap wrappedMap;
+    public SpecialHashMapWrapper(HashMap map) { this.wrappedMap = map; } 
+    public Object put(Object key, Object value) { throw new UnsupportedOperationException("Modifying this map is not supported");}
+    public Object get(Object key) { return wrappedMap.get(key); }
+ 
+TreeMap (RedBlack binary tree) returns the elements in ascending order of keys by default, order can be customized using Comparator and Comparable interfaces
+The methods of both are not synchronized (not thread-safe). to obtain a synchronized version: Map = Collections.synchronizedMap(Hash|TreeMap); 
+java.lang.Comparable.int compareTo(Object2)//both are interfaces return similar, this is implemented by each element object being sorted in a collection by Collections.sort(List) 
+java.util.Comparator.int compare(Object1, Object2)//+ 1>2; 0 1=2; - 1<2; boolean equals(Object) passed to Collections.sort(List, Comparator), Comparable need modify item object source code
+class MComp implements Comparator|Comparable<MCls> {
+    public int compare(MCls m1, MCls m2)|compareTo(MCls other) {
+       int compareResult = m1.enumField.compareTo(m2.enumField);//enum{larger,smaller} 
+       if( compareResult == 0)           
+    	   compareResult = m1.boolField.compareTo(m2.boolField);//true>false
+       if( compareResult == 0)
+           compareResult = m1.doubleField-m2.doubleField;
+       return compareResult;
+      |return Double.compare(doubleField, other.doubleField);
+add values with duplicate keys will to both (TreeMap and HashMap) override previous without error, HashMap allows null keys while TreeMap doesn’t becasue not comparable.
+PriorityQueue heap O(log(n)) time for enqueing and dequeing, allows multiple equal elements, not allow null or non-comparable, Comparable and Comparator to sort, can get only the head (O(1) by default least element), TreeSet can get the lowest and highest unique elements, But both cannot randomly access its element. thread-safe version PriorityBlockingQueue 
+
+http://www.journaldev.com/1162/java-multi-threading-concurrency-interview-questions-with-answers
+Java every Object has a monitor to wait(), notify() and notifyAll() must called from inside a synchronized block (after obtain the lock)
+Once a thread calls wait() it releases the lock it holds on the monitor object. This allows other threads to call wait() or notify() too
+notify wake up one of waiting thread (not guaranteed which thread depends upon Thread scheduler). notify() signal before wait() will be missed, awakened thread cannot exit the wait() call until the thread calling notify() has left its synchronized block.
+notifyAll wake up all threads waiting on that lock, then they will fight to reobtain the lock before exit the wait() continue processing and that's why wait is called on loop because the thread that get lock and may reset waiting condition, force subsequent threads to wait again.
+notify is optimized over notifyAll unless broadcast (fxp: after synchronized clear up concurrent queue)
+try {synchronized (obj) {dowork();obj.wait|notify/All();}}catch (InterruptedException e){ Thread.currentThread().interrupt();}
+the lock on the object that was synchronized be automatically released If an exception is thrown inside a synchronized block 
+A thread can also wake up and continue processing without being notified, To guard against so-called spurious wakeup, waits should always occur in while(condition) loops instead of if(condition):
+     synchronized (obj) {
+         while (<condition>){obj.wait(timeout);} //use if:thread 1 wait and thread 2 come after aqcuired the lock meanwhile 1 wake up by notify, result in race condition
+     }
+Don't use global objects, string constants (refer to same instance in string pool). for wait() / notify() 
+Context Switching is the process of storing and restoring of CPU state so that Thread execution can be resumed from the same point at a later point of time.avoid it by use RealtimeThread and setPriority() to the max, setScheduler() to FIFO
+
+main(){Thread t1 = new Thread(new MyRunnable(), "t1")|MyThread("t1");t1.start();//MyRunnable|MyThread implements|extends  java.lang.Runnable interface|Thread class @Override public void run(){while (!Thread.currentThread().isInterrupted()) {...}//t1.interrupt(); will stop the thread or implement as below CanStop
+Runnable interface is more flexible- can implement multiple interfaces, but thread class provides methods activeCount(),destroy(),dumpStack().. 
+       t1.Join();//make sure threads created by the program is terminated before finishing main  
+class CanStop extends Thread {
+   private volatile boolean stop = false;
+   public void run() {while (!stop) {...
+   public void kill() {stop = true;}
+
+unlike user thread, A daemon thread .setDaemon(true) runs in background (child thread also a daemon) and doesn’t prevent JVM from terminating the program. GC is daemon thread. 
+green threads are scheduled by a virtual machine instead of OS and in user memory space instead of kernel space
+NEW|RUNNABLE(executing)|BLOCKED(acquiring lock)|[TIMED_]WAITING(waiting for signal from other thread [with time out])|TERMINATED(exited)
+
+StringBuilder|Buffer is not|synchronized 
+java.util.Timer.scheduleAtFixedRate(java.util.TimerTask, 0, 10*1000);//Timer class is thread safe, only one thread running the TimerTask at any time
+
+VisualVM Profiler to create a Thread dump (list of all the threads active in the JVM), Thread Status( blocked/waiting threads and resources to acquire) Thread callstack (locks obtained/waiting by Thread)
+t1 tid=0x00007fb0a204b000 State: BLOCKED (on object monitor) -waiting to lock <0x000000013df2f658> (a object) -locked <0x000000013df2f678> (a object)//resource unique ID to detect lock chain 
+JConsole ThreadMXBean. findAllDeadLockedThreads()give the list of threads that are in deadlock.
+Avoid Nested Locks (locking another resource if already hold one), and locks in same order 
+synchronized (obj1) {work();
+                     synchronized (obj2) {work();
+Lock Only What is Required,lock only specific field instead of complete object.Avoid waiting indefinitely by set timeout 
+
+Monitor.wait() give up the locak but Thread.sleep|yield() not
+sleep(x) Thread Scheduler put this thread from running to wait/blocked state, after x milliseconds have elapsed it goes back Runnable state before Thread Scheduler put it to running state. even if no other thread is runnable, then the CPU will go idle.
+yield() no guarantee hint thread scheduler to turn current thread from Running to Runnable state (not wait/blocked) unless no other equal or higher priority thread in runnable state, in which case the yielding thread will continue processing almost straight away. it not consume CPU. 
+
+ConcurrentHashMap allows concurrent threads to read values without locking at all, allows concurrent threads to write by locking only segment being updated, each section (16 by default) is governed with different ReentrantLock internally.cannot contain null keys or values. generally take up more memory.(suit multiple readers and few writers, fxp: caches)
+put|putAll(maptocopy)|remove|clear() is not synchronized, concurrent reads may not reflect the latest change: may reflect insertion and removal of only some entries by putAll() or clear()
+while one thread put() value, it does not lock the map, other thread's get() still return null when check if key exists before insert, which result in one thread overriding value inserted by other thread. instead use putIfAbsent(key, value) enumatomic thus eliminates above race condition, or boolean replace(K key, V oldValue, V newValue) compare-and-set atomic updates
+ConcurrentHashmap iterator do not guarantee show all elements that are added but guarantee that any updates or removal of items will be reflected correctly. can not lock the whole map to find the size of the map 
+SynchronizedMap block whole Map to ensure data consistency (expose up-to-date data to each thread), result in poorer performance.
+
+Enumeration is twice as fast as Iterator and uses very less memory. Iterator safer because blocks other threads to modify the collection.
+Iterator<Integer> itr = list.iterator();//iterator support remove() that Enumeration does not (only has next() hasNext()), only correct way to modify a collection while iterating
+while(itr.hasNext()) | for (Iterator<Integer> itr = list.iterator(); itr.hasNext();){ Integer i=itr.next();itr.remove();}
+
+for(Integer i: list) {  list.remove(i);}//ConcurrentModificationException because an iterator has been generated (in for statement) to traverse over the list, but at the same time the list is changed by Iterator.remove().
+
+iterration (for:) is not threadsafe even within Synchronized method because another thread may insert|delete an element between evaluate the Count property and call the indexer (ArrayOutOfBoundException).
+Java.uitl.Collection are fail-fast : (HashTable and Vector) if be changed while some thread iterator it ,the iterator.next() will throw ConcurrentModificationException.
+java.util.concurrent are fail-safe : (ConcurrentHashMap and CopyOnWriteArrayList) thread-safe iteration, no need to lock the collection during iteration, never throw a ConcurrentModificationException.
+
+CopyOnWriteArrayList: When data set is modified by a thread,A new copy of the list is created and modification is performed in that. Any existing iterators still points to old list snapshot. Later on all object references synch up to the newly created list. 
+Writes do not block reads (or vice versa), but only one write can occur at once, suit for few writes and many reads
+Unlike ConcurrentHashMap, write operations that write or access multiple elements in the list (such as addAll(), retainAll()) will be atomic.
+keep a volatile reference to copy of the list, reading from curent copy via the ref, writing creat a new copy and update on it,  upon complete reset the ref to the updated copy for next read.   
+
+ConcurrentSkipListMap|Set is concurrent alternative for synchronized version of TreeMap|Set : SortedMap|Set.
+
+Thread safety
+Synchronized method: synchronized void increment(){counter++;} allow 1 thread to exe (vs thread interference),value change on shared data fields are visible to all threads (vs memory inconsistency). 
+a thread acquires lock on the monitor of that method's object.
+static synchronized method the thread acquires the lock for the Class object of the class, which control access to class's static fields
+class A {
+    synchronized f1() {...}
+    synchronized f2() {...}
+    static synchronized f3() {...}
+}
+Main: A a = new A();
+Thread 1: a.f1();
+Thread 2: a.f1();a.f2();//block (suspend execution)  A.f3();//ok, lock on diff object
+constructors cannot be synchronized because only the thread that creates an object should have access to it while it is being constructed.
+final fields cannot be modified after the object is constructed, can be safely read through non-synchronized methods cross threads
+Synchronized Statement/block|static (fine-grained): synchronized(this|.class) {counter++;}//can use any shared object besides this, private [static] final Object countLock = new Object(); Don't synchronize on references (immutable object like wrapper class of primitive) that might change memoary location.
+synchronized methods lock the Object, put all (even unrelated) synchronization blocks(only lock section) in the class to wait 
+JVM:64-bit stack:128K max threads:32,072
+
+java.util.concurrent(JDK5.0+):High Level Concurrency Objects
+Executors:thread management and creation with thread pool
+(new Thread(Runnable)).start(); = Executor.execute(r);//use an existing worker thread in treadpool, runnables are loaded on to a task Queue where the pool threads keeps acting on.
+ExecutorService Executor.newFixed|Cached|ThreadPool(int|)//static func create an ExecutorService with fixed-size|expandable thread pool.executor.getPoolSize()|getTaskCount()
+Future|<T>=ExecutorService.submit(Runnable|Callable) //Runnable|Callable not|allow the task to return a value, Future get() Callable return value and cancel() isCancelled|Done() status of Runnable|Callable tasks. 
+public interface Callable<T> {T call() throws Exception;}
+public interface Runnable {  void run();}
+parallel Aggregate 
+	public static void main(String[] args) {//use threadpool
+		ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);//optimal size=CPUs+1
+		List<Future<Long>> list = new ArrayList<Future<Long>>();
+		int max = 1000000000;
+		int span = max / 100;// div into 100 subtasks to be exe by 10 threads
+		for (int i = 0; i < 100; i++) {//pass arg to callable by ctr
+			Callable<Long> aggregateCallable = new AggregateCallable(i * span,span);
+			Future<Long> future = executor.submit(aggregateCallable);
+			list.add(future);
+		}
+		long sum = 0;
+		for (Future<Long> future : list) {
+    			while (!future.isDone()) {// Do some else...}
+			try {
+				sum += future.get();
+				System.out.println(new Date() + "::" + future.get() + "::"+ sum);
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		executor.shutdown();
+	}
+	public class AggregateCallable implements Callable<Long> {
+	private final int begin;
+	private final int span;
+	AggregateCallable(int begin, int span) {
+	    this.begin = begin;
+	    this.span = span;
+	  }
+	  @Override
+	  public Long call() throws Exception {
+	    long sum = 0;
+	    for (int i = begin; i < begin+span; i++) {
+	      sum += i;
+	    }
+	    return sum;
+	  }
+
+	}
+
+	private static AtomicLong total = new AtomicLong(0);
+	public static void main(String[] args) {//use thread
+		int max = 100;
+		final int span = max / 10;//must be final to pass to runnable
+		Thread[] threads = new Thread[10];  
+		for (int i = 0; i < threads.length; i++) {
+			final int begin = i;
+			threads[i] = new Thread(new Runnable() {
+				public void run() {
+					long sum = 0;
+				    for (int j = begin*span; j < (begin+1)*span; j++) {
+					      sum += j;
+					    }
+				    long cur=total.addAndGet(sum);
+				    System.out.println(new Date() + "::" + sum + "::" + cur);
+					return;
+				}
+			});
+			threads[i].start();
+		}
+		//join() must be out off start() section to be concurrent
+		for (int i = 0; i < threads.length; i++) {
+			try {
+				threads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+List<Future<T>>|Future<T> =ExecutorService.invokeAll|Any(List<Callable>[,longTimeOut])//exe multi tasks, return if all| anyone has completed successfully
+ScheduledExecutorService: specify delay or intervals.
+ThreadFactory 
+[Scheduled]ThreadPoolExecutor 
+ExecutorService executor = Executors.newFixedThreadPool(2); 
+FutureTask<String> futureTask = new FutureTask<String>(new MyCallable()); 
+Future<String> future = executor.submit(callable); 
+executor.execute(futureTask); while (true) {try {if(futureTask.isDone()){executor.shutdown();
+future|Task.get();//waits for the callable.call() to return
+
+instead of manual find out which task has completed ( to get the results ) by ExecutorService,
+for (Future<CalcResult> future: resultFutures){
+    while (!future.isDone()) {// Do some work...
+        System.out.println("Working on something...");
+    }
+    try {System.out.println(future.get());
+//block on submit order if Future<T>.get but there is no guarantee Future will complete as order submitted.
+    } catch (ExecutionException e) {
+CompletionService.get blocks and waits for any Future to complete. auto return the resuts as completion order.
+ExecutorService taskExecutor = Executors.newFixedThreadPool(3);
+CompletionService<CalcResult> taskCompletionService = new ExecutorCompletionService<CalcResult>(taskExecutor);
+for(int i=0;i<submittedTasks.size();i++){
+   taskCompletionService.submit(new CallableTask());
+}
+for (int i = 0; i < submittedTasks.size(); ++i) {//counter how many times to call take().
+                Future<CalcResult> future = taskCompletionService.take();
+                try {        CalcResult res = future.get();          
+                } catch (ExecutionException e) {
+//no built in support for processing incoming results concurrently need to manually submit them to a second thread pool
+
+[JAVA 7] the fork/join framework broken work into smaller task recursively and distributes tasks to worker threads in a thread pool Using a work-stealing algorithm (idle Worker threads executes the tasks at the bottom of its list and steals tasks from the top of other busy threads lists.
+fork|join() allows  a new ForkJoinTask (RecursiveAction/Task not/return value)  to launched|wait from|on an another one.
+ForkJoinPool:AbstractExecutorService .invoke() execute RecursiveTask (return a result)|RecursiveAction : ForkJoinTask.
+[JAVA 8] parallel stream execute on ForkJoinPool threads, similar Arrays.parallelSort() 
+
+BlockingQueue<T> bq = new Array|Linked|PriorityBlockingQueue().Put|take() wait if there is no element available|poll([timeout]) keep polling till timeout
+BlockingQueue does not accept null elements. Implementations throw NullPointerException on attempts to add, put or offer a null. 
+org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+CountDownLatch is a top down (parent wait Children to complete op). where as CyclicBarrier is across (child wait Child till all reach alignment).
+CyclicBarrier|CountDownLatch can|NOT be reset or wait for Parallel Threads, suit for onetime|recuring event
+CyclicBarrier.reset() put Barrier on its initial state, other thread which is waiting or not yet reached barrier will terminate with java.util.concurrent.BrokenBarrierException.
+ 
+public static void main(String[] args) throws Exception {
+        final CountDownLatch|CyclicBarrier countDownLatch|cyclicBarrier = new CountDownLatch|CyclicBarrier(MAX_THREADS);
+        for(int i=0;i<MAX_THREADS;i++) {
+            Thread t = new Thread(new WorkerThread(countDownLatch|cyclicBarrier));
+            t.start();
+        }
+        countDownLatch.await(); //wait till the countown reached zero
+    }
+    private static class WorkerThread implements Runnable {
+        private CountDownLatch|CyclicBarrier countDownLatch|cyclicBarrier;
+        public WorkerThreadCountDownLatch|CyclicBarrier countDownLatch|cyclicBarrier) {
+            this.countDownLatch|cyclicBarrier = countDownLatch|cyclicBarrier;
+        }
+         public void run() {
+            try {//op1
+                countDownLatch.countDown();
+		cyclicBarrier.await(); //block till all reached this barrier point then can go to op2
+
+Semaphore.[try]acquire|release([intPermits}) .availablePermits()
+thread inaffinity:release doesn’t have to be called by the same thread as acquire. always release what you acquire by using try..finally
+release() always increment the number of permits( not fixed), even if no corresponding acquire() call was made, can result in bugs.
+final Semaphore semaphore = new Semaphore(1, true);//without true|fairness: there is no guarantee that the first thread to call acquire() is also the first thread to obtain a permit,must be final to pass directly into thread func or inject via runnable constructor
+public class Semaphore {
+	private int empty_slots;
+	private final int MAX_SLOTS;
+	public Semaphore(int i) {
+        	if (i < 0) throw new IllegalArgumentException(i + " < 0");
+        	MAX_SLOTS = i;
+	}
+	public void acquire() throws InterruptedException{//InterruptedException passed from this.wait()
+		synchronized (this) {
+			while (empty_slots == 0) {wait();}
+			empty_slots--;
+
+	public void release() {
+		synchronized (this) {
+			if (empty_slots < MAX_SLOTS) {
+			empty_slots++;
+			notifyAll();}
+
+throttling: only n processes can access a certain resource at a given time.
+public class ConnectionLimiter {
+   private final Semaphore semaphore;
+   private ConnectionLimiter(int maxConcurrentRequests) {
+       semaphore = new Semaphore(maxConcurrentRequests);
+   }
+   public URLConnection acquire(URL url) throws InterruptedException,IOException {
+       semaphore.acquire();
+       return url.openConnection();
+   }
+   public void release(URLConnection conn) {
+       try { Dispose conn           
+       } finally {
+           semaphore.release();
+       }
+   }
+}
+
+java.util.concurrent.locks
+ReentrantLock:Lock 
+runCondition = ReentrantLock.newCondition();
+if (ReentrantLock.tryLock(timeout))//avoid lock indefinitely like synchronized block, a thread is responsive while waiting on a Lock object.
+try {runCondition.signal|All/await();}
+finally {ReentrantLock.unlock}//thread affinity, can acquire|release the lock in diff method
+ReentrantReadWriteLock.read|writeLock().un|lock();.getRead|WriteHoldCount():ReadWriteLock
+final ReadWriteLock lock = new ReentrantReadWriteLock();
+    public void Read|Write() {
+        lock.read|writeLock().lock();//multiple read locks can be acquired at a time unless a exclusive (on both read and write) write lock is acquired
+        try {freqread|rarewrite();}
+	finally {lock.read|writeLock().unlock();}
+
+public class Test{
+public synchronized foo(){bar();}
+public synchronized bar(){...}
+Synchronized blocks are reentrant:thread enters foo() having lock on this Test (Monitor) object, can also execute bar() synchronized by the same lock,  If a thread already holds the lock on a monitor object, it has access to all blocks synchronized on the same monitor object. 
+public class [Reentrant]Lock{//implictily use synchronize on itself
+  boolean isLocked = false;
+  [Thread  lockedBy = null;]
+  [int     lockedCount = 0;]
+
+  public synchronized void lock()  throws InterruptedException{
+    [Thread callingThread = Thread.currentThread();]
+    while(isLocked [&& lockedBy != callingThread]){ wait();}//spin, deadlock on the same thread without [reentry]
+    isLocked = true;
+    [lockedCount++;]
+    [lockedBy = callingThread;]
+  }
+
+  public synchronized void unlock(){
+    [if(Thread.curentThread() == this.lockedBy){//thread affinity: must be the same lock thread to unlock
+      lockedCount--;
+      if(lockedCount == 0){ ]
+        isLocked = false;
+        notify();
+
+  Lock lock = new [Reentrant]Lock();
+  public outer(){
+    lock.lock();//working with simple Lock
+    try{inner();
+    } finally {lock.unlock()};
+  }
+  public synchronized inner(){
+    lock.lock();//reentry lockout with simple Lock, working with ReentrantLock
+    try{//do something
+    } finally {lock.unlock();}
+  }
+lock API provide try|lock([timeout]) (return immedaiatly [wait till timeout]|wait till get lock) interruptile, fairness (priority is given to longest waiting threads), condition (distinguish which object/threads get a specific signal, less error prone than object.wait/notify), can acquire the lock in one method and release it in another method whereas synchronize can cover only one method
+final ReentrantLock lock = new ReentrantLock();
+final Condition notEmpty = lock.newCondition();//block read wait when empty
+final Condition notFull = lock.newCondition();//block write wait when full
+public void write(int value) [throws InterruptedException]{ //need not throw if catch
+try {
+  if (lock.tryLock(1, TimeUnit.SECONDS)) {
+    try {
+	  while (queue.size() == CAPACITY) {
+            notFull.await([1, TimeUnit.SECONDS]);
+          }
+          queue.put(value);
+          notEmpty.signal[All]();          
+    } finally {
+      lock.unlock();
+    }
+  }
+} catch (InterruptedException e) {
+  //a thread can be interrupted while waiting for a lock with a time limit tryLock() throws InterruptedException.
+
+public int Read() [throws InterruptedException]{ 
+try {
+  if (lock.tryLock(1, TimeUnit.SECONDS)) {
+    int value;
+    try {
+	  while (queue.isEmpty()) {
+            notEmpty.await([1, TimeUnit.SECONDS]);
+          }
+          value = queue.take();
+          notFull.signal[All]();
+    } finally {
+      lock.unlock();
+      return value; 
+    }
+  }
+} catch (InterruptedException e) {
+
+uninterruptable lock.lock() block until the thread that currently owns the lock releases it. If the thread never releases it then this thread can't get the lock and will be blocked forever.
+
+interruptable lockInterruptibly() means if current thread is waiting for lock but mean while any other thread reaches to acquire lock, then the previous one will be interrupted Thread.interrupt() and returns immediately without acquiring lock and throw InterruptedException.
+or tryLock(time, TimeUnit) 
+
+spurious wakeup occurs to all Condition.await so they should always be in while or for(;;) loop
+awaitUninterruptibly() to wait until it is signalled 
+await()|awaitNanos(long nanosTimeout) wait until it is signalled or interrupted|or the specified waiting time elapses, better with lockInterruptibly(). awaitNanos return long nanoseconds remaining <= 0L if it timed out
+
+assert lock.isHeldByCurrentThread|isLocked(); typically used for debugging, getHoldCount(): holds by the current thread (>0 reentrant)  getWaitingThreads
+
+https://richardbarabe.wordpress.com/2014/02/21/java-deadlock-livelock-and-lock-starvation-examples/
+//deadlock: thread 1 transferMoney(accountNumberOne, accountNumberTwo, amount); thread 2 transferMoney(accountNumberTwo, accountNumberOne, anotherAmount);
+    void transfer(Account from, Account to, double amount) {
+        synchronized(from) {
+            from.withdraw(amount);
+            synchronized(to) {
+                to.deposit(amount);
+reason using nested sync instead of serial sync is to make sure atomic withdraw+deposit 
+avoid acquiring more than one lock at a time, or enforce ordering by insert :
+    Account firstLock, secondLock;//lock on ordered object instead  
+    if (from.accountNumber() == to.accountNumber())
+      throw new Exception("Cannot transfer from account to itself");
+    else if (from.accountNumber() < to.accountNumber()) {
+      firstLock = fromAccount;
+      secondLock = toAccount;
+    }
+    else {
+      firstLock = toAccount;
+      secondLock = fromAccount;
+    }
+    synchronized (firstLock) {
+      synchronized (secondLock) { 
+        if (from.hasSufficientBalance(amount) { 
+          from.withdraw(amount);
+          to.deposit(amount);
+//livelock: recur trans1|2 A|B to B|A, after withdraw from A|B, fail on deposit(B|A) because trans2|1 still hold lock on B|A, then refund
+//withdraw|deposit trylock(target account,[timeout]) return false on fail instead of lock() blocks, so livelock not deadlock 
+    public boolean tryTransfer(BankAccount destinationAccount, double amount) {
+        if (this.withdraw(amount)) {
+            if (destinationAccount.deposit(amount)) {
+                return true;
+            } else {
+                // destination account busy, refund source account.
+                this.deposit(amount);
+            }
+        } 
+        return false;
+    }
+class Transaction  {public void run() { while (!sourceAccount.tryTransfer(destinationAccount, amount)) continue;
+set a boolean flag/cond to terminate endless recur
+ 
+//higher priority threads constantly access|lock account, lower priority transaction threads hard to get chance to execute
+balanceMonitorThread1.setPriority(Thread.MAX_PRIORITY);
+public void run() { while (true) { if(account.getBalance() <= 0) {// send email alert
+
+public class ASingleton{//single instance per classloader (may multiple per JVM) 
+    private static [volatile] ASingleton instance= null;
+    private static final Object mutex= new Object();
+    private ASingleton(){}
+    public static ASingleton getInstance(){//double check lazy loading because Singleton instance is created only when client calls getInstance()
+        if(instance==null){
+            synchronized (mutex|ASingleton.class){
+                if(instance==null) {
+			instance= new ASingleton();//not atomic op: 1.constructing object [1.1 allocate mem 1.2 initilize fields] 2.assigning to instance variable, 2 maybe reordered (in same thread)  to run before 1 completed (after 1.1 object no longer null before 1.2), which result in race (from diff thread) returning a partially constructed ASingleton. fixed by volatile to ensure actions coded before the write to volatile instance actually happen before the write to instance, i.e. 1 com[lete before 2 
+		}                   
+            }
+        }
+        return instance;
+
+public enum MySingleton [implements MyInterface] {//threas safe, Enum is final can not extend class but can implement an interface
+    INSTANCE(1);
+    private int i;
+    private MySingleton(int it) {this.i=it;} //enum only private contructor, so can not create instance from outside 
+    [@Override	//flexible when need interface
+    public void foo(){...}] 
+}
+equivalent to below: early loading because Singleton instance is created when class is loaded into memory.
+public final class MySingleton {
+    public final static MySingleton INSTANCE = new MySingleton(); 
+}
+MySingleton ms=MySingleton.INSTANCE;
+ms.foo();
+
+Enum by default implement Comparable interface support TreeSet|Map, MySingleton.INSTANCE.ordinal() = 0 
+public final int compareTo(E o) { Enum other = (Enum)o; Enum self = this; if (self.getClass() == other.getClass()) return self.ordinal - other.ordinal; }
+== for faster comparing Enum avoid NullPointerException by equals(), ==|equals()checks if both enum object are from same enum type  at compile|runtime time, 
+
+Classes must implement java.io.Serializable interface to have their state serialized or deserialized. the interface has no methods or fields and only identify being serializable.
+impl Object writeReplace()|readResolve() throws ObjectStreamException (called by ObjectOut|InputStream before|after write|readObject()) to replacing the object write|read to|from the stream to avoid a new instance to be created of orig instance per de|serialized across JVMs
+
+A serializable class can be instantiated/deepcopy by deserializing it result in multiple instances, not applicable to singleton by default, unless override  java.io.Serializable private Object readResolve(){  return getInstance();}) to return the single instance. or simply use enum public enum SafeSingleton implements Serializable {INSTANCE;}
+
+Static variables (class or method level) are always shared between threads since only one copy,
+local primitive variables, Object References(pointer) and parameter declared in a method are stored in each thread's own stack, always thread safe
+Local Object are stored in the shared heap, Each thread executing the method will create its own instance if the object life cycle is enclosed within a method without returning or passing out of the method's hierachy where it can be  accessed from other threads  
+Object member variables (object or primitive fields) are stored on the heap along with the object. un|safe if two threads call a method on the same|diff object instance, use ThreadLocal field for thread safe in case of sharing instance, java.lang.ThreadLocal.set(T)|get|remove() Values stored in private static final ThreadLocal<T> are local to the thread, it wont be GC if use with thread pool thread never be destroyed 
+
+//new Thread(new MyRunnable(new NotThreadSafe())).start(); safe different instance
+//new Thread(new MyRunnable(new NotThreadSafe())).start();
+NotThreadSafe sharedInstance = new NotThreadSafe();//unsafe shared instance
+new Thread(new MyRunnable(sharedInstance)).start();
+new Thread(new MyRunnable(sharedInstance)).start();
+public class MyRunnable implements Runnable{
+  NotThreadSafe instance = null;
+  public MyRunnable(NotThreadSafe instance){this.instance = instance; }
+  public void run(){this.instance.add("some text"); }
+}
+
+    MyRunnable sharedRunnableInstance = new MyRunnable2();
+    Thread thread1 = new Thread(sharedRunnableInstance);
+    Thread thread2 = new Thread(sharedRunnableInstance);
+    thread1.start();
+    thread2.start();
+
+    public class MyRunnable2 implements Runnable {
+        private ThreadLocal<Integer> threadLocal = new ThreadLocal<Integer>();
+        @Override
+        public void run() { threadLocal.set( (int) (0) );
+
+thread-safe operation: Visibility (volatile) and Atomicity (syncronized or CAS)
+volatile object (non-primitives): changes to the reference are automatically visible in all other threads, but not changes to the object being referenced.
+volatile immutable object (fxp String): change to reference pointing to different object (memory) are visible to other threads,  
+volatile String sharedValue;
+static final Object lock=new Object();
+void modifyString(){
+  synchronized(lock){
+    sharedValue=sharedValue+"add";//new mem reference created 
+  }
+}
+public static AtomicReference<String> shared = new AtomicReference<String>();
+String init="Inital";
+shared.set(init);
+for (;;) { String prevValue=shared.get();
+	   if(shared.compareAndSet(prevValue,prevValue+"add")){return;
+
+volatile mutable object: changes to the object being pointed by unchanged reference are NOT visible to other threads, unless field within object is defined volatile
+ordering guarantees: anything (x) that was visible to thread A when it writes to volatile field (v) becomes visible to thread B when it reads (v).
+class VolatileExample {
+  int x = 0;
+  volatile boolean v = false;
+  public void writer() {   x = 42;   v = true;  }//write to v fresh x to memory as well
+  public void reader() {
+    if (v == true) {//must read on the same volatile var v: x - guaranteed to see 42.    }
+
+but reading a volatile variable will not flush preceding writes, so print a volatile b a; 2nd a wont guarantee latest
+
+int counter = 0;counter++;System.out.println(counter);
+memory inconsistency: no guarantee that thread A's increment to counter will be visible to thread B print counter (might be 0)— unless the programmer has established a happens-before relationship between these two statements among multiple threads by synchronized (unlock happens-before subsequent lock);  volatile(write happens-before read); Thread.start() action in the thread happens-before Thread.join();
+Like memory barrier, the volatile read write instructions prevent reorder on them as well as any instructions across it in one executing thread.
+
+volatile (only on fields not local var) for single read or write operation, Without volatile, any updates and reads to a shared variables will be made to local thread storage (CPU Cache) and only updated whenever a thread is synchronized with the central copy in main memory RAM.
+http://tutorials.jenkov.com/java-concurrency/java-memory-model.html 
+processor might return a cached value instead of from memory even one thread can update it each time, so synchronized still need volatile  
+the final members are visible to other threads without synchronization, enter|exiting a synchronized block forces the thread to refresh data from|to memory
+static volatile| volatile means that the changes in the "class| instance field" is made visible to all the threads acting on that class (all the object instances)| particular object instance.
+Final volatile will compile err
+in 32 bit system, Writes or reads reference or primitive are atomic except long or double value (64bit) is treated as two 32-bit op: not atomic
+volatile long and double possible because Writes or reads of values are atomic, volatile BigDecimal impossible becasue not atomic.
+
+Atomic for Multiple related instruction (i++ : write based on read, primitive int is not atomic and wrapper class Integer is immutable) based on Non-blocking Compare and swap
+java.util.concurrent.atomic.AtomicBoolean|Integer|Long|Reference[Array]<T> single read|write .get|set([index,]|new); atomic read+write implicit CAS: old=.getAndSet(new); new=AtomicInteger.add|in|decrementAndGet(); are all based on explicit CAS: true=compareAndSet([index,] T1, T2) if existing T [at index] == T1, set T = T2 by looping pattern
+[final] AtomicInteger|AtomicReferece<Integer> (private volatile int|V value; be atomically CAS) wraps a volatile int (mutable)|reference to an object (only make sense if immutable) so in/decrementAndGet()|only get/compareAndSet all use compareAndSet value(equals)|reference(addresses) equality, similar on smaller number with same cached instance  but different on uncached big number  
+public class CASRange {
+    private static class IntPair {
+        final int lower;  
+        final int upper;
+    }
+//combine lower upper into single instead of two private final AtomicInteger lower|upper = new AtomicInteger(0);
+//avoid case where one thread update lower while upper being changed by another thread, may result in lower>upper  
+    private final AtomicReference<IntPair> values = new AtomicReference<IntPair>(new IntPair(0, 0));
+    public void setLower|Upper(int i) {
+        while (true) {
+            IntPair oldv = values.get();
+            if (i > oldv.upper)|(i < oldv.lower)
+                throw new IllegalArgumentException();
+            IntPair newv = new IntPair(i, oldv.upper)|(oldv.lower,i);
+            if (values.compareAndSet(oldv, newv))
+                return;
+        }  
+synchronized(this){//volatile doesnot provide atomic, short time gap in between related reading and writing on a shared variable, creates an race condition where other threads can update it, prevented by synchronize only 1 thread go thru multiple reading writing as whole 
+        if (volatileBoolean) {  volatileBoolean = !volatileBoolean;  } //double check 
+}//AtomicBoolean (internally volatile int) are functionnaly equivalent but using CAS instread of lock
+
+if (!initialized) { 
+ //maybe initialized by other threads already   
+ initialize();    
+ initialized = true; 
+can be made thread safe by lock+double check above or CAS below 
+AtomicBoolean initialized= new AtomicBoolean(false);
+if (initialized.compareAndSet(false, true)) { initialize(); 
+
+public final boolean getAndSet(boolean newValue) { //keep trying till compareAndSet succeed: return real value was changed 
+while (true) { boolean current = get();//if the value has changed between get() and compareAndSet() won't change its value 
+           if (compareAndSet(current, newValue)){return current; //if false compareAndSet auto set current=lastest value
+
+[JAVA 7] resource object:java.lang.AutoCloseable:java.io.Closeable is auto closed at the end of the statement. 
+try (BufferedReader br = new BufferedReader(new FileReader(path))) {    return br.readLine();  }
+
+JAVA 8
+Stream represents a sequence of objects from a source, which supports aggregate operations.
+int count = (List<String>) ls.[parallel]Stream().filter(s -> s.isEmpty()).count()|.forEach(s -> System.out.print(i+",")); //parallel|sequential 
+streams
+Stream<String> names = Stream.of("aBc", "d", "ef");
+List<String> [reverse]Sorted = names.sorted([Comparator.reverseOrder()]).collect(Collectors.toList());// [ef, d, aBc]
+String[] Converted = names.map(s -> {return s.toUpperCase();}).toArray(String[]::new);//[ABC, D, EF]
+ 
+lambda expressions
+Runnable r = new Runnable(){
+                                                @Override
+                                                public void run() {System.out.println("My Runnable");}};
+Runnable r = () -> {System.out.println("My Runnable");                };
+r.run();
+Thread thread = new Thread(r);
+ 
+Collections.sort(personList, new Comparator<Person>(){
+     public int compare(Person p1, Person p2){return p1.getSurName().compareTo(p2.getSurName());}
+     });
+Collections.sort(personList, (Person p1, Person p2) -> p1.getSurName().compareTo(p2.getSurName()));
+ 
+String result = map.reduce|search(1,
+    (key, value) -> {return key + "=" + value;|if ("foo".equals(key)) return value;},
+    (s1, s2) -> { return s1 + ", " + s2;});//comb to single string k1=v1,k2=v2,..
+ 
+ 
+[Completable]Future<T> [comp]fut = dbLib.get("mykey");//returns immediately
+[compfut.thenAccept(result -> {// Process the result.});]//thenApply().exceptionally((error) -> {return null;}) to transform the result and
+return another CompletableFuture<T> in chain.
+...//do other stuff
+T result = fut.get();
+ 
+ExecutorService executor = Executors.newWorkStealingPool();//ForkJoinPools using all available processors without specify default size=core+1
+List<Callable<String>> callables = Arrays.asList(    callable("task1", 2),    callable("task2", 1),    callable("task3", 3));
+String result = executor.invokeAny(callables);//blocks until the earliest callable returns the result
+executor.invokeAll(callables)
+    .stream()
+    .map(future -> {
+        try {
+            return future.get();
+        }
+        catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    })
+    .forEach(System.out::println);
+
+java.sql
+Connection = DriverManager.getConnection(URL,User,Password)
+Connection.setAutoCommit(false);
+Prepared|CallableStatement = Connection.prepareStatement|Call ("Stmt|SProc");
+Prepared|CallableStatement.setFetchSize|MaxRows(2000);.setInt|String(val, para);CallableStatement.registerOutParameter(6, java.sql.Types.VARCHAR);
+[ResultSet=]Prepared|CallableStatement.executeQuery|Update();|[while(ResultSet.next()){ResultSet.getInt|String("col")];close();
+Statement suit for DDL, no parameters,  DB engine always Compile and optimize exe plan.
+PreparedStatement suit for DML, accepts parameters prevention of SQL injection (escapes the special characters) and map java and SQL type (include BLOBs, OutputStreams as parameter "feeds" via setBlob, setBinaryStream), DB engine Compile and optimize exe plan only once by caches of previous execution plans, better perf if run the same SQL statements many times.  binary (less data in the packets) make communications to the server faster,but NOT support IN clause
+Callable:PreparedStatement for stored procedures
+try{Connection.commit();}catch (SQLException) {Connection.rollback();} finally {Connection.close();}
+
+ResultSet.TYPE_FORWARD_ONLY|SCROLL_[IN]SENSITIVE: move forward|& backward, [not] reflect concur changes to data
+dis|Connected RowSet tabular data 
+java.util.Date{date + time} whereas java.sql.Date {date}
+define database Object and use oracle.sql.STRUCT stmt.setSTRUCT to pass single obj with multi fields as para   
+
+JDBC DataSource javax.sql: Caching PreparedStatement for faster processing, ResultSet maximum size, Connection timeout|pool
+oracle.jdbc.pool.OracleDataSource.setURL|User|Password
+define Connection pool JNDI resource in the container configuration files server.xml or context.xml, DataSource = new InitialContext().lookup("java:/comp/env/jdbc/MyLocalDB");
+<Resource global="jdbc/MyDB" auth="Container" type="javax.sql.DataSource" driverClassName="com.mysql.jdbc.Driver"url|username|password="..."maxActive="100" max|minIdle="20|5"maxWait="10000"/>
+
+JMS Publish Subscribe one-to-many topic unreliable but very fast | Point to Point one-to-one queue highly reliable
+
+Persistent|durable apply to messages (Message Producer - JMS Server) | subscriptions (JMS Server - Subscriber, only active 1 durable subscriber per time) .
+messageProducer.setDeliveryMode(DeliveryMode.[NON_]PERSISTENT)
+
+Queues(one-to-one) consumer always gets a durable subscription over disconn, Persistent|Non-persistent Message saved on disk|in-memory, can|not survive a broker restart.
+Topic (one-to-many) Persistent & Durable : Message will be saved  on-disk &| in-memory, msg sent to subscriber after dis/reconnected to the server, can create many TopicPublisher from TopicSession connect the same Topic
+Topic A durable subscription stored messages will be delivered Once the subscriber becomes active,non-Durable subscribers will not receive any publications if they are not active.
+Queue subscriber does not have to be active or connected to the queue all the time to receive the message, 
+Queue|Topic Every message successfully processed is | not acknowledged by the consumer/subscriber. Messages gurantee|not to be delivered in the order sent
+
+TopicConnection conn = connectionFactory.createTopicConnection();
+conn.setClientID("myClientID");
+TopicSession sess = conn.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);//Auto, Duplicates okay ,Client mode
+TopicSubscriber sub = sess.create[Durable]Subscriber(topic,"subname" [,String messageSelector,boolean noLocal]);
+//subscriber unique Id: clientID##subName, noLocal to true so messages are not published on the connection are delivered
+conn.start();
+Message mess = sub.receive(1000);
+conn.close()
+
+??https://examples.javacodegeeks.com/enterprise-java/jms/jms-messagelistener-example/
+		BrokerService broker = BrokerFactory.createBroker(new URI("broker:(tcp://localhost:61616)"));
+		broker.start();
+		Connection clientConnection = null;
+		try {
+			// Producer
+			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+			clientConnection = connectionFactory.createConnection();
+			clientConnection.setClientID("TempTopicTest");
+			Session session = clientConnection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+			Topic|Queue topic|queue = session.createTemporaryTopic|Queue();	
+
+			MessageConsumer consumer1/2 = session.createConsumer(topic/queue);
+			consumer1/2.setMessageListener(new AckMessageListener(true));
+		    
+			clientConnection.start();		
+			
+			String payload = "Important Task";
+			Message msg = session.createTextMessage(payload);
+			MessageProducer producer = session.createProducer(topic);
+			producer.send(msg);
+
+			session.close();
+		} finally {
+			if (clientConnection != null) {
+				clientConnection.close();
+			}
+			broker.stop();
+		}
+
+public class AckMessageListener implements MessageListener {
+	private boolean acknowledge;
+	public AckMessageListener(boolean acknowledge) {this.acknowledge = acknowledge;}
+	public void onMessage(Message message) {
+		if (acknowledge) {
+			try {	message.acknowledge();
+			} catch (JMSException e1) {
+				e1.printStackTrace();
+			}
+		}
+		System.out.println(message);
+	}
+}
+
+public interface MessageConsumer {
+    String getMessageSelector() throws JMSException;
+    MessageListener getMessageListener() throws JMSException;
+    void setMessageListener(MessageListener listener) throws JMSException;
+    Message receive() throws JMSException;
+    Message receive(long timeout) throws JMSException;
+    Message receiveNoWait() throws JMSException;
+    void close() throws JMSException;
+}
+setMessageListener register listener implements the JMS MessageListener interface, void onMessage(Message message) is callback As messages arrive, where listener may throw a RuntimeException while process msg, handled as below depends on the session’s acknowledgment mode.
+AUTO_ACKNOWLEDGE or DUPS_OK_ACKNOWLEDGE - the message will be immediately redelivered. 
+CLIENT_ACKNOWLEDGE - the next message for the listener is delivered. If a client wishes to have the previous unacknowledged message redelivered, it must manually recover the session.
+Transacted Session - the next message for the listener is delivered. The client can either commit or roll back the session (in other words, a RuntimeException does not automatically rollback the session).
+
+http://javarevisited.blogspot.com/search/label/tibco
+Ultra-Low-Latency Messaging Solace, MQ use TCP, TIBCO RV use UDP suited for transmitting Market data to be stale shortly with very high volume but not used for sending Order or execution message because reliable communication BUT not guranteed delivery, instead use TIBCO EMS (using TCP) or RV Certified messaging where Sender waits for acknowledgment from register/subscribed receivers before remove message, if miss ack from any of receiver, it keep message in a ledger (memory by default or file).
+Certified messaging: registration and acknowledgment, whenever Receiver comes up it registers with Sender by subscribe on a topic by unique name
+in a subnet, Sender can has list of certified listener PreregistEred in its config file, so it will store message until those listener comes up
+and start consuming messages. Sender remove receiver from its list of certified listener if receiver is not responding message for specified
+duration of time.
+Sender remove sent message once it gets acknowledgment from all Receivers, otherwise it keep message in a memory (default) or file based ledger
+is preconfigured
+local|remote daemon (RVD|R installed on local |remote host) R connects to our process via TCP and connect to tibco multicast network via UDP.
+
+Tibco RV is based on tibco protocol (TRDP) for high speed messaging while Tibco EMS which is based upon JMS for more reliable messaging by TCP
+topic and queue created on Tibco EMS are static on Tibco EMS Server while Subject of Tibco RV is dynamic in nature.
+Tibco RV is Bus model every node connected to bus have RVDaemon running so no single point of failure if one node goes down other can still communicate with each other
+Tibco EMS is Hub model where Tibco EMS Server is Single Point of failure because all topics and queues were created on this and publisher and subscriber connects to it 
+(Rendezvous Routing Daemon) RVRD is bridge two different regional network:  receives multicast messages from multiple RVD and send via TCP to another RVRD which distributes messages on different RVD (Rendezvous Daemon) on their network 
+
+SAX|DOM Parsers not|load complete XML into memory 
+
+Java Caching System (distributed cache: cache in a dedicated server) object(element) cached in hashtable(region). each region can be configured independently (size, update freq) https://docs.oracle.com/cd/E15357_01/coh.360/e15723/cache_intro.htm#COHDG318
+Distributed Cache: each cluster server (JVM) maintain unique section of cached data, with its backup on a different node for fault-tolerance. if data in not cached in current node (JVM) then single hop (p2p) the network to another cluster node. write extra step to the backup, scale linearly as the cluster grows  
+Replicated Cache: cached data is replicated thru all servers upon update, which will not scale linearly as the cluster grows, high memory usage but better read (awlays from local memory) but poor write performance, concurrency control operations (lock) involve at most one other cluster node. 
+optimistic cache is replicated cache without concurrency control for higher write throughput.
+Near Cache provide the extreme performance of the Replicated Cache and the extreme scalability of the Distributed Cache by providing fast read access to Most Recently Used (MRU) and Most Frequently Used (MFU) data, by fronts cache with a local cache, back cache with a remote, partitioned cache
+
+Hibernate -  use Object/Relational Mapping to represent/persist data in Object-oriented classes, supporting inheritance relationships collections, auto generate tables or fields at system initialization time instead of at runtime. high performance by lazy initialization, numerous fetching strategies and optimistic locking with automatic versioning and time stamping. caching mechanism reduced round trips between an application and the database, highly scalable by server cluster, hibernate query language is database independent hibernate|jdbc use un|checked exceptions, no|need write code in try, catch and throws.
+Configuration (Database Connection, Class Mapping: hibernate.properties hibernate.cfg.xml), SessionFactory (thread safe, per each database), session (phisical conn), transaction, query, criteria 
+hibernate.cfg.xml:
+<hibernate-configuration>
+   <session-factory>
+   <property name="hibernate.dialect">
+      org.hibernate.dialect.MySQLDialect
+   </property>
+   <property name="hibernate.connection.driver_class">
+      com.mysql.jdbc.Driver
+   </property>
+
+   <!-- Assume test is the database name -->
+   <property name="hibernate.connection.url">
+      jdbc:mysql://localhost/test
+   </property>
+   <property name="hibernate.connection.username">
+      root
+   </property>
+   <property name="hibernate.connection.password">
+      root123
+   </property>
+   <property name="hibernate.cache.provider_class">
+      org.hibernate.cache.EhCacheProvider
+   </property>
+   <property name="hibernate.cache.use_query_cache">
+      true
+   </property>
+   <property name="hibernate.jdbc.batch_size">
+      50
+   </property>
+
+   <!-- List of XML mapping files -->
+   <mapping resource="Employee.hbm.xml"/>
+
+</session-factory>
+</hibernate-configuration>
+POJO (Plain Old Java Object) with fields to be persisted are declared private with getXXX and setXXX methods
+Annotation
+import javax.persistence.*;
+@Entity
+@Table(name = "EMPLOYEE")
+public class Employee {
+   @Id @GeneratedValue
+   @Column(name = "id")
+   private int id;
+   @Column(name = "salary")//length nullable unique 
+   private int salary;  
+
+   public Employee() {}
+   public int getId() {
+      return id;
+   }
+   public void setId( int id ) {
+      this.id = id;
+   }
+   public int getSalary() {
+      return salary;
+   }
+   public void setSalary( int salary ) {
+      this.salary = salary;
+   }
+or
+XML
+<hibernate-mapping>
+   <class name="Employee" table="EMPLOYEE">
+      <cache usage="read-write"/>
+      <id name="id" type="int" column="id">
+         <generator class="native"/>//automatically generate the primary key
+      </id>
+      <property name="name" column="name" type="string"/>
+      <property name="salary" column="salary" type="int"/>
+   </class>
+</hibernate-mapping>
+character=java.lang.String=CHAR(1)  string=java.lang.String=VARCHAR byte==java.lang.Byte=TINYINT boolean=java.lang.Boolean=BIT
+date|time=java.util.Date or java.sql.Date|Time=DATE|TIME currency=java.util.Currency=VARCHAR
+binary=byte[]=VARBINARY(or BLOB) text=java.lang.String=CLOB serializable=class implements java.io.Serializable=VARBINARY(or BLOB) blob=java.sql.Blob=BLOB 
+Collections Mappings: persist instances of java.util.Map|Set=HashMap|Set,SortedMap|Set=TreeMap|Set List=ArrayList and array of entity class or primitive type
+associations Mappings between entity classes and the relationships between tables
+Component Mappings:a entity class having a reference to another entity class as a member variable.
+Session cache (first-level) keeps an object before committing it to the database, multiple updates to an object delay to reduce the number of update SQL statements issued. If you close the session, all the objects being cached are lost and either persisted or updated in the database.
+
+across sessions cache (Second level optional) always consult first-level before any attempt is made to locate an object. can be configured on a per-class and per-collection basis 
+set Concurrency strategies (Read-write) in mapping, cache provider (EHCache) in hibernate.cfg.xml, cache configuration in CLASSPATH/ehcache.xml for the Employee class 
+Transactional Read-write: for read-mostly data where it is critical to prevent stale data in concurrent transactions,in the rare case of an update.
+Nonstrict-read-write: makes no guarantee of consistency between the cache and the database. if data hardly ever changes and stale data is not of critical concern.
+Read-only: A concurrency strategy suitable for data which never changes. Use it for reference data only.
+
+Query-level cache (optional for frequent queries with the same parameters) requires two additional physical cache regions that hold the cached query results and the timestamps when a table was last updated. 
+set property use_query_cache and query.setCacheable setCacheRegion
+
+Interceptor extends EmptyInterceptor callbacks from the session to the application to inspect properties of a persistent object before it is saved, updated, deleted or loaded. 
+findDirty(Object entity, Serializable id,  Object[] currentState, Object[] previousState,String[] propertyNames, Type[] types) on flush() 
+instantiate(...) on instantiated
+isUnsaved(...) on saveOrUpdate() 
+onDelete|Load|Save(...) before delete|initialized|Save
+onFlushDirty(...)  an object is dirty (changed) during a flush
+pre|postFlush(...) before|after a flush
+
+import org.hibernate.*
+static SessionFactoryfactory = new Configuration().configure().buildSessionFactory();
+or = new AnnotationConfiguration(). configure().//addPackage("com.xyz") //add package if used.addAnnotatedClass(Employee.class).buildSessionFactory();
+
+Session session = factory.openSession();
+Transaction tx = null;
+try {
+   tx = session.beginTransaction();
+         for ( int i=0; i<100000; i++ ) {
+            String fname = "name " + i;
+            Integer salary = i;
+            Employee employee = new Employee(lname, salary);
+            session.save(employee);
+         	if( i % 50 == 0 ) {//batch_size
+               session.flush();
+               session.clear();
+            }
+         }
+         employeeID = (Integer) session.save(employee);//single
+
+	ScrollableResults employeeCursor = session.createQuery("FROM EMPLOYEE").scroll();
+	int count = 0;
+	while ( employeeCursor.next() ) {
+   	 Employee employee = (Employee) employeeCursor.get(0);
+   	 employee.updateEmployee();
+   	 seession.update(employee); 
+   	 if ( ++count % 50 == 0 ) {
+      	  session.flush();
+      	  session.clear();
+   	 }
+	}
+
+         String hql = "FROM Employee E WHERE E.id > 10 ORDER BY E.salary DESC";
+	 Query query = session.createQuery(hql);
+	 query.setFirstResult(1);
+	 query.setMaxResults(10);//pagination
+	 query.setCacheable(true); 
+	 query.setCacheRegion("employee");
+	 List employees = query.list(); 
+         for (Iterator iterator = employees.iterator(); iterator.hasNext();){
+            Employee employee = (Employee) iterator.next(); 
+            System.out.println("  Salary: " + employee.getSalary()); 
+         }
+
+	//native query
+	String sql = "SELECT name, salary FROM EMPLOYEE";
+	SQLQuery query = session.createSQLQuery(sql);
+	query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+	List results = query.list();
+
+	String sql = "SELECT * FROM EMPLOYEE WHERE id = :employee_id";
+	SQLQuery query = session.createSQLQuery(sql);
+	query.addEntity(Employee.class);
+	query.setParameter("employee_id", 10);
+	List results = query.list();
+
+	String hql = "UPDATE Employee set salary = :salary WHERE id = :employee_id";
+	Query query = session.createQuery(hql);
+	query.setParameter("salary", 1000);
+	query.setParameter("employee_id", 10);
+	int result = query.executeUpdate();
+	System.out.println("Rows affected: " + result);
+	
+	//buildin func instead of query
+         Employee employee = (Employee)session.get(Employee.class, EmployeeID); 
+         employee.setSalary( salary );
+	 session.update(employee); 
+
+         Employee employee = (Employee)session.get(Employee.class, EmployeeID); 
+         session.delete(employee);
+
+	Criteria cr = session.createCriteria(Employee.class);
+
+	cr.add(Restrictions.eq|gt("salary", 2000));
+	cr.add(Restrictions.like("name", "zara%"));
+
+	Criterion salary = Restrictions.isNull("salary");
+	Criterion name = Restrictions.ilike("name","zara%");//ilike: case insenstive
+	LogicalExpression orExp = Restrictions.or(salary, name);
+	cr.add( orExp );
+
+	cr.addOrder(Order.asc("salary"));
+	//get average, maximum or minimum 
+	cr.setProjection(Projections.rowCount());
+	cr.setProjection(Projections.countDistinct("name"));
+	cr.setProjection(Projections.avg("salary"));
+
+	List results = cr.list();
+	crit.addOrder(Order.desc("salary"));
+
+   tx.commit();
+}
+catch (HibernateException e) {
+   if (tx!=null) tx.rollback();
+   e.printStackTrace(); 
+}finally {
+   session.close();
+}
+
+Inversion of Control (IoC) generally program get the required objects from an outside source (fxp container init & mgr dependencies basedon xml config) instead of create them. 
+dependency injection (DI) is a form of IoC, where implementations, which the object depend on, are passed into the object through constructors/setters/service look-ups via abstractions (interfaces) instead of concrete objects, without knowing at compile time which class/implementations will be used.
+        public void InjectDependent(IDependentClass dependentClass)//IInjectDependent Members:Interface Injection
+        {      this.dependentClass = dependentClass; }
+ServiceLocator & factory pattern are another subset of Ioc
+
+Spring is mainly an inversion of control container for dependency injection pattern (Constructor|Setter|Interface Injection) to loose coupling class.
+easy to unit-test by mocking and seperate development (pluggable), DI containers (increases complexity) perform type resolving incur a slight runtime penalty
+A Java Bean is a "Java Object that is serializable, has a 0-argument constructor (Setter Injection only), and allows access to properties using getter and setter methods." 
+
+Spring 4
+interface I{...}
+Annotation based:
+@Component(value="b|c")//If enabled component scan on the package <context:component-scan base-package="com.mycom.myapp" /> on @Component (basic
+bean) @Controller (servlet control-presentation) @Repository (DAO) @Service (buzlogic service)
+class B|C implements I{...}
+OR xml based
+<beans>
+<bean id="b|c" class="com.mycom.myapp.B|C" />
+<bean id="a" class="com.mycom.myapp.A" scope="singleton|prototype">single(default,for stateless beans) per Spring IoC container|inject separate
+instance each request (for stateful beans)
+                <property name="max" type="int" value="${instance.max}"/>  //value=primitives, Strings or config prop
+                <property name="i" ref="b"/> //=setter
+                <constructor-arg ref="b"/>//constructor
+ 
+@Service|@Component
+@Scope("singleton|prototype")  
+class A
+{    @Autowired//org.springframework.bean.factory auto-wire/@inject beans B/C by type prefer interface I so can inject any implementation at
+runtime by auto detect (interface, implementation) pair. (required=false) remain null if dependency not found instead of exception
+     @Qualifier("b") //javax.inject specify type name, needed only when multi class implement|extend same interface|super otherwise exception
+     //@Resource(name="b")//javax.annotation inject by name=@Autowire+@Qualifier
+     I i;//List<I> li; injected with an instance of type B
+     public void setI(I in) {  this.i = in;}//setter
+     public A(I in){  this.i = in;}//constructor
+     public void foo(@Qualifier("b")I ib,@Qualifier("c")I ic) { 
+OR @Configuration class ...
+
+Spring lets you map these mock objects declaratively to the references at runtime for unittest. 
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import moviebean.MovieLister;
+
+public class Main {
+  public static void main(String[] args) {
+    ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/beans.xml");
+    BeanFactory factory = context;
+    MovieLister ml= (MovieLister) factory.getBean("movieLister");
+  }
+}
+Annotation injection is performed before XML injection, thus the latter will override the former if wired by both
+Spring MethodInvokingFactoryBean invoke instance|static method by targetObject|Class targetMethod
+implements Spring.InitializingBean.afterPropertiesSet()//init, DisposableBean.destroy()//clean-up
+public class MyService {
+    @PostConstruct|@PreDestroy
+    public void init()|destory(){
+<bean name="myService" class="com.XXX.MyService" init-method="init" destroy-method="destroy">
+Global|Local Transaction over multiple|single transaction resources like RDBMS conn or JMS Message Queue, Managed by Application Server using JTA
+Declarative (annotations @Transactional on class/method or XML configuration) is preferable over programmatic (flexible) transaction management: 
+PlatformTransactionManager.TransactionStatus getTransaction(TransactionDefinition) .void commit|rollback(TransactionStatus status) TransactionDefinition. Isolation (READ_COMMITED, REPEATABLE_READ, SERIALIZABLE)|Propagation(REQUIRED, REQUIRED_NEW, NESTED)|Timeout|ReadOnly
+
+to use @Transactional, must add below to Spring.xml configuration
+<tx:annotation-driven transaction-manager="transactionManager"/>
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                                <property name="dataSource" ref="dataSource" />
+</bean>
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+                                <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+                                <property name="url" value="jdbc:mysql://localhost:3306/TestDB" />
+                                <property name="username" value="pankaj" />
+                                <property name="password" value="pankaj123" />
+</bean>
+@Transactional(propagation = Propagation.REQUIRES_NEW, no|rollbackFor = Exception.class)//set exception type besides default unchecked|RuntimeException to rollback, otherwise Checked exceptions wont roll back
+public void foo()
+REQUIRED default join a current transaction, create a new one if none exists.
+REQUIRES_NEW force the start of a new transaction, an exception within will rollback only that new transaction, parent tranaction rollback wont rollback child new transaction
+
+JSP is a webpage scripting language: easier to code client side, while Servlets: are Java programs compiled :faster for processing of lot data.
+both creates dynamic web content
+login.jsp
+<form name="loginForm" method="post" action="servlet/com.mapp.login">
+public class login extends javax.servlet.http.HttpServlet{
+protected void doGet|Post(HttpServletRequest request, HttpServletResponse response){
+request.getParameter("user|pwd");
+//auth and get userId...
+request.setAttribute("UID", userId);
+RequestDispatcher dispatcher = context.getRequestDispatcher("/welcome.jsp");
+  dispatcher.forward(request, response);}//redirect to next page
+ 
+In MVC, jsp act as a view and servlet act as a controller. ?what can only done by jsp|servelet
+Spring MVC servelet dispatcher handle request and response, can have multitple dispatcher but <servlet-mapping> one URL should map to 1 receiving
+servlet
+HTTP stateless TCP/FTP/JDBC stateful
+ 
+EAR application archive packages a Java EE enterprise application in a JAR file. It typically contains a WAR file for the web module, JAR files
+for EJB modules, as well as deployment descriptors such as application.xml and jboss-app.xml
+ 
+Apache Tomcat 8 application server is used to deploy Java Servlets and JSPs in WAR (short for Web ARchive) file
+/<SERVER_ROOT>/applicationname/{.JSP} WEB-INF/{web.xml} classes|lib/{WAR servlet and utility classes}|{JAR used by servlet}
+<web-app>//deployment descriptor web.xml
+  <session-timeout>30</session-timeout>
+  <servlet>
+    <servlet-class>com.onjava.TestServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+Apache web server is HTTP Server for static content .HTML images, forwarding the requests for dynamic content to Tomcat.
+httpd.conf:
+Define SRVROOT "C:\Java\Apache24"
+ServerRoot "${SRVROOT}"
+DocumentRoot "${SRVROOT}/htdocs" //where to put HTML
+ 
+JAXP import javax.xml.parsers.*
+Dom Parser loading the complete document and hiearchical tree in memory. more easier JDOM Parser
+SAX Parser event-driven (generate event as it finds elements, attributes, or data and trigger handler),not load the complete document into the
+memory. more efficient StAX Parser
+XPath Parser based on expression and is used extensively in conjuction with XSLT
+
+install C:\Program Files\Java\jdk1.6.0_32
+downloan maven unzip to C:\DEV\apache-maven-3.0.5
+download eclipse and browse workspace to C:\DEV\SVC upon open, below setups are per workspace
+eclipse>help>marketplace>popular>svn team provider & maven integration
+       >window>preference>java|maven>installation>repoint to above jdk|maven dir, maven>user settings>C:\User\nbdcumj\.m2\setting.xml (maven repo config)
+                         >General>Appearance>Label Deco>SVN
+                         >Team>SVN>Label Deco>Icons Deco>Outgoing Changes, to enable decorator for edited files from svn
+       >file>import>svn/project from svn>to downloan project (base before derived), red error may appear during auto compile
+       >right click project>maven>update project (enforce): if red err each time get latest
+                           >team>sync with repo|commit|branch|merge 
+log4j.xml:file location, level (root: INFO|WARN|DEBUG) 
+        >package explorer> linkwitheditor > auto sync file with editor 
+        >run|debug config>Java application>argument:-server -Xms1024m -Xmx1024m -XX:MaxPermSize=256m (to avoid permgen outmem)|user entry: advance>add folder to resource  
+maven depenpdency is hierchical thru each type .pom, right clcik type listed in maven dependency > maven >open POM> if error then its .pom file is corrupted, the type can not be recognized by ctrl-shift-t to search type, rename .m2\repository folder and reopen eclipse will reload all   
+                         >remote java application>project:swapplatform|host:swp-ax001-s.dev.etsd.ml.com|port:9123 (target service instance propertied: ettconfig.args=-agentlib:jdwp=transport=dt_socket,address=9123,server=y,suspend=y to wait for elipse to attach)
+
+install JDK => If have not done so, install JDK 1.6 from \\uswmwegdas01.amrs.win.ml.com\setup to C:\Program Files\Java\jdk1.6.0_33
+download maven to C:\Depo\DEV\apache-maven-3.0.5, create folder C:\Users\nbdcumj\.m2\, copy setttings.xml there
+install eclipse kepler to  C:\Depo\DEV\eclipse,  
+help>marketplace>install  Maven Integration for Eclipse, Subversion Team Provider 
+help>install new software> 
+http://community.polarion.com/projects/subversive/download/eclipse/3.0/kepler-site/ select svn connector and svnkit 1.7 (preinstalled tortoise svn 1.7  from \\enycmvifl17a.amrs.win.ml.com\gelpnydevf01\merlin\Packages\Tortoise SVN),  
+window>preference>team>svn>svn connector select right one
+                                         >Maven>installations>add> folder C:\Depo\DEV\apache-maven-3.0.5
+                                                          >UserSettings> C:\Users\nbdcumj\.m2\settings.xml
+                                         >Java>Installed JRES>edit location to C:\Program Files\Java\jdk1.6.0_33
+Start Eclipse, Import>SVN>Project from SVN>repo: https://eq1-svn.bankofamerica.com/svnrepos/equity_swaps   >browser to swap core >trunk>finish to get the latest source, similarly for Profile, Swap_platform, FM2-Core, FM2-Service, <execution> section may need to be removed from pom.xml for each project.
+Replace below with attached files:
+\Profile\src\main\java\com\ml\elt\s1\profile\core\das\sqlmap\sql\rule ruleproperty
+
+\swap_platform\src\test\resources\env.xml instance.properties (change jms_subject_prefix= your name)
+\swap_platform\src\main\resources\delta_default.properties
+\swap_platform\src\main\java\com\ml\elt\s1\sw\plugins\cache\ CacheStartstop.java
+Run>Debug config>java application>new> Main[project: swap_platform|main class: com.ml.elt.s1.platform.DefaultPlatform] 
+                                                                                      Arguments[vm arguments: -server -Xms1024m -Xmx1024m -XX:MaxPermSize=256m -Dlog4j.configuration=log4j-perf.xml]
+                                                                                      Classpath[ user entries:advance>add folder>\swap_platform\src\test\resources \swap_platform\src\main\resources
+
+\FM2-Service\src\test\resources\instance-run. properties (change jms_subject_prefix= your name)
+\FM2-Service\src\main\resources\xml-config\default-properties
+\FM2-Service\src\main\java\com\ml\elt\s1\fm\service\dmaclientlimits\ DmaClientsLimitsProcessor.java 
+Add null pointer check  if(profile != null && profile.isDollarNeutralRestriction()
+Run>Debug config>java application>new> Main[project:FM2-Service|main class: org.mule.MuleServer] 
+                                                                                      Arguments[program arguments:-config instance-run.xml -props instance-run.properties|
+                                                                                                              vm arguments: -Xms1024m -Xmx1024m -ea -Dapp.properties=instance-run.properties -Dlog4j.configuration=log4j-test.xml ]
+                                                                                      Classpath[ user entries:advance>add folder>\FM2-Service\src\test\resources
+
+CTRL + D: del row, [CTRL]ALT + Up/Down Arrow:[Copy]Move row up or down, ALT + Left/Right Arrow:Move to last location edited
+CTRL+SHIFT+O: fix imports, CTRL+1: quik fix, CTRL+SHIFT+T: list find type, CTRL+F6: switch tab, CTRL+E: list files
+CTRL + SHIFT + F:format, CTL + N: new type, CTRL + J:search while typing, SHIFT+HOME|END: begin|end of line
+ALT+SHIFT+R:rename, ALT+SHIFT+M: extrart method 
+
+File -> Project ->Maven -> Maven Project: Group Id=com.mycom and Artifact Id=myapp.
+/src/main/java folder, that contains source files for the dynamic content of the application,
+/src/test/java folder contains all source files for unit tests,
+/src/main/resources folder contains configurations files,
+/target folder contains the compiled and packaged deliverables,
+the pom.xml is the project object model (POM) file. The single file that contains all project related configuration.
+
+intellij
+right click FM2-Service project>open module settings>dependecy>+jar or dir>select FM2-Service\src\test\resource where instance-run propeties is
+run>edit configuration>+Application>set main class,vm option,prog arg same as above, working dir:C:\Depo\DEV\S1\Service\FM2-Service, use alt JRE>C:\Program Files\Java\jdk1.6.0_33
+in default-properties.xml change instance.prop to instance-run.prop
+proj window>upright setting icon>auto scroll to/from source 
+file>settings>compiler>java compiler: 1.6
+             >inspector: code err checking
+             >Maven
+             >editor>appearance>show line number
+                    >color n fonts>file status>modified :blue
+
+http://docs.python.org/3.3/library/index.html#library-index
+Python 3.3.2 eclipse+pydev
+ 
+Python uses dynamic typing: can change the type of a variable after decalration
+func NO Signature overload, def f(x, y=0) y is optional with default value, returns None (Null) if no return statement
+swap y, x = x, y   x=y=0 #ok  x=0=y #err
+variables are in scope even outside the loops in which they are first instantiated.
+a = 0
+def foo():
+    print(a)//error: foo create a local variable a can’t refer to the global variable in foo, unless global a
+    a = 3
+objA  is | ==  objB reference | Value equal,  
+>>> a = [1, 2, 3]>>> b = a>>> b is a True >>> b == a True //Python caches small integer objects <=256
+>>> b = a[:]>>> b is a False >>> b == a True
+3 BUILD-IN strong type: int 'i' (char bool 'b' long 'l' long long 'q'), float 'f'(double 'd') and strings is immutable "Hi" 'H' '''I'm here''' count find index("c") replace split lower|upper
+s = "Compute" c = s[2] #"m" no char only string sub = s[1:4] #"omp"  s[3:] #"pute"
+must explicit convert  x = 3 s = "The answer is " + str(x)
+print("3" + 4) #error print("3%d" % 4) # concatenate "3" and "4" to get "34" print(int("3") + 4) # add 3 and 4 to get 7
+int(3.7|"3.7") #ok|error unless int(float("3.7")) i = round(5.834)#6
+bool("") # False bool(0|2|"0") # False|True|True bool("False") #True
+// integer division / floating-point division   28//|/10 =2|2.8, 1.5 // 2.0=0.0, -3 // 2=-2 round upper, 2**3=8 power
+print("%.2f" % 12.3456)#12.35  1e1000 > max floating number +-inf
+ 
+for i in range(2, 9, 3)|range(len(ls)): #start 2 (default 0) stop 9 with step 3, only 3 element so use fixed memory, list(range(10))
+for i, num in enumerate(ls): # i thru index from 0, num thru item
+    if num == 2:
+        del numbers[i]
+ 
+tuple (immutable) (x,y) suit for coordinate
+ 
+List(ArrayList mutable + mixed type, ls+|-lst concat|erase,ls*3 repeat, in: for|if val in ls:, ,  if isinstance(ls, list) and ls==lst: # isinstance(object, class), value comp vs ref comp ls is not lst, issubclass(sub, base)
+ls = list()|[1,2]  # no new  val=ls[idx] #O(1)|ls.append(val)#ls[len(ls):]=val|extend(lst)|insert(idx,val)#O(n) n items on right|remove(val)|pop([idx])#del ls[begIdx:endIdx]|clear()|copy() #shallow|count(val)|reverse() #inplace O(n)|sort() #O(n log n) same instance |sorted() #new instance
+ls[-k] = ls[len(ls) - k], ls[-1] last item, sum|any|all(ls) any|all is True
+used directly as stack append(val)|val=pop() on top, from collections import deque.appendleft|extendleft|popleft
+ 
+class Node (Base1,Base2): #extend object implicitly Node(object), multiple inherit
+    def __init__(self, value = None, next = None):
+        self.value = value
+        self.next = next
+    def __str__(self): #tostring
+        return str(self.value)
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):#isinstance(sub|base, Base|Sub) True|False, more accurate type(other) is type(self): __class__
+           return self.__dict__ == other.__dict__# a dictionary contains all non-method instance attributes >>>Node.__dict__
+        return False
+    def __hash__(self):
+        return hash(self.value)
+class LinkedList:
+    def __init__(self): #ll = LinkedList()
+        self.head = None
+    def add(self, x):
+        if self.head == None:
+            self.head = Node(x, None) #no new calling contructor
+        else:
+            self.head.next = Node(x, None)
+            self.head = current
+ 
+2Dls = [[1, 2],[4, 5],[7, 8]], 2Dls[1][2], print(2Dls[0][1:-1])
+ 
+array('l', [1, 2]) type constrained
+ 
+Dictionary is hashmap map = dict()|{'k1':v1,'k2':v2} map['key']=value map['key2']|map.get('key2') return Exception|None, map['key2'] += 1 error
+map.update('k1':v1,'k2':v2), for k|v/k,v in map.keys|values/items(), dict([(k1, v1), (k2, v2)]) convert list tuple to dic
+supMap={'supkey1':{'subkey1':subVal1,'subkey2':[lstval1,lstval2]},'supkey2':(tupval1,tupval2)} #mixed type map for value and key on hash('a'|2|object())
+ 
+set is an unordered collection of distinct hashable objects (with __hash__() and __eq__() method). st={1,2,2} is {1,2}
+ 
+Heaps are binary trees parent <= children. (priority queue) heapq.heappush:auto sort|.heappop:return smallest|.merge:take multiple sorted iterable return single sorted iterable|nsmallest/nlargest(n, iterable[, key]) Return a list with the n smallest/largest elements|heapq.heapify(lst) list to heap in-place
+from heapq import heappush, heappop heap = []  heappush(heap, item) heappop(heap)
+ 
+collections.OrderedDict retain the order of items being added not sorted, by linkedhashmap 
+ 
+queue. #multi-producer/consumer synchronized queues
+Queue(maxsize=0)|LifoQueue|PriorityQueue (sorted by heap)
+     .put|get(item, block=True, timeout=None) block if .full()|.empty(), return immediate if block=False
+     .join() Blocks until unfinished items count=0
+q = Queue()
+for i in range(num_threads): #daemon threads keep consuming q
+     t = Thread(target=worker)
+     t.daemon = True
+     t.start()
+q.join()
+def worker():
+    while True:
+        item = q.get()
+        #work on item
+        q.task_done()#consumer threads task_done()to signal queue the task is complete by decrement unfinished items count.
+ 
+#syntax errors: incorrect indentation, empty block
+try: except TypeError: except(ValueError, ZeroDivisionError): else: finally: #Runtime errors
+b = lambda x, y: x + y #anonymous one-line functions
+no switch/case, class/method/except/if:pass#block do nothing, illegal to leave any block empty
+def print_args(*|**args):    for arg|k,v in args|.items(): # variable length same as c# params
+ 
+execute a function body many times, a function definition is executed only once – that means that default the empty list (mutable) created in function definition will be the same for all exe.
+def add_to_list(pet, pets=[]): pets.append(pet)
+list_with_cat = add_to_list("cat") #cat list_with_dog = add_pto_list("dog")# cat dog
+def add_to_list(pet, pets=None): if pets is None: pets = [] pets.append(pet)
+ 
+def fibonacci(n):
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    return fibonacci(n - 1) + fibonacci(n - 2)
+ 
+def fibonacci(n):
+    current, next = 0, 1
+    for i in range(n):
+        current, next = next, current + next
+    return current
+ 
+class Person
+    count=0 # static attribute vs instance self.attribute
+    @staticmethod|@classmethod #buildin  decorator
+    def incCount()|(cls): #Person.incCount()|person.incCount() #@classmethod take both class or instance
+         Person.count += 1 #full class.member
+         return Person.count
+    def __init__(self, fname, lname):
+        self.f|lname = f|lname
+    @property#decorator make a method an attribute getter/setter
+    def fullname(self):
+        return self.fname+self.lname
+    @fullname.setter
+    def fullname(self, value):
+    def abstract(self):
+        raise NotImplementedError()
+ 
+class Employee(Person):
+    def __init__(self, first, last, staffnum):
+        super().__init__(first, last)
+        self.staffnumber = staffnum
+    def abstract(self): #same name override
+        print super().fullname() #Python 3.x, super(no arguments) to call base
+ 
+class First(object):
+  def __init__(self):
+    super(First, self)|super().__init__()# this trigger object.__init__() becasue First is considered as object by super(First, self), without it the calling chain stop here
+class Second(object):
+  def __init__(self):
+    super(Second, self).__init__() 
+    print "second"
+class Third(First, Second):
+  def __init__(self):
+    super(Third, self).__init__() #pyhton 2|3 super(MyClass, self)|super().__init__() provides the next __init__ method in Method Resolution Ordering (MRO), this trigger First.__init__() becasue Third is considered as First by super(Third, self)
+>>> x = Third() depth-first left-to-right traversal in cooperative inheritance by >>>Third.mro():
+Third --> First --> object (object__init__() only once by smart super)
+      --> Second --> object --> "second" #exe  after object has no further next
+ 
+class A(object):
+    def foo(self): print 'A' #no super().foo() at the end of chain
+class B(A):
+    def foo(self): print 'B' super(B, self).foo() #super().foo() Pyhton 3
+class C(A):
+    def foo(self): print 'C' super(C, self).foo()
+class D(B,C):
+    def foo(self): print 'D' super(D, self).foo()
+d = D() d.foo() #DBCA similar for methods super handle diamond problem with A being called only once
+ 
+split up optional functionality into mix-ins classes to be multiple inherited to avoid ambiguity
+ 
+dir(Person|person)#inspect all content
+ 
+import lib.cls | from lib import cls # c = lib|.cls()
+import datetime math random re (regular expression)  csv (parse csv file) logging
+
+generator function by yield as iterators: next() def get_primes(number):
+    while True:
+       if is_prime(number):
+            yield number
+        number += 1
+for value in get_primes(100):
+List comprehensions concise create NEW lists from existing data. new_list = [expression(i) for i in old_list if filter(i)]
+[double(x) for x in range(10) if x%2==0] [0, 4, 8, 12, 16]
+from package.script import class
+//no type, declare, return at will
+class sub(base|object, base2):
+def __init__(self, map, env='dev'):
+  self.configMap=map
+  self.ev=env #instance field
+def create(self,name):
+  rtn = None
+  list=[]
+  map={}
+  try:     
+    config=self.configMap[name]
+    if|while not config://None = False|null
+      for k, v in self.configMap:
+        if v in map:
+          map[v]=k
+        elif v
+          break
+    else:
+      list.append((k,v))//tuple immutable
+   except Exception, e:
+    raise RuntimeError|MyException("I failed")
+   with open('myfile.txt', 'r|w') as myfile:
+    data = myfile.read()|write("test")
+class MyException(Exception):
+  
+ pass#to  be implemented|except/if block do nothing, illegal to leave any block empty def main():
+para = int|(input("Enter para: ")) print("output %d|s" % para)
+ 
+class Singleton(type):
+    _instances = {}
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+ 
+from risk.smi.liquidity.core.service.Singleton import Singleton
+class Service(object):
+    __metaclass__ = Singleton   
+    def __init__(self, runEnv, context=None):
+        self.runEnv = runEnv
+        from risk.smi.liquidity.core.service.ContextService import ContextService
+        contextService = ContextService(runEnv, context=context)
+        context = contextService.getContext()
+        self.context = context       
+    def getContext(self):
+        return self.context
+ 
+class SqlService(Service):   
+    def __init__(self, runEnv, context=None):
+        super(SqlService, self).__init__(runEnv, context=context)
+        self.dao = SqlDao(runEnv, context=self.context)
+    def executeSql(self, sql, timeout=0, retries=1, doCommit=False):
+        return self.dao.executeSql(sql, timeout=timeout, retries=retries, doCommit=doCommit)
+ 
+ 
+threading.
+Thread.start() signal (once & first per thread, async return immediately) JVM to initialize new thread and invoke run() method in a separate thread of control.
+      .run() ordinary function can be overriden and called, default invokes the callable object passed to thread’s constructor(target=None
+      T1.run();T2.run(); callables exe sequentially  T1.start(); T2.start(); callables exe concurrently scheduling by os
+      .join(timeout=None) the calling thread blocks until the thread whose join() method is called terminates
+      .is_alive() after join() call on the same thread, if true, the join() timed out.
+      .daemon threads wont stop when the creating program exit (all non-daemon threads including main terminated), are abruptly stopped at shutdown instead, and their resources (open files, database conn, etc.) may not be released properly.
+Lock.acquire(blocking=True, timeout=-1) return True successfully, False timeout
+                When orig state of lock object is unlocked, acquire() resets state to locked and returns immediately.
+        When orig state of lock object is locked, acquire() blocks until release() from another thread resets state to unlocked, then acquire() resets state to locked and returns.
+    .release() can be called from any thread, allow one waiting thread to proceed, RuntimeError if release lock object at unlocked state.
+RLock A reentrant lock may be acquired multiple times by the same thread. nested acquire|release in|decrement the recursion level
+Condition(lock=None) an associated lock will be constructed by default if none is passed in.
+with cv: #acquires the associated lock
+    while not item_in_list(): # while loop checking is necessary because wait() can return after an arbitrary long time, equivalent to cv.wait_for(item_available)
+        cv.wait(timeout=None) #releases the lock, then blocks until awakened by another thread.notify(n=1)|notify_all(). Once awakened, wait() re-acquires the lock and returns, while and next stmt get exed.
+    get_item()
+with cv:
+    add_item()
+    cv.notify() #don’t release the lock
+Semaphore(value=1) internal counter decremented by acquire() and incremented by release().  acquire() blocks when counter =0
+sema = Semaphore(value=maxconn)
+with sema:
+    sema.acquire()
+    conn = connectdb()
+    try:
+        # ... use connection ...
+    finally:
+        conn.close()
+        sema.release()
+Event for one thread signals (internal flag set() to True, clear() to False) other threads wait() blocks until the flag is true.
+Timer(interval, func).start()
+Barrier align progress of multi threads by block them until all of the threads have called wait()   
+b = Barrier(2, timeout=5)
+def func1|2():
+    b.wait()
+    while True: #proceed
+ 
+concurrent.futures.
+ThreadPoolExecutor(max_workers=2) uses a pool of threads to execute calls asynchronously.
+                  .submit(func) return future object and async .result(timeout=None), add_done_callback(func), cancel()
+with ThreadPoolExecutor(max_workers=4) as e:
+                a|b = executor.submit(wait_on_b|a)
+def wait_on_a|b():
+    time.sleep(5)
+    print(a|b.result())#dead lock wait on each other
+ 
+Local:thread-specific data
+ 
+ 
+ 
+generator function by yield as iterators: next()
+def get_primes(number):
+    while True:
+        if is_prime(number):
+            yield number
+        number += 1
+for value in get_primes(100):
+List comprehensions concise create NEW lists from existing data. new_list = [expression(i) for i in old_list if filter(i)]
+[double(x) for x in range(10) if x%2==0] [0, 4, 8, 12, 16]
+ 
+from package.script import class
+//no type, declare, return at will
+class sub(base|object, base2):
+ pass#to  be implemented|except/if block do nothing, illegal to leave any block empty
+def main():
+para = int|(input("Enter para: ")) print("output %d|s" % para)
+
+
+http://www.timestored.com/kdb-guides/ http://code.kx.com/wiki/Cookbook http://stackoverflow.com/questions/tagged/kdb IDE qStudio
+Column oriented database means that each column of data is stored sequentially in memory
+TestTable : ([] sym:`symbol$(); date:`date$(); val:`float$()) Creating a none keyed table with time series identifiers (sym), dates (date) and values (val)
+`sym`date xkey `TestTable  apply key on sym+date same as below
+TestTable : ([sym:`symbol$(); date:`date$()] val:`float$())  
+upsert [`TestTable] (`EURUSD; 2009.02.10; 1.2874) 
+select sym, date, x from (select count i by sym, date from TestTable) where x > 1 find duplicate sym+date
+K : () 0h, L : `int$() 6h, M : `symbol$() 11h, N : `char$() 10h
+K can become a list of any type
+Symbols are interned strings referencing to a interned string pool in memory where only one copy of any distinct value is stored, suitable for Short and often repeated strings (reduce mem) or column is used in where clause equality comparisons (speed up) where col1 in `a`b |=`tick
+q).Q.w[] OR \w OR \w 0 SHOW MEM used (heap in actual use) heap (physically memory allocated to this process) peak wmax mmap(memory used for memory mapping files on disk) syms (Number of distinct syms in this q process) symw (memory footprint of interned string pool)
+version 2.6|2.7: Unreferenced memory over 32MB/64MB are returned immediately| when memory full or .Q.gc[] called
+memory mapping a file increasing I/O performance, especially large files, Accessing memory mapped files is faster than using direct read and write operations.
+deferred|immediate mode: memory mapped is maintained| on demand as needed for the duration of the query
+
+Attributes applied to lists/columns based on the data to speed up queries 
+Sorted: perform binary search to find elements rather than scanning the entire list, appends unsorted element will remove the attribute from list, s-fail if apply to an unsorted list
+ls:1 2 3 /init list ls:`s#ls /apply attribute  ls,:1/append
+Unique: marks a list as unique by creates a unique hash table (cost extra storage space) to make search (list?element) constant time 
+Grouped: store a lookup table grouping element to all the positions it occurs rather than performing a full column scan
+lg:'g#1 3 2 3 2 1 2 3  / set attribute on init
+group lg
+1| 0 5 /1 occurs at 0 and 5 row
+3| 1 3 7
+2| 2 4 6
+it does not enforce any requirements on the data, but lookup table cost extra storage space and a hard limit to how many grouped columns kdb supports
+Parted: store all occurences of a value in a sequential block,with a lookup table from each distinct value to its first occurence, then all its occurences can be found in one sequential read.
+a table can only realistically have one column (typically sym) Parted.
+Medium-sized tables (<=100 million rows) are better stored on disk splayed: each column is stored as a separate file, becuase queries access only subset of all columns
+q)`:dirname/|filename set tablename saves in splayed|single file
+tables that are splayed across a directory must be fully enumerated and not keyed, err if has symbol type column with repeated elements
+q)`:dir/tr/ set .Q.en[`:dir] tr`:dir/tr/ to it returns a copy table with columns of type varchar enumerated under same name directory before saving table tr splayed
+add|delete a column from the schema .d file and reload the splayed table ./q.exe dir
+ 
+defined by par.txt each row as a directory path, if each dir (itself be partitioned usually by date) is on a separate local disk, Starting the q process with n slave threads (q -s), partition num p is given to slave thread p mod n (best:one disk per thread)
+ 
+pivot: use column p data as row to cross with column k data, cross cell will be filled with column v data mapped to k p in oringinal table t 
+q)exec p!v by k from t
+
+Left Join t lj kt : each row in source table kt (trade [dt,sym,price,qty]) to match values in (MUST keyed) lookup table t (stock [sym,sector]) via key column (sym), all rows of t are in result having columns from both t & kt, 
+if no match kt columns fill nulls, if duplicate keys in kt, only first match from kt is used in result, if kt non-key columns with the same name as t columns, the matched kt columns value overwrite the original value in t, while in Plus Join (pj) if numric value they are added up instead of overwriten.
+inner join t ij kt :ONLY t rows having match in kt are in result
+t:([] sym:`a`b`c; v:1 2 3)
+kt:([sym:`a`a`b`d] s:100 200 300 400)
+t ij kt
+sym v s
+a   1 100 /only first match from kt is used
+b   2 300   
+Union Join: combine all rows/columns from two tables, append no match key column, fill nulls in no match non-key column, overwrite t with matched kt if having same non-key column.
+t uj kt
+sym v s
+a   1 100 
+a     200
+b   2 300
+c   3
+d     400
+
+#include"k.h" // essential to define kdb data objects and access them
+int main(int argc, char *argv[]) {
+    int handle = khpu(host, port, "user:pass");
+    result=k(handle,"select..",(K)0);
+    K r = k(handle, ".u.sub[`trade;`]", (K) 0);// subscribe to trade table
+    kclose(handle);//do not close for subscribe
+
+    flip=ktd(result); // if keyed table, unkey it. ktd decrements ref count of arg.
+    columnNames=kK(flip->k)[0];    // table (flip) is column names!list of columns (data)
+    columnData=kK(flip->k)[1];
+    nCols=columnNames->n;
+    nRows=kK(columnData)[0]->n;
+    for(row=0;row<nRows;row++)  {
+        for(col=0;col<nCols;col++) {// print value of row/col
+
+    while(1) {    // process subscribed ticks 
+        r = k(handle, "", (K)0);
+        if(r) {
+            if(r->t == 0) {
+                // r is 3 item list of format (".u.upd"; `trade; updateTable)
+                printf("\n%s update", kK(r)[1]->s); // table name symbol atom
+                tbl = kK(r)[2]->k; 
+                colNames = kK(tbl)[0];
+                colData = kK(tbl)[1];
+                printf(" rows: %lld cols: ", kK(colData)[0]->n);
+                for(c=0; c < colNames->n; c++) {
+                    printf("%s,", kS(colNames)[c]);
+                }
+            }
+        }
+        r0(r); // decrement reference count, free memory
+    }
+}
+
+c con = new c("localhost", 5001,"username:password);
+con.k(".u.sub[`trade;`]"); //subscribe to trade table
+while (true) {
+    try {
+        Object r = con.k();//Flip tblResult = (c.Flip) c.k("select.."); //query
+        if (r != null) {
+            Object[] data = (Object[]) r;
+            String tblname = (data[1]).toString();
+            c.Flip tblResult = (c.Flip) data[2];
+            String[] colNames = tblResult.x;
+            Object[] colData = tblResult.y;
+            for (int i = 0; i < colData.length; i++) {
+                s += " " + colNames[i] + ":" + c.at(colData[i], 0).toString();
+            }
+        }
+    } catch (Exception e) {
+      finally { if (c != null) {try{c.close();} catch (IOException ex) {}
+
+int n= trades.size();
+String[] COL_NAMES = new String[] { "time", "sym", "price", "size", "stop", "cond", "ex" };
+Time|String|double|int|boolean|char|char[] time|sym|price|size|stop|cond|ex = new Time|String|double|int|boolean|char|char[n];
+for(int i=0; i<n; i++) { time|sym|price|size|stop|cond|ex[i] = trades.get(i).time|sym|price|size|stop|cond|ex};	
+Object[] data = new Object[] { time, sym, price, size, stop, cond, ex };
+c.Flip tbl = new c.Flip(new c.Dict(COL_NAMES, data));
+Object[] updStatement = new Object[] { ".u.upd", "trade", tbl };
+conn.ks(updStatement); // send asynchronously

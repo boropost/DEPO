@@ -3,7 +3,7 @@ spotcast-45e35.firebaseapp.com //domain
 
 add anfroid Enter the codelab's package name: com.google.firebase.codelab.friendlychat.
 
-https://developers.facebook.com/docs/facebook-login/android/  richcluo@gmail.com  same eamil can not be used for email/pwd auth acct 
+https://developers.facebook.com/docs/facebook-login/android/  richcluo@gmail.com  if advance: One account per email address: same eamil can not be used for other auth acct 
 facebook login> get start SDK choose platform > android >[download Facebook SDK] > project structure | new project  : Select API 15/Android 4.0.3
 proj build.gradle : repositories {    mavenCentral() //search mavenLocal() on machine  %USER_HOME% or %M2_HOME%\conf\settings.xml then mavenCentral() http://repo1.maven.org/maven2/
 app  build.gradle : dependencies {   compile 'com.facebook.android:facebook-android-sdk:[4,5)'
@@ -31,6 +31,7 @@ keyhash: +/FJAETJ76lTOXIlN1408IxftdM=
 password: android, wont prompt pwd if not at ~/.android, pwd gen diff key, 
 
 https://apps.twitter.com/  richcluo@gmail.com
+eanble permissions:Request email addresses from users (must provide Privacy Policy URL n Terms of Service URL) and revoke access of the app at https://twitter.com/settings/applications of app user to receive email in FirebaseAuth.getInstance().getCurrentUser().getEmail(), otherwise - stored as email 
 app/src/main/res/values/ids.xml
     <string name="twitter_consumer_key">jf1QXxq65V5gM6sTlJjw5m7Ow</string>
     <string name="twitter_consumer_secret">mPI3b5Yk20woNnta9kwTnIRFVPoykYGgN98k1tpoVeuENXRUcu</string>

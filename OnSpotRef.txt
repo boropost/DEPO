@@ -255,7 +255,7 @@ string,double,long,Boolean, Map<String, Object>, List<Object>
 https://firebase.googleblog.com/2013/10/queries-part-1-common-sql-queries.html 
 ".read": "auth == null",test simulator turn off auth
 or enable firebase anonymous auth, rules ".read": "auth != null", test simulator turn on auth select anonymous provider which gen anonymous auth token
-https://jsfiddle.net/katowulf/eypydqjn/ (external resources+https://www.gstatic.com/firebasejs/3.6.5/firebase.js) Auth API Key=firebase setting:Web API Key
+https://jsfiddle.net/katowulf/eypydqjn/ (external resources + https://www.gstatic.com/firebasejs/3.6.5/firebase.js) Auth API Key=firebase setting:Web API Key
  url=database-1ab1b Path=latitudes/-77/38/8/9/7
 https://database-1ab1b.firebaseio.com/latitudes/-77/38/8/9/7.json?print=pretty //CURL request
 <div id="result"></div>//html or settting jQuery edge + firebug
@@ -319,6 +319,30 @@ query.orderByValue().limitToLast(2).on("value", function(snapshot) {
 });
 query.orderByValue().equalTo(1).once('value', function(snapshot) {//or equalTo("uid") dep on orderBy}
 
+storage: files{bucket gs://database-1ab1b.appspot.com, +folder images} | rules{ request.auth 1= null }
+var config = {
+  apiKey: "AIzaSyAMs6eu3EO0z_PJ-TwA8ctI7-KBXEVJgHg",
+  authDomain: "database-1ab1b.firebaseapp.com",
+  databaseURL: "https://database-1ab1b.firebaseio.com",
+  storageBucket: "gs://database-1ab1b.appspot.com"
+};
+firebase.initializeApp(config);
+
+var storageRef = firebase.storage().ref();
+var imagesRef = storageRef.child('images');
+var fileName = 'RQL.png';
+var spaceRef = imagesRef.child(fileName);
+imgRef.getDownloadURL().then(function(url) {
+	$("#result").append('<p>' + url + '</p>');
+}).catch(function(error) {
+    switch (error.code) {
+    case 'storage/object_not_found':
+    case 'storage/unauthorized':
+    case 'storage/canceled':
+    case 'storage/unknown': //Unknown error 
+      break;
+  }
+});
 
 https://developer.android.com/training/location/retrieve-current.html
 https://developer.android.com/guide/topics/location/strategies.html //android.location.LocationManager 

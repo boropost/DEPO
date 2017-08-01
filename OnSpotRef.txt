@@ -269,11 +269,11 @@ let db = firebase.database().ref();
 let query = db.child("latitudes/-77/38/8/9/7/1");
 query.once('value').then(snap => {	
 	snap.forEach(function(data) {
-		var uids=JSON.stringify(data.val());
+		var uids=JSON.stringify(data.val()); 
 		var beg=0;
 		var pos=0;
-   	whle(true){
-    	pos=uids.indexOf('t',pos); //search after prev pos 
+   	whle(true){//parse leaf xxx from "xxx":uid" from high level node latitudes/-77/38/8/9
+    	pos=uids.indexOf('":uid"',pos); //search after prev pos 
     	if(pos>0){
       	if(beg==0){ //only for the first uid
         	beg=pos-1;
@@ -294,18 +294,31 @@ query.once('value').then(snap => {
   });
 }).catch(e => console.log(e)); //same as .then(function(snap) {
 
+let query = db.child("users/nNosBR5IaoXNnSsubByOnM1BIgM2/posts/1");
+query.once('value').then(snap => {	
+  snap.forEach(function(data) {  
+    var post= data.val();//get obj from uniquekey{object} exclude uniquekey
+    $("#result").append('<p>' + post.body + '</p>'); 	
+    $("#result").append('<p>' + JSON.stringify(data.child("body").val()|key) + '</p>');
+    $("#result").append('<p>' + data.child("to").numChildren()+ '</p>');
+    data.child("re").forEach(function(dt) {
+    	var re=dt.val();
+    	$("#result").append('<p>' + re.text + '</p>');
+    });
+    data.child("to").forEach(function(dt) {
+    	$("#result").append('<p>' + dt.key + '</p>');
+    });
+  });
+});	
 
 query.orderByValue().limitToLast(2).on("value", function(snapshot) {
   snapshot.forEach(function(data) {
-            //data.ref().child("next").on(...);  recusive
+            //data.ref().child("next").on(...);  ??recusive
   	console.log(data.key + "|" + JSON.stringify(data.val(), null, 2));//JSON.parse|stringify() de|serializes a JS object from to a JSON string.
   });
 });
-query.orderByValue().equalTo(1).once('value', function(snapshot) {//equalTo("uid") dep on orderBy
-  snapshot.forEach(function(data) {
-    $("#result").append('<p>' + JSON.stringify(data.child("body").val()|key) + '</p>');
-  });
-}); 
+query.orderByValue().equalTo(1).once('value', function(snapshot) {//or equalTo("uid") dep on orderBy}
+
 
 https://developer.android.com/training/location/retrieve-current.html
 https://developer.android.com/guide/topics/location/strategies.html //android.location.LocationManager 

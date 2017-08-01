@@ -3,7 +3,7 @@ spotcast-45e35.firebaseapp.com //domain
 
 add anfroid Enter the codelab's package name: com.google.firebase.codelab.friendlychat.
 
-https://developers.facebook.com/docs/facebook-login/android/  richcluo@gmail.com  if advance: One account per email address: same eamil can not be used for other auth acct 
+https://developers.facebook.com/docs/facebook-login/android/  richcluo@gmail.com  if advance: One account per email address: same eamil can not be used for other auth acct, otherwise email/name left empty for the user in database  
 facebook login> get start SDK choose platform > android >[download Facebook SDK] > project structure | new project  : Select API 15/Android 4.0.3
 proj build.gradle : repositories {    mavenCentral() //search mavenLocal() on machine  %USER_HOME% or %M2_HOME%\conf\settings.xml then mavenCentral() http://repo1.maven.org/maven2/
 app  build.gradle : dependencies {   compile 'com.facebook.android:facebook-android-sdk:[4,5)'
@@ -250,6 +250,7 @@ http://cliffordhall.com/2017/04/using-firebase-cloud-functions-manage-compound-k
 
 DatabaseReference.setValu,e push, getKey(), child(String pathString) getParent|root() return DatabaseReference, updateChildren(Map), removeValue(), runTransaction
 Query.equalTo, orderByChild(String path)|Key|value() also in dbRef js, limitToFirst|last  start|endAt getRef() need order, keepSynced(auto download),  add|removeChild|ValueEventListener|addListenerForSingleValueEvent 
+string,double,long,Boolean, Map<String, Object>, List<Object>
 
 https://firebase.googleblog.com/2013/10/queries-part-1-common-sql-queries.html 
 ".read": "auth == null",test simulator turn off auth

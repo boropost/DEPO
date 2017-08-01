@@ -145,7 +145,7 @@ database/PostDetailActivity.java
 public void onStart() {
         ValueEventListener postListener = new ValueEventListener() {
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Post post = dataSnapshot.getValue(Post.class); //latest
+                Post post = dataSnapshot.getValue(Post.class); //latest, populate post object from JASON
 mPostReference.addValueEventListener(postListener);
 
     private void postComment() {
@@ -235,7 +235,7 @@ skooterapp/common/view/SlidingTabLayout.java //constant feedback as to * the use
 skooterapp/AppController.java{ com.android.volley.RequestQueue; //asynchronous RESTful HTTP requests, no need if use firebase 
 
 
-Firebase end node must name:val, mid node name(key) must be unique, click parent node to its detail page to del/modify child (type in and return) wont impact upper nodes 
+Firebase end node must name:val, mid node name(key) must be unique, click parent node to its detail page to del/modify child (type in value not name and return) wont impact upper nodes, export/import override all children under parent/root (exclude parent) to db-root-export file
 Firebase ref = new Firebase("https://dinosaur-facts.firebaseio.com/dinosaurs");
 Query queryRef = ref.orderByChild("height");
 
@@ -303,7 +303,7 @@ query.orderByValue().limitToLast(2).on("value", function(snapshot) {
 });
 query.orderByValue().equalTo(1).once('value', function(snapshot) {//equalTo("uid") dep on orderBy
   snapshot.forEach(function(data) {
-    console.log(data.key + "|" + JSON.stringify(data.val(), null, 2));
+    $("#result").append('<p>' + JSON.stringify(data.child("body").val()|key) + '</p>');
   });
 }); 
 

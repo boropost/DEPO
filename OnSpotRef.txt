@@ -319,6 +319,17 @@ query.orderByValue().limitToLast(2).on("value", function(snapshot) {
 });
 query.orderByValue().equalTo(1).once('value', function(snapshot) {//or equalTo("uid") dep on orderBy}
 
+var postRef = query.push(); //add a new empty child with name=uniqueId
+postRef.set({//set overwrite all at current ref  
+  'title': 'tt',
+  'body': 'tb'
+});
+
+query.on("child_added", function(snapshot) {//return each existing child at first and trigger upon new 
+  var post = snapshot.val();
+  $("#result").append('<p>' + post.body + '</p>');
+});
+
 storage: files{bucket gs://database-1ab1b.appspot.com, +folder images} | rules{ request.auth 1= null }
 var config = {
   apiKey: "AIzaSyAMs6eu3EO0z_PJ-TwA8ctI7-KBXEVJgHg",

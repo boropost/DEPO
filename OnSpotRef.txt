@@ -319,11 +319,12 @@ query.orderByValue().limitToLast(2).on("value", function(snapshot) {
 });
 query.orderByValue().equalTo(1).once('value', function(snapshot) {//or equalTo("uid") dep on orderBy}
 
-var postRef = query.push(); //add a new empty child with name=uniqueId
-postRef.set({//set overwrite all at current ref  
+var postRef = query[.child(2)].push(); //add a new empty child with name=uniqueId [create/locate node 2 if not/ exist}
+postRef.set({//set overwrite all at current ref, while update change existing value based on key
   'title': 'tt',
   'body': 'tb'
 });
+transaction() is used to modify the existing value to a new value, ensuring there are no conflicts with other clients writing to the same location at the same time.
 
 query.on("child_added", function(snapshot) {//return each existing child at first and trigger upon new 
   var post = snapshot.val();
@@ -354,6 +355,10 @@ imgRef.getDownloadURL().then(function(url) {
       break;
   }
 });
+
+cloud functions
+ref("posts/{Id}")  wildcards matches  /posts/1 or /posts/2, invocation ret event.params.1|2
+Path match all events (onwrite|create|update|delete) that happen anywhere below it.
 
 https://developer.android.com/training/location/retrieve-current.html
 https://developer.android.com/guide/topics/location/strategies.html //android.location.LocationManager 
@@ -400,7 +405,9 @@ latitudes> -77> 38> 8> 9> 8> 5> "nNosBR5IaoXNnSsubByOnM1BIgM2":2
 longitudes> 38> -77> 0> 3> 7> 8> "OmYPbTLDq1TOt4GZnUHbKS2G5S92":1
                         4> 3> 8> "14ytGxFYAOdnUP8wrzdwOz03mGw1":0
                               9> "nNosBR5IaoXNnSsubByOnM1BIgM2":2
-                            
+ [-90,90] +90 to [0,180], [-180,180]  +180 to [0,360], 
+ 38 to 128, -77 to 103 after before calc distance only for storing
+
 mDatabase.child("latitudes").child(-77).child(38).child(8).child(9).child(8).child(5).setValue(user); 
 latitudes/-77/38/8/9/7
 longitudes/38/-77/0/4/3

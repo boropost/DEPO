@@ -196,16 +196,21 @@ public void onActivityCreated((Bundle savedInstanceState) {
         Query postsQuery = getQuery(mDatabase);//databaseReference.child("posts").limitToFirst(100);
         mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
         PostViewHolder.class, postsQuery) {
+	//fragment_all_posts.xml {RecyclerView android:id="@+id/messages_list"{ tools:listitem="@layout/item_post" 
+	//PostViewHolder extends RecyclerView.ViewHolder is item data model with itemtemplate item_post.xml { include_post_author.xml bind to each post
+//The populateViewHoldermethod works almost the same as onChildAdded/onChildChanged where it returns each child under a referenced node postsQuery (TODO: extend FirebaseRecyclerAdapter to multiple query[i].addChildEventListener(mListener);).The FirebaseRecyclerAdapter will call our populateViewHolder method for each Post it finds in the database.
+//https://github.com/firebase/FirebaseUI-Android/tree/master/database  ??FirebaseIndexRecyclerAdapter
+//https://firebaseui.com/docs/android/index.html?com/firebase/ui/FirebaseRecyclerViewAdapter.html update query instead of recreate adapter
             protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
-                final DatabaseReference postRef = getRef(position);
+                final DatabaseReference postRef = getRef(position); //get Ref on index of returned post
                 final String postKey = postRef.getKey();
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {//click post item to display detail
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), PostDetailActivity.class);//intent move from one activity to another 
                         intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey); //getIntent().getExtras().getString("AnyKeyName");
                         startActivity(intent);
-                 
-                viewHolder.bindToPost(model, new View.OnClickListener() {
+                //set each field in PostViewHolder to field in returned post (model) viewHolder.titleView.setText(post.title);
+                viewHolder.bindToPost(model, new View.OnClickListener() {//click star button
                     public void onClick(View starView) {
                         DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
                         DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
@@ -233,7 +238,11 @@ public void onActivityCreated((Bundle savedInstanceState) {
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError);
             }
         });
-
+@Override
+protected void onDestroy() {
+    super.onDestroy();
+    mAdapter.cleanup();
+}
 skooterapp/common/view/SlidingTabLayout.java //constant feedback as to * the user's scroll progress.
 skooterapp/AppController.java{ com.android.volley.RequestQueue; //asynchronous RESTful HTTP requests, no need if use firebase 
 

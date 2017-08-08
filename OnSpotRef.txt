@@ -251,8 +251,28 @@ postsQuery.addChildEventListener(new ChildEventListener() {
 msgRef.orderByChild("date").endAt(3)
 http://cliffordhall.com/2017/04/using-firebase-cloud-functions-manage-compound-key-index/
 
-DatabaseReference.setValu,e push, getKey(), child(String pathString) getParent|root() return DatabaseReference, updateChildren(Map), removeValue(), runTransaction
+Firebase ref = new Firebase("https://<YOUR-FIREBASE-APP>.firebaseio.com");
+Firebase newPostRef = ref.child("posts").push();
+String newPostKey = newPostRef.getKey();
+Map newPost = new HashMap();
+newPost.put("title", "New Post");
+newPost.put("content", "Here is my new post!");
+Map updatedUserData = new HashMap();
+updatedUserData.put("users/posts/" + newPostKey, true);
+updatedUserData.put("posts/" + newPostKey, newPost);
+// Do a deep-path update
+ref.updateChildren(updatedUserData, new Firebase.CompletionListener() {
+   @Override
+   public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+       if (firebaseError != null) {
+           System.out.println("Error updating data: " + firebaseError.getMessage());
+       }
+   }
+});
+
+DatabaseReference extends Query extends Object
 Query.equalTo, orderByChild(String path)|Key|value() also in dbRef js, limitToFirst|last  start|endAt getRef() need order, keepSynced(auto download),  add|removeChild|ValueEventListener|addListenerForSingleValueEvent 
+DatabaseReference.setValu,e push, getKey(), child(String pathString) getParent|root() return DatabaseReference, updateChildren(Map), removeValue(), runTransaction
 string,double,long,Boolean, Map<String, Object>, List<Object>
 
 https://firebase.googleblog.com/2013/10/queries-part-1-common-sql-queries.html 

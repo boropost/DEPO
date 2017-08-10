@@ -185,6 +185,33 @@ Fragment's onActivityCreated() to final initialisations (for example, modifying 
 <android.support.v7.widget.RecyclerView 
     android:id="@+id/messages_list"
     tools:listitem="@layout/item_post" />
+//fragment_all_posts.xml {RecyclerView android:id="@+id/messages_list"{ tools:listitem="@layout/item_post" 
+//PostViewHolder extends RecyclerView.ViewHolder is item data model with itemtemplate item_post.xml { include_post_author.xml bind to each post
+//The populateViewHoldermethod works almost the same as onChildAdded/onChildChanged where it returns each child under a referenced node postsQuery (TODO: extend FirebaseRecyclerAdapter to multiple query[i].addChildEventListener(mListener);).The FirebaseRecyclerAdapter will call our populateViewHolder method for each Post it finds in the database.
+//https://github.com/firebase/FirebaseUI-Android/tree/master/database  ??FirebaseIndexRecyclerAdapter
+//https://firebaseui.com/docs/android/index.html?com/firebase/ui/FirebaseRecyclerViewAdapter.html update query instead of recreate adapter?? query is immutable can not be updated
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+public class RecipeAdapter extends FirebaseRecyclerAdapter<RecipeObject, RecipeHolder>{
+    private static final String TAG = RecipeAdapter.class.getSimpleName();
+    private Context context;
+    public RecipeAdapter(Class<RecipeObject> modelClass, int modelLayout, Class<RecipeHolder> viewHolderClass, DatabaseReference ref, Context context) {
+        super(modelClass, modelLayout, viewHolderClass, ref);
+        this.context = context;
+    }
+    @Override
+    protected void populateViewHolder(RecipeHolder viewHolder, RecipeObject model, int position) {
+        viewHolder.recipeName.setText(model.getRecipename());
+        Glide.with(context).load(model.getRecipeImageUrl()).into(viewHolder.recipeImage);
+    }
+}
+mRecipeAdapter = new RecipeAdapter(RecipeObject.class, R.layout.recipe_category_list, RecipeHolder.class, childRef, getContext());
+https://www.cpume.com/question/fhzszheg-how-to-combine-two-recycler-adapter-into-one-custom-adapter.html
+//mRecyclerView.setAdapter(mFirebaseRecyclerAdapter); mFirebaseRecyclerAdapter.notifyDataSetChanged(); //refresh RecyclerView
+https://geektalk.info/.../how-to-load-firebase-query-into-arraylist-to-pass-to-adapter
+//https://litotom.com/2016/08/29/firephoto-recyclerview-storage/
+//https://www.codementor.io/tips/1237823034/how-to-filter-a-recyclerview-with-a-searchview
+
 fragment/PostListFragment.java vs https://github.com/prathmeshranaut/skooterapp/blob/master/app/src/main/java/com/skooterapp/PostAdapter.java
 public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);//res/layout/fragment_all_posts.xml
@@ -196,11 +223,7 @@ public void onActivityCreated((Bundle savedInstanceState) {
         Query postsQuery = getQuery(mDatabase);//databaseReference.child("posts").limitToFirst(100);
         mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
         PostViewHolder.class, postsQuery) {
-	//fragment_all_posts.xml {RecyclerView android:id="@+id/messages_list"{ tools:listitem="@layout/item_post" 
-	//PostViewHolder extends RecyclerView.ViewHolder is item data model with itemtemplate item_post.xml { include_post_author.xml bind to each post
-//The populateViewHoldermethod works almost the same as onChildAdded/onChildChanged where it returns each child under a referenced node postsQuery (TODO: extend FirebaseRecyclerAdapter to multiple query[i].addChildEventListener(mListener);).The FirebaseRecyclerAdapter will call our populateViewHolder method for each Post it finds in the database.
-//https://github.com/firebase/FirebaseUI-Android/tree/master/database  ??FirebaseIndexRecyclerAdapter
-//https://firebaseui.com/docs/android/index.html?com/firebase/ui/FirebaseRecyclerViewAdapter.html update query instead of recreate adapter
+
             protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
                 final DatabaseReference postRef = getRef(position); //get Ref on index of returned post
                 final String postKey = postRef.getKey();

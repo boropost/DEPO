@@ -190,6 +190,9 @@ Fragment's onActivityCreated() to final initialisations (for example, modifying 
 //The populateViewHoldermethod works almost the same as onChildAdded/onChildChanged where it returns each child under a referenced node postsQuery (TODO: extend FirebaseRecyclerAdapter to multiple query[i].addChildEventListener(mListener);).The FirebaseRecyclerAdapter will call our populateViewHolder method for each Post it finds in the database.
 //https://github.com/firebase/FirebaseUI-Android/tree/master/database  ??FirebaseIndexRecyclerAdapter
 //https://firebaseui.com/docs/android/index.html?com/firebase/ui/FirebaseRecyclerViewAdapter.html update query instead of recreate adapter?? query is immutable can not be updated
+
+https://www.learnhowtoprogram.com/android/gestures-animations-flexible-uis/updating-data-after-gesture-interactions
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 public class RecipeAdapter extends FirebaseRecyclerAdapter<RecipeObject, RecipeHolder>{

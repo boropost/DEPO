@@ -192,12 +192,24 @@ Fragment's onActivityCreated() to final initialisations (for example, modifying 
 //https://firebaseui.com/docs/android/index.html?com/firebase/ui/FirebaseRecyclerViewAdapter.html update query instead of recreate adapter?? query is immutable can not be updated
 
 https://www.learnhowtoprogram.com/android/gestures-animations-flexible-uis/updating-data-after-gesture-interactions
+FirebaseRestaurantListAdapter {
+public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                mRestaurants.add(dataSnapshot.getValue(Restaurant.class));
+            }
+	        Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
+                intent.putExtra("position", viewHolder.getAdapterPosition());
+                intent.putExtra("restaurants", Parcels.wrap(mRestaurants));
+                mContext.startActivity(intent);
+		
+ RestaurantDetailActivity{ mRestaurants = Parcels.unwrap(getIntent().getParcelableExtra("restaurants"));
+ int startingPosition = getIntent().getIntExtra("position", 0);
+         adapterViewPager = new RestaurantPagerAdapter(getSupportFragmentManager(), mRestaurants);
+        mViewPager.setAdapter(adapterViewPager);
+        mViewPager.setCurrentItem(startingPosition);
+
 db.child("0/1300106/81/57").orderByKey().startAt("100").limitToLast(2); //only return immediate child post after max subtree key 99, newer the later 
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.DatabaseReference;
 public class RecipeAdapter extends FirebaseRecyclerAdapter<RecipeObject, RecipeHolder>{
-    private static final String TAG = RecipeAdapter.class.getSimpleName();
     private Context context;
     public RecipeAdapter(Class<RecipeObject> modelClass, int modelLayout, Class<RecipeHolder> viewHolderClass, DatabaseReference ref, Context context) {
         super(modelClass, modelLayout, viewHolderClass, ref);
@@ -210,9 +222,7 @@ public class RecipeAdapter extends FirebaseRecyclerAdapter<RecipeObject, RecipeH
     }
 }
 mRecipeAdapter = new RecipeAdapter(RecipeObject.class, R.layout.recipe_category_list, RecipeHolder.class, childRef, getContext());
-https://www.cpume.com/question/fhzszheg-how-to-combine-two-recycler-adapter-into-one-custom-adapter.html
 //mRecyclerView.setAdapter(mFirebaseRecyclerAdapter); mFirebaseRecyclerAdapter.notifyDataSetChanged(); //refresh RecyclerView
-https://geektalk.info/.../how-to-load-firebase-query-into-arraylist-to-pass-to-adapter
 //https://litotom.com/2016/08/29/firephoto-recyclerview-storage/
 //https://www.codementor.io/tips/1237823034/how-to-filter-a-recyclerview-with-a-searchview
 

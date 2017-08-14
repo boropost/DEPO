@@ -509,7 +509,7 @@ VCS > check out from version control: github
 File>Project Structure=>app(i.e left pannel)=>Properties=>SDK loc proj gradle/android version 
 app>SDK|Build Tools Version,sign,Flavor default|minSDKJellyBean:min/targetSDK Version 19 (change to 16 =phone), build type:debug|relese dependencies
      Settings > Plugins (built-in Image Asset Studio, Theme and Layout Editor ) >Browse repositories  ADB(android cmd), Codota
-Right-click the res folder and select New > Image Asset (res/mipmap launcher icon, res/drawable other types of icons, can access image from the main thread only.refer to image as @drawable in XML or Drawable in Java)
+Right-click the res folder and select New > Image Asset (res/mipmap launcher icon, res/drawable/x|m|hdpi/(copy same img each has diff size, auto group on AS) other types of icons, can access image from the main thread only.refer to image as @drawable in XML or Drawable in Java)
 <ImageView    android:src="@drawable/myimage" />
 Resources res = getResources();// Context.getResources class applies to UI objects, such as activities, fragments, layouts, views,
 Drawable drawable = res.getDrawable(R.drawable.myimage);

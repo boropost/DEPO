@@ -192,7 +192,7 @@ Fragment's onActivityCreated() to final initialisations (for example, modifying 
 //https://firebaseui.com/docs/android/index.html?com/firebase/ui/FirebaseRecyclerViewAdapter.html update query instead of recreate adapter?? query is immutable can not be updated
 
 https://www.learnhowtoprogram.com/android/gestures-animations-flexible-uis/updating-data-after-gesture-interactions
-let query = db.child("0/1300106/81/57").orderByKey().startAt("101"); //only return immediate child post 
+db.child("0/1300106/81/57").orderByKey().startAt("100").limitToLast(2); //only return immediate child post after max subtree key 99, newer the later 
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;

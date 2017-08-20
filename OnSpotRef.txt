@@ -207,7 +207,7 @@ public void onChildAdded(DataSnapshot dataSnapshot, String s) {
         mViewPager.setAdapter(adapterViewPager);
         mViewPager.setCurrentItem(startingPosition);
 
-db.child("0/1300106/81/57").orderByKey().startAt("100").limitToLast(2); //only return immediate child post after max subtree key 99, newer the later 
+query.child("0/1300106/81/57").orderByKey().startAt("100").limitToLast(2); //only return immediate child post after max subtree key 99, newer the later, only for query not reference 
 
 public class RecipeAdapter extends FirebaseRecyclerAdapter<RecipeObject, RecipeHolder>{
     private Context context;
@@ -521,6 +521,7 @@ File>Project Structure=>app(i.e left pannel)=>Properties=>SDK loc proj gradle/an
 app>SDK|Build Tools Version,sign,Flavor default|minSDKJellyBean:min/targetSDK Version 19 (change to 16 =phone), build type:debug|relese dependencies
      Settings > Plugins (built-in Image Asset Studio, Theme and Layout Editor ) >Browse repositories  ADB(android cmd), Codota
 Right-click the res folder and select New > Image Asset (res/mipmap launcher icon, res/drawable/x|m|hdpi/(copy same img each has diff size, auto group on AS) other types of icons, can access image from the main thread only.refer to image as @drawable in XML or Drawable in Java)
+new value res file: ints|bools|arrays.xml (file name doesnot matter) <res> <integer|bool|array name="location_size">4</integer>  ref by attr name "@integer|bool|array/location_size" or R.integer|bool|array.location_size 
 <ImageView    android:src="@drawable/myimage" />
 Resources res = getResources();// Context.getResources class applies to UI objects, such as activities, fragments, layouts, views,
 Drawable drawable = res.getDrawable(R.drawable.myimage);

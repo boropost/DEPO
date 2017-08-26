@@ -1,7 +1,7 @@
 statically compiled programming languages, such as C++, are compiled into native, machine-specific instructions and saved as an executable file. linking process combines of separately compiled code with shared library code to create an executable application. 
 dynamically compiled programming languages such as Java. code .java files are compiled into binary .class files, which remain as-is until loaded into the Java Virtual Machine (JVM) via ClassLoader per top jar.  linking process is performed by the JVM at runtime. Classes with depenpdency class are loaded into the JVM on an 'as needed' basis
 Just-in-Time  convert source code into assmebly language (intermediate language for C#,ByteCode for java), then compile functionality to machine code when it is called in runtime, reduces burden on cpu and optimised for runtime enviorment.
-bootstrap class loader: javaís core classes like JAVA_HOME/jre/bin\java.dll|exe (java.lang, java.util) lib\rt.jar  
+bootstrap class loader: java‚Äôs core classes like JAVA_HOME/jre/bin\java.dll|exe (java.lang, java.util) lib\rt.jar  
 extensions class loader: packages extends standard core java classes at JAVA_HOME/jre/lib/ext 
 System Class Loader: Java classes in the classpath
 JDK { (run) JRE { JVM }, (dev) Java compiler|debugger|core classes} .java>compiler>.class(byte code)>JVM>bin instanceof = typeof
@@ -27,7 +27,7 @@ String.indexOf('s') faster than ("s")
 two string literals (String s1|2 = "Hello";)  share the same storage inside the common pool. String objects (String s3|4 = new String("Hello");) are stored seperately in the heap without sharing
 s1 == s2;//true s1.equals(s3);//true s3 == s4;//false
 
-Java integer types: byte 8bit [ñ 128 to 127] (2^8=256/2=128) short 16 int 32 long 64 (not|atomic on 32|64 bit JVM) are signed (positive and negative value). Java does not support unsigned, positive-only integers
+Java integer types: byte 8bit [‚Äì 128 to 127] (2^8=256/2=128) short 16 int 32 long 64 (not|atomic on 32|64 bit JVM) are signed (positive and negative value). Java does not support unsigned, positive-only integers
 max array size 120 elements 
 primitive (int) are mutable value unless final, an array of char has mutable elements vs immutable String 
 Wrapper classes (Boolean Integer etc) are final and immutable so i++ would create a new Integer object memory, so runtime have only two Boolean instance (true and false), Integer cache common signed values (-128 to 127), every variable is a reference to one of those (Integer(127|128)==Integer(127|128) true|false). save memory and avoid accidental change value when passing as parameter, so no 'pass by reference' for mutable. 
@@ -94,7 +94,7 @@ JVM uses TWO different Garbage Collectors for minor/Young (fxp +UseParNewGC para
 Serial (+UseSerialGC single-threaded, not for server)
 Parallel(-XX:+UseParallelGC multi-threaded, stop application threads: StopTheWorld) default
 
-Concurrent-Mark-Sweep (-XX:+UseConcMarkSweepGC multi GC threads (run concurrently with application threads) to scan heap ìmarkî for unused objects to be recycled ìsweepî, consume more CPU and reduce STW (only occur in Initial Mark and remark phases) in major collections, CMS collector needs to start collecting when there is a still enough (30%) working space left in tenured, may promotion/Concurrent Mode failures :a race condition between collecting the young and old generations: If the collector needs to promote young objects to the tenured, but is unable to free space fast enough in tenured to catchup with the object promotion rates, (CMS  doesn't "defrag" its heap) so trigger a full gc, result in a pause roughly 1 second per GB.
+Concurrent-Mark-Sweep (-XX:+UseConcMarkSweepGC multi GC threads (run concurrently with application threads) to scan heap ‚Äúmark‚Äù for unused objects to be recycled ‚Äúsweep‚Äù, consume more CPU and reduce STW (only occur in Initial Mark and remark phases) in major collections, CMS collector needs to start collecting when there is a still enough (30%) working space left in tenured, may promotion/Concurrent Mode failures :a race condition between collecting the young and old generations: If the collector needs to promote young objects to the tenured, but is unable to free space fast enough in tenured to catchup with the object promotion rates, (CMS  doesn't "defrag" its heap) so trigger a full gc, result in a pause roughly 1 second per GB.
 Initial Mark - Pauses all application threads and marks all objects directly reachable from root objects as live
 Concurrent Mark - Application threads are restarted. All live objects are transitively marked as reachable by following references from the objects marked in the initial mark.
 Concurrent Preclean - looks at objects which have been updated or promoted or new objects that have been allocated during the concurrent mark.
@@ -102,7 +102,7 @@ Remark - Pauses all application threads and revisit objects may have been update
 Concurrent Sweep- looks through all dead objects re-adds the memory allocated to those objects to free memory list 
 
 [JAVA 7]The Garbage-First garbage collector a server-style GC targeted for multi-processor machines with large memories with limited GC latency (heap>6GB,pausetime<0.5 second)
-G1 (ñXX:+UseG1GC separate the collection pause time from the overall size of the heap by splitting up the heap into different regions (2000). and scan that contain the most garbage objects first) Any object which is bigger than 50% of the size of a regular region (<32MB) is stored in a humongous region
+G1 (‚ÄìXX:+UseG1GC separate the collection pause time from the overall size of the heap by splitting up the heap into different regions (2000). and scan that contain the most garbage objects first) Any object which is bigger than 50% of the size of a regular region (<32MB) is stored in a humongous region
 Concurrent Mark- the application is paused -Remark-Cleanup
 evacuation: compacts and copies live objects from target regions to free (mostly empty) regions, then entire target region are freed. evacuation failure and happens when there aren't any regions which are empty enough to be used as free region
 G1 is not a real-time collector uses a pause prediction model to meet a user-defined pause time target and selects the number of regions to collect based on it.
@@ -128,12 +128,12 @@ https://dzone.com/articles/how-to-take-thread-dumps-7-options
 Kill -3 <pid>  output to standard error stream like <TOMCAT_HOME>/logs/catalina.out
 JDK_HOME\bin\jstack.exe  jstack -l <pid> > /tmp/dumpOutput.txt 
 JDK_HOME\bin\jvisualvm.exe select the application running on a JVM (local or remmote host) threads tab click thread dump button
-JDK_HOME\bin\jmc.exe on local or remmote host Flight Recorder > Thread Dump: interval to capture, output on ìThreadsî panel
+JDK_HOME\bin\jmc.exe on local or remmote host Flight Recorder > Thread Dump: interval to capture, output on ‚ÄúThreads‚Äù panel
 or jcmd <pid> Thread.print > /tmp/dumpOutput.txt, also acquiring heap dumps, GC statistics
 
 https://dzone.com/articles/java-performance-tuning
 JVM -Xms|x4g -XX:NewRatio=5 -server: specify ini|max mem for GC,  new to old generations mem at 1:5 (default 2) in heap 
-$JDK_HOME/bin/jstat //ñverbosegc generate log, profiling tool VisualVM(+ Visual GC plugin) to monitor GC, HPJMeter analyze log
+$JDK_HOME/bin/jstat //‚Äìverbosegc generate log, profiling tool VisualVM(+ Visual GC plugin) to monitor GC, HPJMeter analyze log
 E|S0|1C|U Eden|survivor 1|2 area capacity|usage, Y|FGC[T] accumulated times[time] for GC on full|Young(minor), Divide F|YGCT by F|YGC = time per each GC event  
 if time per GC F|Y > 1s|50ms, freq GC F|Y > 1 per 10min|10sec then GC tuning is need http://www.cubrid.org/blog/textyle/428187:
 expand young gen mem if alot of short living objects like in trading system
@@ -144,7 +144,7 @@ GC in the Old area takes relatively more time than the GC in the New area.
 3 reduce Full GC to once per day by 
 using primitive instead of wrapper, int[] (no auto boxing) over ArrayList<Integer>, an object with an int|Integer field is GC by one|two object reclaim. 
 allocate lists|maps<T> with enough initial capacity to avoid reallocate memory upon dynamic grow 
-Use Streams instead of in-memory buffers: Javaís native serialization, Googleís Protocol Buffers to deserialize data directly from the incoming file or network stream, without allocate new internal byte arrays memory to hold the data. 
+Use Streams instead of in-memory buffers: Java‚Äôs native serialization, Google‚Äôs Protocol Buffers to deserialize data directly from the incoming file or network stream, without allocate new internal byte arrays memory to hold the data. 
 Object Pooling implemented as factory attampt to get existing recycled instance from queue before creating a new
 avoid method return a new copy of an object String.trim()
 decrease the number of objects created especially in loop (use StringBuilder instead of String).
@@ -265,6 +265,11 @@ interface  B {public String MethodA();}
 class AB implements A,B{
     @Override
     public String MethodA() {...}//throw compile error
+override can return sub / same type and same signature of parent impl
+class Sub extends Sup{ //Sup{public SupType foo()
+    @Override
+    public SubType foo() {
+}
 default constructor of the parent class is automatically called, but must use super to call parametrized constructor  
 [default modifier] accessible from any other class in the same package (package private=internal c#), methods are virtual by default, fields|methods in an interface are implicitly public static final|public as contract without any behavior or state (if not final then can be changed become implementation,static belong to the interface instead object), final para not qualify signature, Outer classes can access inner classes private instance member, and verse versa
 A final class|method|variable cannot be inherited|overridden|modified after constructed, FINAL variable hint for the compiler to potenitally performance optimizations.
@@ -329,7 +334,7 @@ Erasure: Generic only check type at compile time, Compile remove all the generic
 hashset1.retainAll|removeAll(hashset2) get instersect|difference by Retains|remove only hashset1 elements contained in hashset2
 hashset1.addAll|containsAll(hashset2) combine or if subset
 for (T t : hashset<T>) SAME AS Iterator<T> iter = hashset<T>.iterator(); while (iter.hasNext()) { System.out.println(iter.next());}
-public class Test<T extends Comparable<T>> {//E ñ Element used Java Collections 
+public class Test<T extends Comparable<T>> {//E ‚Äì Element used Java Collections 
 private T data;
 public T getData() { return this.data; }   
 //key value pair than single T type parameters 
@@ -445,7 +450,7 @@ class MComp implements Comparator|Comparable<MCls> {
            compareResult = m1.doubleField-m2.doubleField;
        return compareResult;
       |return Double.compare(doubleField, other.doubleField);
-add values with duplicate keys will to both (TreeMap and HashMap) override previous without error, HashMap allows null keys while TreeMap doesnít becasue not comparable.
+add values with duplicate keys will to both (TreeMap and HashMap) override previous without error, HashMap allows null keys while TreeMap doesn‚Äôt becasue not comparable.
 PriorityQueue heap O(log(n)) time for enqueing and dequeing, allows multiple equal elements, not allow null or non-comparable, Comparable and Comparator to sort, can get only the head (O(1) by default least element), TreeSet can get the lowest and highest unique elements, But both cannot randomly access its element. thread-safe version PriorityBlockingQueue 
 
 http://www.journaldev.com/1162/java-multi-threading-concurrency-interview-questions-with-answers
@@ -471,7 +476,7 @@ class CanStop extends Thread {
    public void run() {while (!stop) {...
    public void kill() {stop = true;}
 
-unlike user thread, A daemon thread .setDaemon(true) runs in background (child thread also a daemon) and doesnít prevent JVM from terminating the program. GC is daemon thread. 
+unlike user thread, A daemon thread .setDaemon(true) runs in background (child thread also a daemon) and doesn‚Äôt prevent JVM from terminating the program. GC is daemon thread. 
 green threads are scheduled by a virtual machine instead of OS and in user memory space instead of kernel space
 NEW|RUNNABLE(executing)|BLOCKED(acquiring lock)|[TIMED_]WAITING(waiting for signal from other thread [with time out])|TERMINATED(exited)
 
@@ -671,7 +676,7 @@ public static void main(String[] args) throws Exception {
 		cyclicBarrier.await(); //block till all reached this barrier point then can go to op2
 
 Semaphore.[try]acquire|release([intPermits}) .availablePermits()
-thread inaffinity:release doesnít have to be called by the same thread as acquire. always release what you acquire by using try..finally
+thread inaffinity:release doesn‚Äôt have to be called by the same thread as acquire. always release what you acquire by using try..finally
 release() always increment the number of permits( not fixed), even if no corresponding acquire() call was made, can result in bugs.
 final Semaphore semaphore = new Semaphore(1, true);//without true|fairness: there is no guarantee that the first thread to call acquire() is also the first thread to obtain a permit,must be final to pass directly into thread func or inject via runnable constructor
 public class Semaphore {
@@ -943,7 +948,7 @@ class VolatileExample {
 but reading a volatile variable will not flush preceding writes, so print a volatile b a; 2nd a wont guarantee latest
 
 int counter = 0;counter++;System.out.println(counter);
-memory inconsistency: no guarantee that thread A's increment to counter will be visible to thread B print counter (might be 0)ó unless the programmer has established a happens-before relationship between these two statements among multiple threads by synchronized (unlock happens-before subsequent lock);  volatile(write happens-before read); Thread.start() action in the thread happens-before Thread.join();
+memory inconsistency: no guarantee that thread A's increment to counter will be visible to thread B print counter (might be 0)‚Äî unless the programmer has established a happens-before relationship between these two statements among multiple threads by synchronized (unlock happens-before subsequent lock);  volatile(write happens-before read); Thread.start() action in the thread happens-before Thread.join();
 Like memory barrier, the volatile read write instructions prevent reorder on them as well as any instructions across it in one executing thread.
 
 volatile (only on fields not local var) for single read or write operation, Without volatile, any updates and reads to a shared variables will be made to local thread storage (CPU Cache) and only updated whenever a thread is synchronized with the central copy in main memory RAM.
@@ -1068,7 +1073,7 @@ Persistent|durable apply to messages (Message Producer - JMS Server) | subscript
 messageProducer.setDeliveryMode(DeliveryMode.[NON_]PERSISTENT)
 
 Queues(one-to-one) consumer always gets a durable subscription over disconn, Persistent|Non-persistent Message saved on disk|in-memory, can|not survive a broker restart.
-Topic (one-to-many) Persistent & Durable : Message will be saved† on-disk &| in-memory, msg sent to subscriber after dis/reconnected to the server, can create many TopicPublisher from TopicSession connect the same Topic
+Topic (one-to-many) Persistent & Durable : Message will be saved¬† on-disk &| in-memory, msg sent to subscriber after dis/reconnected to the server, can create many TopicPublisher from TopicSession connect the same Topic
 Topic A durable subscription stored messages will be delivered Once the subscriber becomes active,non-Durable subscribers will not receive any publications if they are not active.
 Queue subscriber does not have to be active or connected to the queue all the time to receive the message, 
 Queue|Topic Every message successfully processed is | not acknowledged by the consumer/subscriber. Messages gurantee|not to be delivered in the order sent
@@ -1135,7 +1140,7 @@ public interface MessageConsumer {
     Message receiveNoWait() throws JMSException;
     void close() throws JMSException;
 }
-setMessageListener register listener implements the JMS MessageListener interface, void onMessage(Message message) is callback As messages arrive, where listener may throw a RuntimeException while process msg, handled as below depends on the sessionís acknowledgment mode.
+setMessageListener register listener implements the JMS MessageListener interface, void onMessage(Message message) is callback As messages arrive, where listener may throw a RuntimeException while process msg, handled as below depends on the session‚Äôs acknowledgment mode.
 AUTO_ACKNOWLEDGE or DUPS_OK_ACKNOWLEDGE - the message will be immediately redelivered. 
 CLIENT_ACKNOWLEDGE - the next message for the listener is delivered. If a client wishes to have the previous unacknowledged message redelivered, it must manually recover the session.
 Transacted Session - the next message for the listener is delivered. The client can either commit or roll back the session (in other words, a RuntimeException does not automatically rollback the session).
@@ -1559,7 +1564,7 @@ swap y, x = x, y   x=y=0 #ok  x=0=y #err
 variables are in scope even outside the loops in which they are first instantiated.
 a = 0
 def foo():
-    print(a)//error: foo create a local variable a canít refer to the global variable in foo, unless global a
+    print(a)//error: foo create a local variable a can‚Äôt refer to the global variable in foo, unless global a
     a = 3
 objA  is | ==  objB reference | Value equal,  
 >>> a = [1, 2, 3]>>> b = a>>> b is a True >>> b == a True //Python caches small integer objects <=256
@@ -1644,7 +1649,7 @@ b = lambda x, y: x + y #anonymous one-line functions
 no switch/case, class/method/except/if:pass#block do nothing, illegal to leave any block empty
 def print_args(*|**args):    for arg|k,v in args|.items(): # variable length same as c# params
  
-execute a function body many times, a function definition is executed only once ñ that means that default the empty list (mutable) created in function definition will be the same for all exe.
+execute a function body many times, a function definition is executed only once ‚Äì that means that default the empty list (mutable) created in function definition will be the same for all exe.
 def add_to_list(pet, pets=[]): pets.append(pet)
 list_with_cat = add_to_list("cat") #cat list_with_dog = add_pto_list("dog")# cat dog
 def add_to_list(pet, pets=None): if pets is None: pets = [] pets.append(pet)
@@ -1782,7 +1787,7 @@ class SqlService(Service):
  
 threading.
 Thread.start() signal (once & first per thread, async return immediately) JVM to initialize new thread and invoke run() method in a separate thread of control.
-      .run() ordinary function can be overriden and called, default invokes the callable object passed to threadís constructor(target=None
+      .run() ordinary function can be overriden and called, default invokes the callable object passed to thread‚Äôs constructor(target=None
       T1.run();T2.run(); callables exe sequentially  T1.start(); T2.start(); callables exe concurrently scheduling by os
       .join(timeout=None) the calling thread blocks until the thread whose join() method is called terminates
       .is_alive() after join() call on the same thread, if true, the join() timed out.
@@ -1799,7 +1804,7 @@ with cv: #acquires the associated lock
     get_item()
 with cv:
     add_item()
-    cv.notify() #donít release the lock
+    cv.notify() #don‚Äôt release the lock
 Semaphore(value=1) internal counter decremented by acquire() and incremented by release().  acquire() blocks when counter =0
 sema = Semaphore(value=maxconn)
 with sema:

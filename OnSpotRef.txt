@@ -52,7 +52,29 @@ TwitterConfig config = new TwitterConfig.Builder(this)
         FacebookSdk.sdkInitialize(getApplicationContext());
         //init facebook or twitter before inflate login button constructor know how to connect api
         setContentView(R.layout.activity_sign_in);
-com.twitter.sdk.android.core.TwitterCore.getInstance().getSessionManager().getActiveSession().getAuthToken().token|secret;        
+com.twitter.sdk.android.core.TwitterCore.getInstance().getSessionManager().getActiveSession().getAuthToken().token|secret;   
+
+
+keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"
+//[Storing C:/Users/holly/.android/debug.keystore]
+keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -list -v -storepass android 
+//Valid from: Sat Jul 08 12:04:40 EDT 2017 until: Fri Oct 06 12:04:40 EDT 2017 SHA1: FB:F1:49:00:44:C9:EF:A9:53:39:72:25:37:5E:34:F0:8C:5F:B5:D3 
+proj settings > add finger print,  per development machines. shared by many proj debug,
+Before you publish your app, the release SHA-1 key needs to be uploaded in Project Settings. Each of the apps that users download from the Play Store is signed with the same release key
+              > currency / timezone
+
+download google-services.json and drag to app dir in AV or filesys, 
+Project-level build.gradle (<project>/build.gradle):
+buildscript {
+  dependencies {
+    // Add this line
+    classpath 'com.google.gms:google-services:3.1.0'
+
+App-level build.gradle (<project>/<app-module>/build.gradle):
+// Add to the bottom of the file if not auto added
+apply plugin: 'com.google.gms.google-services'
+
+sync gradle (upgrade if need) then app repoint to src/main dir
 
 build.gradle of top level
 buildscript {
@@ -489,17 +511,6 @@ locations/path/type(101/2/3/4) for pub on sender loc and sub to listen on the no
 firebase/AndroidChat //old
 open-source-android-apps
 http://www.parallelcodes.com/android-using-stored-procedure-ms-sql-server/
-
-keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"
-//[Storing C:/Users/holly/.android/debug.keystore]
-keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -list -v -storepass android 
-//Valid from: Sat Jul 08 12:04:40 EDT 2017 until: Fri Oct 06 12:04:40 EDT 2017 SHA1: FB:F1:49:00:44:C9:EF:A9:53:39:72:25:37:5E:34:F0:8C:5F:B5:D3 
-shared by many proj debug
-
-download google-services.json and drag to app dir in AV or filesys, 
-classpath 'com.google.gms:google-services:3.1.0' to proj level build.gradle
-apply plugin: 'com.google.gms.google-services'  to app level build.gradle if not auto added
-sync gradle (upgrade if need) then app repoint to src/main dir
 
 enable Virtual T in BIOS, run app first time to start emulator to be connected device, run again to launch app on it.
 5:debugger> drag variables to right to view frames/threads as call stack

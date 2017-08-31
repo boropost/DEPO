@@ -34,7 +34,7 @@ keyhash: +/FJAETJ76lTOXIlN1408IxftdM=
 password: android, wont prompt pwd if not at ~/.android, pwd gen diff key, 
 
 https://apps.twitter.com/  richcluo@gmail.com
-eanble permissions:Request email addresses from users (must provide Privacy Policy URL n Terms of Service URL) and revoke access of the app at https://twitter.com/settings/applications of app user to receive email in FirebaseAuth.getInstance().getCurrentUser().getEmail(), Has access to your email address will be on approved list, otherwise - stored as email 
+eanble permissions:Request email addresses from users (must provide Privacy Policy URL n Terms of Service URL) and click generate access token (revoke and regen if changed), Has access to your email address will be on approved list of the app at https://twitter.com/settings/applications forapp user to receive email in FirebaseAuth.getInstance().getCurrentUser().getEmail(), otherwise - stored as email 
 app/src/main/res/values/ids.xml
     <string name="twitter_consumer_key">jf1QXxq65V5gM6sTlJjw5m7Ow</string>
     <string name="twitter_consumer_secret">mPI3b5Yk20woNnta9kwTnIRFVPoykYGgN98k1tpoVeuENXRUcu</string>

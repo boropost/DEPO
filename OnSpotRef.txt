@@ -34,7 +34,7 @@ keyhash: +/FJAETJ76lTOXIlN1408IxftdM=
 password: android, wont prompt pwd if not at ~/.android, pwd gen diff key, 
 
 https://apps.twitter.com/  richcluo@gmail.com
-eanble permissions:Request email addresses from users (must provide Privacy Policy URL n Terms of Service URL) and revoke access of the app at https://twitter.com/settings/applications of app user to receive email in FirebaseAuth.getInstance().getCurrentUser().getEmail(), otherwise - stored as email 
+eanble permissions:Request email addresses from users (must provide Privacy Policy URL n Terms of Service URL) and revoke access of the app at https://twitter.com/settings/applications of app user to receive email in FirebaseAuth.getInstance().getCurrentUser().getEmail(), Has access to your email address will be on approved list, otherwise - stored as email 
 app/src/main/res/values/ids.xml
     <string name="twitter_consumer_key">jf1QXxq65V5gM6sTlJjw5m7Ow</string>
     <string name="twitter_consumer_secret">mPI3b5Yk20woNnta9kwTnIRFVPoykYGgN98k1tpoVeuENXRUcu</string>
@@ -52,8 +52,7 @@ TwitterConfig config = new TwitterConfig.Builder(this)
         FacebookSdk.sdkInitialize(getApplicationContext());
         //init facebook or twitter before inflate login button constructor know how to connect api
         setContentView(R.layout.activity_sign_in);
-com.twitter.sdk.android.core.TwitterCore.getInstance().getSessionManager().getActiveSession().getAuthToken().token|secret;   
-
+com.twitter.sdk.android.core.TwitterCore.getInstance().getSessionManager().getActiveSession().getAuthToken().token|secret; 
 
 keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"
 //[Storing C:/Users/holly/.android/debug.keystore]

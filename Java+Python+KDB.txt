@@ -24,7 +24,8 @@ Arrays: 8 byte Object overhead + 4 bytes int field (length) + size of the array 
 String has 3 int fields (offset, count and hash) whereas char[] has the single int field length
 String "" = 8 byte Object overhead + 12 bytes 3 int fields + internal char[](8 byte Object overhead + 4 bytes int field + 2X0 bytes data + 2 bytes pad) = 38 bytes for an empty String + [2 bytes for each char] + pad to multiple of 8 = 40
 8 * (int) ((((num chars) * 2) + 45) / 8) 
-3|4|5 X 2 + 38 = 44|46|48 pad 4|2|0 to 48
+1 x 2 + 38 = 40 no pad
+2|3|4|5 X 2 + 38 = 42|44|46|48 pad 6|4|2|0 to 48
 6|7|8|9 X 2 + 38 = 50|52|54|56  pad 6|4|2|0 to 56
 String.indexOf('s') faster than ("s")
 two string literals (String s1|2 = "Hello";)  share the same storage inside the common pool. String objects (String s3|4 = new String("Hello");) are stored seperately in the heap without sharing

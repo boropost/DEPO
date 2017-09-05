@@ -22,7 +22,8 @@ primitive type boolean: 1 byte  byte: 1 byte (8 bit) char: 2 bytes (16 bit) refe
 Objects: 8 byte Object overhead +size of all primitives and references + pad to multiple of 8, wrapper class Character 16 (8 byte Object + 2 bytes char + 6 byte pad) nullable
 Arrays: 8 byte Object overhead + 4 bytes int field (length) + size of the array times the size of the primitive type
 String has 3 int fields (offset, count and hash) whereas char[] has the single int field length
-String "ABC" = 8 byte Object overhead + 12 bytes 3 int fields + internal char[](8 byte Object overhead + 4 bytes int field + 2X3 bytes data + 2 bytes pad) = 32 bytes for an empty String + 2 bytes for each char + pad to multiple of 8 = 40
+String "" = 8 byte Object overhead + 12 bytes 3 int fields + internal char[](8 byte Object overhead + 4 bytes int field + 2X0 bytes data + 2 bytes pad) = 38 bytes for an empty String + [2 bytes for each char] + pad to multiple of 8 = 40
+8 * (int) ((((num chars) * 2) + 45) / 8) 
 String.indexOf('s') faster than ("s")
 two string literals (String s1|2 = "Hello";)  share the same storage inside the common pool. String objects (String s3|4 = new String("Hello");) are stored seperately in the heap without sharing
 s1 == s2;//true s1.equals(s3);//true s3 == s4;//false

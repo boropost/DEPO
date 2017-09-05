@@ -564,3 +564,9 @@ down load OEM USB driver.exe from sumsong ny model from settings
 win7 >device mgr> sumsung Android ADB intf> Update Driver Software >Browse Google USB Driver in C:\Users\holly\AppData\Local\Android\sdk\extras\google\usb_driver\. after install google USB driver from SDL mgr
 
 emulator bottom ...>location :GPS point
+
+string mem = chars X 2 + 38 pad to 8s
+3|4|5 X 2 + 38 = 44|46|48 pad 4|2|0 to 48
+6|7|8|9 X 2 + 38 = 50|52|54|56  pad 6|4|2|0 to 56
+post.from|text|image|favCt|vetCt|reCt
+user.uname

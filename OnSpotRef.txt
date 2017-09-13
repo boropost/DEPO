@@ -421,6 +421,7 @@ query.on("child_added", function(snapshot) {//return each existing child at firs
   $("#result").append('<p>' + post.body + '</p>');
 });
 
+compile 'com.google.firebase:firebase-storage:11.0.2' not 11.2.0 as doc to sync with database 11.0.2, otherwise Found com.google.firebase:firebase-storage:11.2.0, but version 11.0.2 is needed for the google-services plugin 
 storage: files{bucket gs://database-1ab1b.appspot.com, +folder images} | rules{ request.auth 1= null }
 var config = {
   apiKey: "AIzaSyAMs6eu3EO0z_PJ-TwA8ctI7-KBXEVJgHg",
@@ -445,6 +446,10 @@ imgRef.getDownloadURL().then(function(url) {
       break;
   }
 });
+
+https://github.com/codepath/android_guides/wiki/Displaying-Images-with-the-Glide-Library
+http://bumptech.github.io/glide/doc/migrating.html
+http://bumptech.github.io/glide/javadocs/400/com/bumptech/glide/request/RequestOptions.html
 
 cloud functions
 ref("posts/{Id}")  wildcards matches  /posts/1 or /posts/2, invocation ret event.params.1|2

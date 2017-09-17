@@ -575,3 +575,5 @@ string mem = chars X 2 + 38 pad to 8s
 6|7|8|9 X 2 + 38 = 50|52|54|56  pad 6|4|2|0 to 56
 post.from|text|image|favCt|vetCt|reCt
 user.uname
+
+https://guides.codepath.com/android/Defining-The-ActionBar

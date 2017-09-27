@@ -580,3 +580,12 @@ post.from|text|image|favCt|vetCt|reCt
 user.uname
 
 https://guides.codepath.com/android/Defining-The-ActionBar
+
+<activity android:name=".MyActivity"
+              android:label="My Activity">
+        <intent-filter>
+            <action android:name="net.learn2develop.MYACTIVITY" />
+            <category android:name="android.intent.category.DEFAULT" />
+	    
+https://developer.android.com/guide/topics/providers/document-provider.html#client	
+http://www.appstoremarketresearch.com/articles/android-tutorial-startActivityForResult/

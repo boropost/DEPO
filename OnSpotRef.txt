@@ -589,3 +589,4 @@ https://guides.codepath.com/android/Defining-The-ActionBar
 	    
 https://developer.android.com/guide/topics/providers/document-provider.html#client	
 http://www.appstoremarketresearch.com/articles/android-tutorial-startActivityForResult/
+https://github.com/coomar2841/android-multipicker-library

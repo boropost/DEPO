@@ -1,11 +1,3 @@
-quickstart-android/auth/README.md
-spotcast-45e35.firebaseapp.com //domain
-
-add anfroid Enter the codelab's package name: com.google.firebase.codelab.friendlychat.
-
-https://firebase.google.com/docs/auth/android/manage-users
-firebase user profile photourl phone area store diff from database
-
 https://developers.facebook.com/docs/facebook-login/android/  richcluo@gmail.com  if advance: One account per email address: same eamil can not be used for other auth acct, otherwise email/name left empty for the user in database  
 facebook login> get start SDK choose platform > android >[download Facebook SDK] > project structure | new project  : Select API 15/Android 4.0.3
 proj build.gradle : repositories {    mavenCentral() //search mavenLocal() on machine  %USER_HOME% or %M2_HOME%\conf\settings.xml then mavenCentral() http://repo1.maven.org/maven2/
@@ -112,88 +104,12 @@ context.getSystemService(LAYOUT_INFLATER_SERVICE) getApplicationContext().getSha
 Accessing Components Implicitly: Regarding content providers, broadcasts, intent
 getApplicationContext().getContentResolver().query(uri, ...);
 
-quickstart-android/auth/app/src/minSdkJellybean/
-FacebookLoginActivity.java : onCreate{setContentView(R.layout.activity_facebook); //bind with activity_facebook.xml
-findViewById(R.id.button_facebook_login) //android:id="@+id/button_facebook_login"
-
-mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {task.getResult().getUser()
-https://developers.google.com/android/reference/com/google/android/gms/tasks/Continuation
-
-quickstart-android/database/app/src/main/res/menu/menu_main.xml
-<menu  tools:context=".MainActivity">//diff menu per act
-    <item
-        android:id="@+id/action_logout"
-quickstart-android/database/app/src/main/java/com/google/firebase/quickstart/database/MainActivity.java   
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_logout) {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, SignInActivity.class));
-activity_main.xml            
-   <android.support.design.widget.TabLayout        android:id="@+id/tabs"
-   <android.support.v4.view.ViewPager        android:id="@+id/container"        android:layout_below="@id/tabs" />
-//TabLayout {ViewPager{FragmentPagerAdapter{Fragment[]{RecentPostsFragment,MyPostsFragment,MyTopPostsFragment}}
-        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            private final Fragment[] mFragments = new Fragment[] {
-                    new RecentPostsFragment(),
-                    new MyPostsFragment(),
-                    new MyTopPostsFragment(),
-            };
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mPagerAdapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager)
-        findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {//FloatingActionButton for new post
-                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
-        
-https://firebase.google.com/docs/database/admin/retrieve-data            
-database/NewPostActivity.java .writeNewPost            
-        String key = mDatabase.child("posts").push().getKey(); //get next uid
-        Post post = new Post(userId, username, title, body);
-        Map<String, Object> postValues = post.toMap(); //post key-value pairs as map 
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/posts/" + key, postValues);
-        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
-
-        mDatabase.updateChildren(childUpdates); //update 2 
-
-database/PostDetailActivity.java
-    protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_post_detail);//res/layout/activity_post_detail.xml
-public void onStart() {
-        ValueEventListener postListener = new ValueEventListener() {
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Post post = dataSnapshot.getValue(Post.class); //latest, populate post object from JASON
-mPostReference.addValueEventListener(postListener);
-
-    private void postComment() {
-        FirebaseDatabase.getInstance().getReference().child("users").child(uid)
-                .addListenerForSingleValueEvent(new ValueEventListener() {//stops listening after exec onDataChange, auto remove 
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
                         
 https://developer.android.com/guide/topics/ui/layout/relative.html
 <include
         android:id="@+id/post_text_layout"
         layout="@layout/include_post_text" //reusable layout/include_post_text.xml
         android:layout_below="@+id/post_author_layout"  //related pos to another android:id 
-        
-https://developer.android.com/guide/topics/ui/layout/recyclerview.html
-        mAdapter = new CommentAdapter(this, mCommentsReference);
-        mCommentsRecycler.setAdapter(mAdapter);
-public CommentAdapter(final Context context, DatabaseReference ref) {
-            ChildEventListener childEventListener = new ChildEventListener() {
-                public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) { //onChildChanged ...
-                Comment comment = dataSnapshot.getValue(Comment.class);
-         ref.addChildEventListener(childEventListener);       
-<android.support.v7.widget.RecyclerView
-tools:listitem="@layout/item_comment" />
 
 fragment has its own layout and lifecycle closely related to the lifecycle of its host activity. add or remove fragments in an activity while the activity is running. fragment can implement a behavior has no user interface (return null from onCreateView)
 Activity's onAttachFragment() ->  
@@ -208,9 +124,7 @@ Fragment's onActivityCreated() to final initialisations (for example, modifying 
     tools:listitem="@layout/item_post" />
 //fragment_all_posts.xml {RecyclerView android:id="@+id/messages_list"{ tools:listitem="@layout/item_post" 
 //PostViewHolder extends RecyclerView.ViewHolder is item data model with itemtemplate item_post.xml { include_post_author.xml bind to each post
-//The populateViewHoldermethod works almost the same as onChildAdded/onChildChanged where it returns each child under a referenced node postsQuery (TODO: extend FirebaseRecyclerAdapter to multiple query[i].addChildEventListener(mListener);).The FirebaseRecyclerAdapter will call our populateViewHolder method for each Post it finds in the database.
-//https://github.com/firebase/FirebaseUI-Android/tree/master/database  ??FirebaseIndexRecyclerAdapter
-//https://firebaseui.com/docs/android/index.html?com/firebase/ui/FirebaseRecyclerViewAdapter.html update query instead of recreate adapter?? query is immutable can not be updated
+//The populateViewHoldermethod works almost the same as onChildAdded/onChildChanged where it returns each child under a referenced node postsQuery (REF: extend FirebaseRecyclerAdapter to multiple query[i].addChildEventListener(mListener);).The FirebaseRecyclerAdapter will call our populateViewHolder method for each Post it finds in the database.
 
 https://www.learnhowtoprogram.com/android/gestures-animations-flexible-uis/updating-data-after-gesture-interactions
 FirebaseRestaurantListAdapter {
@@ -230,80 +144,8 @@ public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
 query.child("0/1300106/81/57").orderByKey().startAt("100").limitToLast(2); //only return immediate child post after max subtree key 99, newer the later, only for query not reference 
 
-public class RecipeAdapter extends FirebaseRecyclerAdapter<RecipeObject, RecipeHolder>{
-    private Context context;
-    public RecipeAdapter(Class<RecipeObject> modelClass, int modelLayout, Class<RecipeHolder> viewHolderClass, DatabaseReference ref, Context context) {
-        super(modelClass, modelLayout, viewHolderClass, ref);
-        this.context = context;
-    }
-    @Override
-    protected void populateViewHolder(RecipeHolder viewHolder, RecipeObject model, int position) {
-        viewHolder.recipeName.setText(model.getRecipename());
-        Glide.with(context).load(model.getRecipeImageUrl()).into(viewHolder.recipeImage);
-    }
-}
-mRecipeAdapter = new RecipeAdapter(RecipeObject.class, R.layout.recipe_category_list, RecipeHolder.class, childRef, getContext());
-//mRecyclerView.setAdapter(mFirebaseRecyclerAdapter); mFirebaseRecyclerAdapter.notifyDataSetChanged(); //refresh RecyclerView
-//https://litotom.com/2016/08/29/firephoto-recyclerview-storage/
 //https://www.codementor.io/tips/1237823034/how-to-filter-a-recyclerview-with-a-searchview
-
-fragment/PostListFragment.java vs https://github.com/prathmeshranaut/skooterapp/blob/master/app/src/main/java/com/skooterapp/PostAdapter.java
-public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);//res/layout/fragment_all_posts.xml
-        mRecycler = (RecyclerView) rootView.findViewById(R.id.messages_list);
-public void onActivityCreated((Bundle savedInstanceState) {
-        mManager = new LinearLayoutManager(getActivity());//(this, LinearLayoutManager.VERTICAL|HORIZONTAL, false); (reverseLayout)             mManager.setReverseLayout|.setStackFromEnd(true);//displayed new from the bottom
-        mRecycler.setLayoutManager(mManager);//LayoutManager for laying out each item in the view specifiying orientation/order
-        
-        Query postsQuery = getQuery(mDatabase);//databaseReference.child("posts").limitToFirst(100);
-        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
-        PostViewHolder.class, postsQuery) {
-
-            protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
-                final DatabaseReference postRef = getRef(position); //get Ref on index of returned post
-                final String postKey = postRef.getKey();
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {//click post item to display detail
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), PostDetailActivity.class);//intent move from one activity to another 
-                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey); //getIntent().getExtras().getString("AnyKeyName");
-                        startActivity(intent);
-                //set each field in PostViewHolder to field in returned post (model) viewHolder.titleView.setText(post.title);
-                viewHolder.bindToPost(model, new View.OnClickListener() {//click star button
-                    public void onClick(View starView) {
-                        DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
-                        DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
-                        onStarClicked(globalPostRef);
-                        onStarClicked(userPostRef);
-                    }
-                }); 
-        mRecycler.setAdapter(mAdapter);      
-        private void onStarClicked(DatabaseReference postRef) {
-        postRef.runTransaction(new Transaction.Handler() {
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Post p = mutableData.getValue(Post.class);
-                if (p.stars.containsKey(getUid())) {//FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    p.starCount = p.starCount - 1;
-                    p.stars.remove(getUid());
-                } else {
-                    p.starCount = p.starCount + 1;
-                    p.stars.put(getUid(), true);
-                }
-                mutableData.setValue(p);
-                return Transaction.success(mutableData);
-            }
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
-            }
-        });
-@Override
-protected void onDestroy() {
-    super.onDestroy();
-    mAdapter.cleanup();
-}
 skooterapp/common/view/SlidingTabLayout.java //constant feedback as to * the user's scroll progress.
-skooterapp/AppController.java{ com.android.volley.RequestQueue; //asynchronous RESTful HTTP requests, no need if use firebase 
-
 
 Firebase end node must name:val, mid node name(key) must be unique, must have at least 1 leaf (value) node to save all super (name) nodes, click parent node to its detail page to del/modify child (type in value not name and return) wont impact upper nodes, export/import override all children under parent/root (exclude parent) to db-root-export file
 Firebase ref = new Firebase("https://dinosaur-facts.firebaseio.com/dinosaurs");
@@ -317,25 +159,6 @@ postsQuery.addChildEventListener(new ChildEventListener() {
 });
 msgRef.orderByChild("date").endAt(3)
 http://cliffordhall.com/2017/04/using-firebase-cloud-functions-manage-compound-key-index/
-
-Firebase ref = new Firebase("https://<YOUR-FIREBASE-APP>.firebaseio.com");
-Firebase newPostRef = ref.child("posts").push();
-String newPostKey = newPostRef.getKey();
-Map newPost = new HashMap();
-newPost.put("title", "New Post");
-newPost.put("content", "Here is my new post!");
-Map updatedUserData = new HashMap();
-updatedUserData.put("users/posts/" + newPostKey, true);
-updatedUserData.put("posts/" + newPostKey, newPost);
-// Do a deep-path update
-ref.updateChildren(updatedUserData, new Firebase.CompletionListener() {
-   @Override
-   public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-       if (firebaseError != null) {
-           System.out.println("Error updating data: " + firebaseError.getMessage());
-       }
-   }
-});
 
 DatabaseReference extends Query extends Object
 Query.equalTo, orderByChild(String path)|Key|value() also in dbRef js, limitToFirst|last  start|endAt getRef() need order, keepSynced(auto download),  add|removeChild|ValueEventListener|addListenerForSingleValueEvent 
@@ -451,10 +274,6 @@ https://github.com/codepath/android_guides/wiki/Displaying-Images-with-the-Glide
 http://bumptech.github.io/glide/doc/migrating.html
 http://bumptech.github.io/glide/javadocs/400/com/bumptech/glide/request/RequestOptions.html
 
-cloud functions
-ref("posts/{Id}")  wildcards matches  /posts/1 or /posts/2, invocation ret event.params.1|2
-Path match all events (onwrite|create|update|delete) that happen anywhere below it.
-
 https://developer.android.com/training/location/retrieve-current.html
 https://developer.android.com/guide/topics/location/strategies.html //android.location.LocationManager 
 https://developer.android.com/training/location/retrieve-current.html //FusedLocationProviderClient depend on Google Play Services SDK  AV SDK Manager: click SDK Tools, expand Support Repo, select Google Repository    dependencies { compile 'com.google.android.gms:play-services:11.0.2'    }//device that runs Android 4.0 or higher and includes Google Play Store.
@@ -466,23 +285,6 @@ or ACCESS_FINE_LOCATION NETWORK_PROVIDER and GPS_PROVIDER
 <manifest ... >
     <uses-permission android:name="android.permission.ACCESS_COARSE|FINE_LOCATION" />    
     <uses-feature android:name="android.hardware.location.network|gps" /><!-- app targets Android 5.0 (API level 21) or higher. -->
-LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-String locationProvider = LocationManager.NETWORK_PROVIDER;//LocationManager.GPS_PROVIDER
-Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-LocationListener locationListener = new LocationListener() {
-    public void onLocationChanged(Location location) {
-      // Called when a new location is found by the network location provider.
-      makeUseOfNewLocation(location);
-    }
-
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-    public void onProviderEnabled(String provider) {}
-
-    public void onProviderDisabled(String provider) {}
-  };
-locationManager.requestLocationUpdates(locationListener, 0, 0, locationListener);  
-locationManager.removeUpdates(locationListener);
 
 Latitudes [-90,90]. Longitudes [-180,180]  http://andrew.hedges.name/experiments/haversine/
 110km|70ml/1 (max scope:50km|30ml) avg metro size 15-25ml
@@ -491,30 +293,15 @@ Latitudes [-90,90]. Longitudes [-180,180]  http://andrew.hedges.name/experiments
 0.1km(100m)|0.05ml(300ft) /0.001 (near)
 0.01km(10m)|0.005ml(30ft) /0.0001 (close)
 0.001km(1m)|0.001ml(4ft) /0.00001
-(38.898556 -77.037852)
-(38.897147 -77.043934)
-latitudes> -77> 38> 8> 9> 8> 5> "nNosBR5IaoXNnSsubByOnM1BIgM2":2
-                          7> 1> "14ytGxFYAOdnUP8wrzdwOz03mGw1":0  
-                              > "OmYPbTLDq1TOt4GZnUHbKS2G5S92":1
-//if key<=1 val() render it as array [null,{ "14ytGxFYAO... instead of  {1:{ "14ytGxFYAO...                               
-longitudes> 38> -77> 0> 3> 7> 8> "OmYPbTLDq1TOt4GZnUHbKS2G5S92":1
-                        4> 3> 8> "14ytGxFYAOdnUP8wrzdwOz03mGw1":0
-                              9> "nNosBR5IaoXNnSsubByOnM1BIgM2":2
  [-90,90] +90 to [0,180], [-180,180]  +180 to [0,360], 
- 38 to 128, -77 to 103 after before calc distance only for storing
- 12210 = 12,210 or 122,10 so 12 0 210, 10,10=10 0 010  {(lat+90)10000+(lgt+180)}
- (38.898556 -77.037852) 1280103/80/93/87/58
- (38.897147 -77.043934) 1280103/80/94/73/19
+ (38.898556 -77.037852)  11/20/83/80/93/87/58
 mDatabase.child("latitudes").child(-77).child(38).child(8).child(9).child(8).child(5).setValue(user); 
-latitudes/-77/38/8/9/7
-longitudes/38/-77/0/4/3
 
-user-cast for mycast to listen, order by date for clean up (path to copy on loactions) on regular basis by cloud function
-locations/path/type(101/2/3/4) for pub on sender loc and sub to listen on the node and below, uid for recast to update user-cast copy 
-                    
-firebase/AndroidChat //old
+user-post for mycast to listen, order by date for clean up (path to copy on loactions) on regular basis by cloud function by wildcards matches
+ref("user-post/{uId}/<postid>")   /posts/1/xxx or /posts/2/xxx, invocation ret event.params.1|2
+Path match all events (onwrite|create|update|delete) that happen anywhere below it.  
+
 open-source-android-apps
-http://www.parallelcodes.com/android-using-stored-procedure-ms-sql-server/
 
 enable Virtual T in BIOS, run app first time to start emulator to be connected device, run again to launch app on it.
 5:debugger> drag variables to right to view frames/threads as call stack
@@ -589,4 +376,4 @@ https://guides.codepath.com/android/Defining-The-ActionBar
 	    
 https://developer.android.com/guide/topics/providers/document-provider.html#client	
 http://www.appstoremarketresearch.com/articles/android-tutorial-startActivityForResult/
-https://github.com/coomar2841/android-multipicker-library
+https://github.com/coomar2841/android-multipicker-library :MediaPicker extends PickerManager

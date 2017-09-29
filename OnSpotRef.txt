@@ -367,6 +367,15 @@ post.from|text|image|favCt|vetCt|reCt
 user.uname
 
 https://guides.codepath.com/android/Defining-The-ActionBar
+https://developer.android.com/training/appbar/index.html
+https://stackoverflow.com/questions/35648913/how-to-set-menu-to-toolbar-in-android
+if all you need is a static bar at the top that can host icons and a back button, then you can safely continue to use ActionBar.
+https://www.androidhive.info/2013/11/android-working-with-action-bar/
+always (on bar)| ifRoom | never (only in popping up menu) |withText  (after either always or ifRoom button = both icon and title)
+https://stackoverflow.com/questions/26300480/how-to-change-option-menu-icon-in-the-action-bar
+https://stackoverflow.com/questions/18374183/how-to-show-icons-in-overflow-menu-in-actionbar
+
+https://stackoverflow.com/questions/31231609/creating-a-button-in-android-toolbar
 
 <activity android:name=".MyActivity"
               android:label="My Activity">

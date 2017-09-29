@@ -374,7 +374,16 @@ https://www.androidhive.info/2013/11/android-working-with-action-bar/
 always (on bar)| ifRoom | never (only in popping up menu) |withText  (after either always or ifRoom button = both icon and title)
 https://stackoverflow.com/questions/26300480/how-to-change-option-menu-icon-in-the-action-bar
 https://stackoverflow.com/questions/18374183/how-to-show-icons-in-overflow-menu-in-actionbar
-
+build.gradle (Module:app) file
+dependencies {
+  ...
+  compile 'com.android.support:appcompat-v7:25.2.0'
+}
+disable the theme-provided ActionBar within the res/styles.xml file
+<resources>
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+  </style>
+<resources>
 https://stackoverflow.com/questions/31231609/creating-a-button-in-android-toolbar
 
 <activity android:name=".MyActivity"

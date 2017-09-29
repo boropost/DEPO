@@ -389,6 +389,10 @@ Telegram/tree/drawable-xhdpi/profile_list.png
 ndroid-money-manager-ex/drawable/help,cancel
 financius/values-de|ru/
 
+https://stackoverflow.com/questions/1964789/move-layouts-up-when-soft-keyboard-is-shown
+onCreate() 
+getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
 <activity android:name=".MyActivity"
               android:label="My Activity">
         <intent-filter>

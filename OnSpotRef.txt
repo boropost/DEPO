@@ -385,6 +385,9 @@ disable the theme-provided ActionBar within the res/styles.xml file
   </style>
 <resources>
 https://stackoverflow.com/questions/31231609/creating-a-button-in-android-toolbar
+Telegram/tree/drawable-xhdpi/profile_list.png
+ndroid-money-manager-ex/drawable/help,cancel
+financius/values-de|ru/
 
 <activity android:name=".MyActivity"
               android:label="My Activity">

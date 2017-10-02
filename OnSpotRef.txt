@@ -346,7 +346,7 @@ res/values/A theme is styles applied to an entire Activity or app, rather than a
     <style name="CodeFont" parent="@android:style/TextAppearance.Medium">//<style name="CodeFont.Red.Big"> inheritance Big:Red:CodeFont
         <item name="android:textColor">#00FF00</item>
 Build > Select Build Variant from the menu bar (or btn tool window bar to select minSdkJellyBeanDebug vs minSdkIncs
-      >rebuild (if unused import) = clean (if cant resolve R, INSTALL_FAILED_INVALID_APK) + make proj
+      >rebuild (if unused import) = clean (if cant resolve R, INSTALL_FAILED_INVALID_APK, changed manifest) + make proj
       >sel variant : debug|release
 Analyze > dependency | stacktrace  | Inspect Code (Lint find issues such as deprecated elements, or API calls that aren't supported by your target API.)    
 run app second time to see app on phone
@@ -366,39 +366,20 @@ string mem = chars X 2 + 38 pad to 8s
 post.from|text|image|favCt|vetCt|reCt
 user.uname
 
-https://guides.codepath.com/android/Defining-The-ActionBar
-https://developer.android.com/training/appbar/index.html
-https://stackoverflow.com/questions/35648913/how-to-set-menu-to-toolbar-in-android
 if all you need is a static bar at the top that can host icons and a back button, then you can safely continue to use ActionBar.
-https://www.androidhive.info/2013/11/android-working-with-action-bar/
 always (on bar)| ifRoom | never (only in popping up menu) |withText  (after either always or ifRoom button = both icon and title)
-https://stackoverflow.com/questions/26300480/how-to-change-option-menu-icon-in-the-action-bar
 https://stackoverflow.com/questions/18374183/how-to-show-icons-in-overflow-menu-in-actionbar
-build.gradle (Module:app) file
-dependencies {
-  ...
-  compile 'com.android.support:appcompat-v7:25.2.0'
-}
+
+https://stackoverflow.com/questions/31231609/creating-a-button-in-android-toolbar
 disable the theme-provided ActionBar within the res/styles.xml file
 <resources>
   <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
   </style>
 <resources>
-https://stackoverflow.com/questions/31231609/creating-a-button-in-android-toolbar
+
 Telegram/tree/drawable-xhdpi/profile_list.png
 ndroid-money-manager-ex/drawable/help,cancel
 financius/values-de|ru/
 
-https://stackoverflow.com/questions/1964789/move-layouts-up-when-soft-keyboard-is-shown
-onCreate() 
-getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
-<activity android:name=".MyActivity"
-              android:label="My Activity">
-        <intent-filter>
-            <action android:name="net.learn2develop.MYACTIVITY" />
-            <category android:name="android.intent.category.DEFAULT" />
 	    
-https://developer.android.com/guide/topics/providers/document-provider.html#client	
-http://www.appstoremarketresearch.com/articles/android-tutorial-startActivityForResult/
 https://github.com/coomar2841/android-multipicker-library :MediaPicker extends PickerManager

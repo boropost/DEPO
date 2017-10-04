@@ -378,7 +378,7 @@ disable the theme-provided ActionBar within the res/styles.xml file
 <resources>
 
 Telegram/tree/drawable-xhdpi/profile_list.png
-ndroid-money-manager-ex/drawable/help,cancel
+ndroid-money-manager-ex/drawable/help,cancel, SwitchPreferenceCompat
 financius/values-de|ru/
 
 	    

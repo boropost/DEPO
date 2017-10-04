@@ -370,12 +370,15 @@ if all you need is a static bar at the top that can host icons and a back button
 always (on bar)| ifRoom | never (only in popping up menu) |withText  (after either always or ifRoom button = both icon and title)
 https://stackoverflow.com/questions/18374183/how-to-show-icons-in-overflow-menu-in-actionbar
 
-https://stackoverflow.com/questions/31231609/creating-a-button-in-android-toolbar
+https://stackoverflow.com/questions/31231609/creating-a-button-in-android-toolbar //need upload pic to storage first
 disable the theme-provided ActionBar within the res/styles.xml file
 <resources>
   <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
   </style>
 <resources>
+
+https://stackoverflow.com/questions/39704291/how-can-i-add-name-profile-pic-address-of-a-user-to-firebase-database
+https://github.com/chintansoni202/Firebase-Authentication-Basic activity_profile.xml profileactivity.java ReAuthenticateDialog
 
 Telegram/tree/drawable-xhdpi/profile_list.png PreferenceScreen
 minicat:options.xml android.preference.Preference

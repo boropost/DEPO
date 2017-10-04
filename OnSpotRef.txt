@@ -377,9 +377,12 @@ disable the theme-provided ActionBar within the res/styles.xml file
   </style>
 <resources>
 
-Telegram/tree/drawable-xhdpi/profile_list.png
+Telegram/tree/drawable-xhdpi/profile_list.png PreferenceScreen
+minicat:options.xml android.preference.Preference
+https://alvinalexander.com/android/android-tutorial-preferencescreen-preferenceactivity-preferencefragment
 ndroid-money-manager-ex/drawable/help,cancel, SwitchPreferenceCompat
 financius/values-de|ru/
+
 
 	    
 https://github.com/coomar2841/android-multipicker-library :MediaPicker extends PickerManager

@@ -383,8 +383,12 @@ https://github.com/chintansoni202/Firebase-Authentication-Basic activity_profile
 Telegram/tree/drawable-xhdpi/profile_list.png PreferenceScreen
 minicat:options.xml android.preference.Preference
 https://alvinalexander.com/android/android-tutorial-preferencescreen-preferenceactivity-preferencefragment
-ndroid-money-manager-ex/drawable/help,cancel, SwitchPreferenceCompat
+https://developer.android.com/guide/topics/ui/settings.html
+http://www.cnblogs.com/tianzhijiexian/p/3893504.html
+ndroid-money-manager-ex/drawable/help,cancel,strings.xml(lang) android.support.v7|14.preference.SwitchPreferenceCompat
 financius/values-de|ru/
+
+With preference-v7 library you can replace PreferenceFragment (API 11+) with PreferenceFragmentCompat subclass, and SwitchPreference (API 14+) with SwitchPreferenceCompat
 
 
 	    

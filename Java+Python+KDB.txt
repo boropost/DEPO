@@ -968,7 +968,7 @@ Atomic for Multiple related instruction (i++ : write based on read, primitive in
 java.util.concurrent.atomic.AtomicBoolean|Integer|Long|Reference[Array]<T> single read|write .get|set([index,]|new); atomic read+write implicit CAS: old=.getAndSet(new); new=AtomicInteger.add|in|decrementAndGet(); are all based on explicit CAS: true=compareAndSet([index,] T1, T2) if existing T [at index] == T1, set T = T2 by looping pattern
 [final] AtomicInteger|AtomicReferece<Integer> (private volatile int|V value; be atomically CAS) wraps a volatile int (mutable)|reference to an object (only make sense if immutable) so in/decrementAndGet()|only get/compareAndSet all use compareAndSet value(equals)|reference(addresses) equality, similar on smaller number with same cached instance  but different on uncached big number  
 public class CASRange {
-    private static class IntPair {
+    private static class IntPair {//only nested class can be static 
         final int lower;  
         final int upper;
     }

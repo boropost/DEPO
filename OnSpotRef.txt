@@ -390,6 +390,6 @@ With preference-v7 library you can replace PreferenceFragment (API 11+) with Pre
 https://storiesandroid.wordpress.com/2015/10/06/android-settings-using-preference-fragments/
 https://stackoverflow.com/questions/32070186/how-to-use-the-v7-v14-preference-support-library
 
-
+ FacebookSdk. ... sdkInitialize() is deprecated from SDK V4.19 onwards, auto init by manifest <meta-data android:name="com.facebook.sdk.ApplicationId", but still rarely null, fix: try{AccessToken.getCurrentAccessToken()} catch(com.facebook.FacebookSdkNotInitializedException){//do nothing} 
 	    
 https://github.com/coomar2841/android-multipicker-library :MediaPicker extends PickerManager

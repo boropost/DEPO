@@ -46,10 +46,14 @@ TwitterConfig config = new TwitterConfig.Builder(this)
         setContentView(R.layout.activity_sign_in);
 com.twitter.sdk.android.core.TwitterCore.getInstance().getSessionManager().getActiveSession().getAuthToken().token|secret; 
 
+GIT BASH
 keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"
 //[Storing C:/Users/holly/.android/debug.keystore]
 keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -list -v -storepass android 
 //Valid from: Sat Jul 08 12:04:40 EDT 2017 until: Fri Oct 06 12:04:40 EDT 2017 SHA1: FB:F1:49:00:44:C9:EF:A9:53:39:72:25:37:5E:34:F0:8C:5F:B5:D3 
+keytool -exportcert -alias androiddebugkey -file bostdebugkey.cer -keystore ~/.android/debug.keystore //to file
+keytool -import -alias androiddebugkey -file bostdebugkey.cer -keystore ~/.android/debug.keystore //another computer
+Enter keystore password:<enter> without input
 proj settings > add finger print,  per development machines. shared by many proj debug,
 Before you publish your app, the release SHA-1 key needs to be uploaded in Project Settings. Each of the apps that users download from the Play Store is signed with the same release key
               > currency / timezone

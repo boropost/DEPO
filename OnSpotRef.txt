@@ -328,6 +328,7 @@ app>SDK|Build Tools Version,sign,Flavor default|minSDKJellyBean:min/targetSDK Ve
      Settings > Build, Execution, Deployment > disable "Instant Run" if  “Unable to get provider com.google.firebase.provider.FirebaseInitProvider” Error 
               > Plugins (built-in Image Asset Studio, Theme and Layout Editor ) >Browse repositories  ADB(android cmd), Codota
 Right-click the res folder and select New > Image Asset (res/mipmap launcher icon, res/drawable/x|m|hdpi/(copy same img each has diff size, auto group on AS) other types of icons, can access image from the main thread only.refer to image as @drawable in XML or Drawable in Java)
+Right-click the strings.xml file, and select Open Translations Editor. click global icon to add locale, auto gen a value-zh/string.xml  
 new value res file: ints|bools|arrays.xml (file name doesnot matter) <res> <integer|bool|array name="location_size">4</integer>  ref by attr name "@integer|bool|array/location_size" or R.integer|bool|array.location_size 
 <ImageView    android:src="@drawable/myimage" />
 Resources res = getResources();// Context.getResources class applies to UI objects, such as activities, fragments, layouts, views,

@@ -396,5 +396,10 @@ https://storiesandroid.wordpress.com/2015/10/06/android-settings-using-preferenc
 https://stackoverflow.com/questions/32070186/how-to-use-the-v7-v14-preference-support-library
 
  FacebookSdk. ... sdkInitialize() is deprecated from SDK V4.19 onwards, auto init by manifest <meta-data android:name="com.facebook.sdk.ApplicationId", but still rarely null, fix: try{AccessToken.getCurrentAccessToken()} catch(com.facebook.FacebookSdkNotInitializedException){//do nothing} 
+ 
+ onBindViewHolder(ViewHolder holder, final int position){ 
+ holder.itemView.setVisibility(View.GONE); //hide item
+ holder.mTextView.setBackgroundColor(getLighterColor(color));
+ model.remove(holder.getAdapterPosition());
 	    
 https://github.com/coomar2841/android-multipicker-library :MediaPicker extends PickerManager

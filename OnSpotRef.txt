@@ -399,6 +399,7 @@ https://stackoverflow.com/questions/32070186/how-to-use-the-v7-v14-preference-su
  
  onBindViewHolder(ViewHolder holder, final int position){ 
  holder.itemView.setVisibility(View.GONE); //hide item
+ viewHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0)); //no space
  holder.mTextView.setBackgroundColor(getLighterColor(color));
  model.remove(holder.getAdapterPosition());
 	    

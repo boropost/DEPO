@@ -2099,7 +2099,7 @@ vim|less [+10] f.txt //> edit mode [start at line 10]
 [i|o] //edit mode > insert mode at cur|new line
 [esc] insert mode > edit mode: u (Undo), dd (Delete line), x|r [new char]|Y|p(Delete|replace|copy line|paster char at cursor), .(repeat last command)  i (>insert mode)
 [:] edit mode > file mode w|q|! (save|quit|force) /|? (forward|backward search (case senstive), shift-N|n to prev|next  set num(show linenumber) 10(goto line 10)  i (>insert mode)
-move cursor: shift-G|g (to file end|begin), H|L(top|bottom of window), CTRL+F|B (for|backward one window), '(to previously modified line).
+move cursor: shift-G|g or GG|gg(to file end|begin), H|L(top|bottom of window), CTRL+F|B (for|backward one window), '(to previously modified line).
  
 which <filename> //returns the matching path/file which would be executed in the current context
 whereis python //list dirs of python src doc bin

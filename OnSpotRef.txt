@@ -402,5 +402,7 @@ https://stackoverflow.com/questions/32070186/how-to-use-the-v7-v14-preference-su
  viewHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0)); //no space
  holder.mTextView.setBackgroundColor(getLighterColor(color));
  model.remove(holder.getAdapterPosition());
+ 
+ C:\DEPO\APP\boropost\app\build can  be deleted if java.io.IOException: Could not delete folder
 	    
 https://github.com/coomar2841/android-multipicker-library :MediaPicker extends PickerManager

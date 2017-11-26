@@ -1,3 +1,8 @@
+https://firebase.google.com/docs/use-cases/payments 
+https://github.com/firebase/functions-samples/  stripe/ //by Cloud Functions 
+https://medium.com/google-cloud/cashless-ecommerce-real-time-shopping-with-google-firebase-and-stripe-payment-51e7dbbe993e
+https://inducesmile.com/android/android-mobile-ecommerce-online-shopping-app-students-project-idea/ downloaded app-debug.apk, open by https://www.apkdecompilers.com/ or android studio > build > APK analyzer  
+https://dashboard.stripe.com Hanger99!
 https://developers.facebook.com/docs/facebook-login/android/  richcluo@gmail.com  if advance: One account per email address: same eamil can not be used for other auth acct, otherwise email/name left empty for the user in database  
 facebook login> get start SDK choose platform > android >[download Facebook SDK] > project structure | new project  : Select API 15/Android 4.0.3
 proj build.gradle : repositories {    mavenCentral() //search mavenLocal() on machine  %USER_HOME% or %M2_HOME%\conf\settings.xml then mavenCentral() http://repo1.maven.org/maven2/

@@ -2,9 +2,12 @@ https://firebase.google.com/docs/use-cases/payments
 https://github.com/firebase/functions-samples/  stripe/ //by Cloud Functions 
 https://medium.com/google-cloud/cashless-ecommerce-real-time-shopping-with-google-firebase-and-stripe-payment-51e7dbbe993e
 https://inducesmile.com/android/android-mobile-ecommerce-online-shopping-app-students-project-idea/ downloaded app-debug.apk, open by https://www.apkdecompilers.com/ or android studio > build > APK analyzer 
+https://www.programcreek.com/java-api-examples/index.php?api=com.stripe.model.Charge
+
 https://stripe.com/docs/mobile/android
 https://stripe.com/docs/api
-compile 'com.stripe:stripe-android:3.1.0' //with compileSdkVersion 25, 5.1.0 with 26
+compile 'com.stripe:stripe-android:3|4.1.0' //with compileSdkVersion 25, 5.1.0 with 26
+compile 'com.stripe:stripe-java:4.1.0' //import com.stripe.model.Charge
 https://dashboard.stripe.com Hanger99!
 
 https://developers.facebook.com/docs/facebook-login/android/  richcluo@gmail.com  if advance: One account per email address: same eamil can not be used for other auth acct, otherwise email/name left empty for the user in database  

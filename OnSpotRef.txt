@@ -433,7 +433,11 @@ click proj (switch sub proj up down btn) > general {bundle (package) ID =com.bor
 click top bar proj > device > iphone
 Codesign wants to access key "access" in your keychain > MAC pwd > always allows
 
+debug view at breakpoint> rightclick var > add exp = var.description | watch var | edit value | view value as type
+
 build >Codesign wants to access key "access" in your keychain > mac pwd >always allow
 
 support files >main.storyboard (all ui)
               /images.xcassets/(all imgs) +
+	      
+	      

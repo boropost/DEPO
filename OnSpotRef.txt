@@ -421,3 +421,19 @@ https://stackoverflow.com/questions/32070186/how-to-use-the-v7-v14-preference-su
 https://github.com/coomar2841/android-multipicker-library :MediaPicker extends PickerManager
 
 http://touchfreeze.net/ 
+
+
+IOS
+Finder > applications > utilities > console : cd Desktop/RichBost/Depo/Firebase/
+install cocoapods.org by sudo gem install cocoapods (dep mgmt) > pod init (if no create Podfile > add pod 'Firebase/Core' > pod install (all deps spec in Podfile) > XCODE open other project > .xcworkspace > pods with proj
+Firebase > proj > add app  > ios > drag download .plist to XCODE proj root > do 
+
+proj | src | symbol (type) | find (search) | issue (error) | test | debug | breakpoint |report (activity) navigator
+click proj (switch sub proj up down btn) > general {bundle (package) ID =com.boropost.app }| signing { team > add account = Apple ID }
+click top bar proj > device > iphone
+Codesign wants to access key "access" in your keychain > MAC pwd > always allows
+
+build >Codesign wants to access key "access" in your keychain > mac pwd >always allow
+
+support files >main.storyboard (all ui)
+              /images.xcassets/(all imgs) +

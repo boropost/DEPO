@@ -425,7 +425,7 @@ http://touchfreeze.net/
 
 IOS
 Finder > applications > utilities > console : cd Desktop/RichBost/Depo/Firebase/
-install cocoapods.org by sudo gem install cocoapods (dep mgmt) > pod init (if no create Podfile > add pod 'Firebase/Core' > pod install (all deps spec in Podfile) > XCODE open other project > .xcworkspace > pods with proj
+install cocoapods.org by sudo gem install cocoapods (dep mgmt) > pod init (if no create Podfile > add pod 'Firebase/Core' > pod install (all deps spec in Podfile) > XCODE open other project > .xcworkspace {group:DatabaseExample|Pods.xcodeproj}
 Firebase > proj > add app  > ios > drag download .plist to XCODE proj root > do 
 
 proj | src | symbol (type) | find (search) | issue (error) | test | debug | breakpoint |report (activity) navigator

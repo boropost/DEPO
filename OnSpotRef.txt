@@ -441,5 +441,11 @@ build >Codesign wants to access key "access" in your keychain > mac pwd >always 
 
 support files >main.storyboard (all ui)
               /images.xcassets/(all imgs) +
-	      
-	      
+
+https://stackoverflow.com/questions/25296691/get-users-current-location-coordinates
+import CoreLocation  > CLLocationManager()
+https://github.com/aslanyanhaik/Quick-Chat/blob/master/QuickChat/ViewControllers/ChatVC.swift
+import UIKit[.UITableViewController] //foundation
+import Photos let imagePicker = UIImagePickerController()
+http://www.codingexplorer.com/choosing-images-with-uiimagepickercontroller-in-swift/
+AnyObject = NSString //ref type or Any = "t" //value type

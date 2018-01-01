@@ -427,10 +427,12 @@ IOS
 Finder > applications > utilities > console : cd Desktop/RichBost/Depo/Firebase/
 install cocoapods.org by sudo gem install cocoapods (dep mgmt) > pod init (if no create Podfile > add pod 'Firebase/Core' > pod install (all deps spec in Podfile) > XCODE open other project > .xcworkspace {group:DatabaseExample|Pods.xcodeproj}
 Firebase > proj > add app  > ios > drag download .plist to XCODE proj root > do 
-click top bar proj > device > iphone
-Codesign wants to access key "access" in your keychain > MAC pwd > always allows
+click top bar proj > device = iphone | new / edit schema > regen with new proj name | build / run = debug/release  
+
 proj | src | symbol (type) | find (search) | issue (error) | test | debug | breakpoint |report (activity) navigator
-click proj (switch sub proj up down btn) > general {bundle (package) ID =com.boropost.app }| signing { team > add account = Apple ID }
+click proj (switch sub proj up down btn) > general {bundle (package) ID =com.boropost.app | signing team > add account = Apple ID | app icon launchImage | linked framework lib}                               
+					> info = info.plist 
+                                         > build settings  { deployment | linking | info.plist | signing| version| compiler ...}
 rightclick proj folder > addfiles (auto update project.pbxproj) 
 per project xxx.xcodeproj/project.pbxproj has all settings, after change, run to auto fix red items on proj nav
 

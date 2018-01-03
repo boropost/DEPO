@@ -451,3 +451,19 @@ import UIKit[.UITableViewController] //foundation
 import Photos let imagePicker = UIImagePickerController()
 http://www.codingexplorer.com/choosing-images-with-uiimagepickercontroller-in-swift/
 AnyObject = NSString //ref type or Any = "t" //value type
+
+let | var = im|mutable, func(s1: String){ var s2=s1 //argument is immutable
+optional variable Int? default to nil
+
+var positions = [Int]() 
+positions.append(val) // not positions[i] =val
+
+
+REFACTOR
+PositionUtil.convertPosition{
+        var i: Int  = 0
+        +++let len = Int(log10(Double(precision)))
+        while(i < len){
+            positions.append(abs(lat%10*10)+abs(lgt%10))
+ints.xml	    
+--- <integer name="location_precision">1000</integer><!--0.001 100m/300ft-->

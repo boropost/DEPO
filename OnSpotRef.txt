@@ -422,6 +422,20 @@ https://github.com/coomar2841/android-multipicker-library :MediaPicker extends P
 
 http://touchfreeze.net/ 
 
+https://developers.google.com/android/reference/com/google/android/gms/maps/model/Circle  Polygon
+com.google.android.gms.maps.model.Circle  Polygon
+https://github.com/googlemaps/android-samples/blob/master/ApiDemos/app/src/main/java/com/example/mapdemo/CircleDemoActivity.java
+https://stackoverflow.com/questions/15129012/android-google-map-v2-draw-circle
+https://stackoverflow.com/questions/17090816/android-maps-api-v2-add-circle-cannot-be-resolved
+compile 'com.google.android.gms:play-services-location:10.0.1'
+to
+compile 'com.google.android.gms:play-services-maps:10.0.1'
+
+http://android-er.blogspot.com/2012/12/a-simple-example-using-google-maps.html  com.google.android.gms.maps.MapFragment
+http://topandroidphones1.blogspot.com/2013/02/implement-onmylocationchangelistener.html
+
+
+https://developers.google.com/maps/documentation/android-api/
 
 IOS
 Finder > applications > utilities > console : cd Desktop/RichBost/Depo/Firebase/

@@ -432,7 +432,9 @@ to
 compile 'com.google.android.gms:play-services-maps:10.0.1'
 
 http://android-er.blogspot.com/2012/12/a-simple-example-using-google-maps.html  com.google.android.gms.maps.MapFragment
+http://android-er.blogspot.com/2013/01/move-google-maps-v2-with-auto-best-zoom.html
 http://topandroidphones1.blogspot.com/2013/02/implement-onmylocationchangelistener.html
+
 
 
 https://developers.google.com/maps/documentation/android-api/

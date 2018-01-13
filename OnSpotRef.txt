@@ -333,7 +333,8 @@ Android Monitor: device being monitored=ADB enabled > memory|cpu|network monitor
 Tools > Android > SDK Manager > SDK platform (android)| tools (emulator,playsvc,google USB driver...) selecct > apply
                 > AVD Manager
                 >enable ADB int (for run on phone)
-        firebase>auth/database         
+        firebase>auth/database   
+help > update (if Error:Failed to complete Gradle execution. Cause: invalid stream header: 07D06A0F)
 run> edit config > 
 VCS > check out from version control: github
 File>Project Structure=>app(i.e left pannel)=>Properties=>SDK loc proj gradle/android version 

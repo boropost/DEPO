@@ -334,12 +334,13 @@ Tools > Android > SDK Manager > SDK platform (android)| tools (emulator,playsvc,
                 > AVD Manager
                 >enable ADB int (for run on phone)
         firebase>auth/database   
-help > update (if Error:Failed to complete Gradle execution. Cause: invalid stream header: 07D06A0F)
+help > update 
 run> edit config > 
 VCS > check out from version control: github
 File>Project Structure=>app(i.e left pannel)=>Properties=>SDK loc proj gradle/android version 
 app>SDK|Build Tools Version,sign,Flavor default|minSDKJellyBean:min/targetSDK Version 19 (change to 16 =phone), build type:debug|relese dependencies
      Settings > Build, Execution, Deployment > disable "Instant Run" if  “Unable to get provider com.google.firebase.provider.FirebaseInitProvider” Error 
+                                             >Compiler>Add "--stacktrace" to "Command-line Options"
               > Plugins (built-in Image Asset Studio, Theme and Layout Editor ) >Browse repositories  ADB(android cmd), Codota
 Right-click the res folder and select New > Image Asset (res/mipmap launcher icon, res/drawable/x|m|hdpi/(copy same img each has diff size, auto group on AS) other types of icons, can access image from the main thread only.refer to image as @drawable in XML or Drawable in Java)
 Right-click the strings.xml file, and select Open Translations Editor. click global icon to add locale, auto gen a value-zh/string.xml  
@@ -371,6 +372,7 @@ Analyze > dependency | stacktrace  | Inspect Code (Lint find issues such as depr
 run app second time to see app on phone
 
 clean C:\Users\holly\.android\build-cache and rebuild proj if err after rename layout element 
+clean C:\Users\holly\.gradle if Error:Failed to complete Gradle execution. Cause: invalid stream header: 07D06A0F)
 
 Enable USB debugging on your device by going to Settings > Developer options
 Note: On Android 4.2 and newer, Developer options is hidden by default. To make it available, go to Settings > About phone and tap Build number seven times. Return to the previous screen to find Developer options. enable debug when USB disconnected
@@ -426,8 +428,12 @@ http://touchfreeze.net/
 https://developers.google.com/android/reference/com/google/android/gms/maps/model/Circle  Polygon
 com.google.android.gms.maps.model.Circle  Polygon
 https://github.com/googlemaps/android-samples/blob/master/ApiDemos/app/src/main/java/com/example/mapdemo/CircleDemoActivity.java
-https://stackoverflow.com/questions/15129012/android-google-map-v2-draw-circle
-https://stackoverflow.com/questions/17090816/android-maps-api-v2-add-circle-cannot-be-resolved
+https://developers.google.com/maps/documentation/android-api/signup to get api key (https://console.developers.google.com/apis/credentials/wizard?api=maps-android-backend.googleapis.com&project=boropost-ea8ed select a key >restriction > Android|IOS APP>  package|bundleid=com.boropost.app SHAI=FB:F1:49:00:44:C9:EF:A9:53:39:72:25:37:5E:34:F0:8C:5F:B5:D3) 
+<application/>        
+	    <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCj4W9viVpSiLPEFR6zViuF-mqKLazQvys"/>
+    
 compile 'com.google.android.gms:play-services-location:10.0.1'
 to
 compile 'com.google.android.gms:play-services-maps:10.0.1'
@@ -435,8 +441,6 @@ compile 'com.google.android.gms:play-services-maps:10.0.1'
 http://android-er.blogspot.com/2012/12/a-simple-example-using-google-maps.html  com.google.android.gms.maps.MapFragment
 http://android-er.blogspot.com/2013/01/move-google-maps-v2-with-auto-best-zoom.html
 http://topandroidphones1.blogspot.com/2013/02/implement-onmylocationchangelistener.html
-
-
 
 https://developers.google.com/maps/documentation/android-api/
 

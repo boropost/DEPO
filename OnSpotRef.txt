@@ -185,18 +185,29 @@ string,double,long,Boolean, Map<String, Object>, List<Object>
 https://firebase.googleblog.com/2013/10/queries-part-1-common-sql-queries.html 
 ".read": "auth == null",test simulator turn off auth
 or enable firebase anonymous auth, rules ".read": "auth != null", test simulator turn on auth select anonymous provider which gen anonymous auth token
-https://jsfiddle.net/katowulf/eypydqjn/ (external resources + https://www.gstatic.com/firebasejs/3.6.5/firebase.js) Auth API Key=firebase setting:Web API Key
- url=database-1ab1b Path=latitudes/-77/38/8/9/7
-https://database-1ab1b.firebaseio.com/latitudes/-77/38/8/9/7.json?print=pretty //CURL request
-<div id="result"></div>//html or settting jQuery edge + firebug
+
+https://jsfiddle.net/
++external resource:  https://www.gstatic.com/firebasejs/4.8.2/firebase.js
+javascript + jQuery(edge) (turn on firebuglite for console)
+turn off auth rule in firebase ".read": "auth == null",
+HTML:
+<div id="result"></div>
+javascript
 let config = {
-  "apiKey": "AIzaSyAMs6eu3EO0z_PJ-TwA8ctI7-KBXEVJgHg",
-  "authDomain": "database-1ab1b.firebaseapp.com",
-  "databaseURL": "https://database-1ab1b.firebaseio.com"
+  "apiKey": "AIzaSyB1QS5UCKuwaB6NdcyXNyPT9TOiAZR6O0Y",
+  "authDomain": "boropost-ea8ed.firebaseapp.com",
+  "databaseURL": "https://boropost-ea8ed.firebaseio.com"
 };
 firebase.initializeApp(config);
 let db = firebase.database().ref();
-let query = db.child("latitudes/-77/38/8/9/7/1");
+let query = db.child("mac-posts/1/11/30/6/81/57/20");
+query.once('value').then(snap => {
+	snap.forEach(function(data) {
+    var post = data.val();
+    $("#result").append('<p>' + post.body+ '</p>');
+  });
+}).catch(e => console.log(e));
+
 query.once('value').then(snap => {	
 	snap.forEach(function(data) {
 		var uids=JSON.stringify(data.val()); 
@@ -474,6 +485,46 @@ optional variable Int? default to nil
 var positions = [Int]() 
 positions.append(val) // not positions[i] =val
 
+https://www.weheartswift.com/firebase-101/
+push|modal segue (show|modally) child viewcontroller under same navigation controller as parent VC that must|not embed in a NC, it inherit|not nav bar in|not nav stack 
+TasksTableViewController{ tasksReference.observe(.value {task = Task(snapshot: item); self.tableView.reloadData() > refresh whole dataset is too expensive than insert|
+
+reloadRowsAtIndexPaths >tableView{TasksTableViewCell.titleLabel.text  = self.tasks[indexPath.row].title 
+prepare(set value to segue.destination) before parent VC segue to child,  prepareForUnwind(save input from child) before child VC wrapup
+
+https://github.com/firebase/FirebaseUI-iOS/blob/master/FirebaseDatabaseUI/README.md
+FUITableViewDataSource (query){ FUIArray.initWithQuery(self.query) {observeQuery {handle = [self.query observeEventType:FIRDataEventTypeChildAdded
+				self.tableView insertRowsAtIndexPaths
+in existing Swift app, add MyFUITableViewDataSource|MyFUIArray.h/m accepting queries in Objective-C, auto popup bridging header to import to swift 
+
+AppDelegate: FIRDatabase.database().persistenceEnabled = true //writes the data locally to the device while network interruptions
+FirebaseDatabase.getInstance().setPersistenceEnabled(true); //Android
+
+self.yourArray.insert(msg, at: 0)
+self.tblView.beginUpdates()
+self.tblView.insertRows(at: [IndexPath.init(row: 0|self.yourArray.count-1, section: 0)], with: .automatic) //insert at top|bottom
+self.tblView.endUpdates()
+
+https://stackoverflow.com/questions/39949925/firebase-closure-in-obvserveeventtype-and-observesingleeventoftype-withblock-n
+.observeSingleEventOfType(.Value //one-time read vs .observeEventType(.ChildAdded //keep sync
+ref.observeEventType(.Value, withBlock: { snapshot in
+     if ( snapshot.value is NSNull ) { //!snapshot.exists()
+          print("Skillet was not found")
+     } else {
+          for child in snapshot.children {   //in case there are several skillets
+               let key = child.key as String
+               print(key)
+          }
+     }
+})
+
+https://stackoverflow.com/questions/40855215/new-fuitableviewdatasource-how-to-use-swift-3
+https://stackoverflow.com/questions/30774671/uitableview-with-more-than-one-custom-cells-with-swift  //prototype cell in story board 
+https://firebase.googleblog.com/2015/10/best-practices-for-ios-uiviewcontroller_6.html
+
+
+https://medium.com/@andycherkashyn/everything-you-need-to-know-about-ios-uitableview-79b766bf1a42 //indexPath.section
+https://blog.apoorvmote.com/uitableview-with-multiple-sections-ios-swift/
 
 REFACTOR
 PositionUtil.convertPosition{

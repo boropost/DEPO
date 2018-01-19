@@ -588,7 +588,8 @@ edittext with border and round corner: Create a border.xml in Drawable folder
     <solid android:color="#ffffff"        />
     <stroke        android:width="2dip"        android:color="#000" />
 </shape>
- <EditText        android:background="@drawable/border"/>   
+ <EditText        android:background="@drawable/border"/> 
+ https://stackoverflow.com/questions/23417443/change-border-color-when-edittext-is-focused
 
 <parent | child  gravity | layout_gravityarranges positon related to border, center = center_horizontal + center_vertical
  

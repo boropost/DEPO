@@ -542,6 +542,16 @@ edit.requestFocus(); //hight light edittext https://stackoverflow.com/questions/
 getDialog().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE); //key board
 
 https://stackoverflow.com/questions/31391413/cant-change-the-height-of-my-facebook-login-button-android
+<com.facebook.login.widget.LoginButton
+        xmlns:facebook="http://schemas.android.com/apk/res-auto"	
+        facebook:com_facebook_login_text="LOGIN"
+	android:textColor="@color/white"
+	android:textSize="20sp"
+	android:textStyle="bold"
+	android:paddingLeft|Top="15dp"
+	android:layout_marginRight|Bottom="20dp"/>
+
+facebook:login_text="LOGIN"
 https://stackoverflow.com/questions/31327897/custom-facebook-login-button-android
 public void onClick(View v) { //use own btn fb to replace facebook btn
     if (v == fb) {        loginButton.performClick();

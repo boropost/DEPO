@@ -534,3 +534,11 @@ PositionUtil.convertPosition{
             positions.append(abs(lat%10*10)+abs(lgt%10))
 ints.xml	    
 --- <integer name="location_precision">1000</integer><!--0.001 100m/300ft-->
+
+https://stackoverflow.com/questions/40998914/how-to-change-a-drawableleft-icon-size-on-a-button
+<EditText     android:drawableLeft="@drawable/ic_username"    android:drawableStart="@drawable/ic_username"  android:drawablePadding=10dp > //The padding between the drawables and the text
+<requestFocus />
+edit.requestFocus(); //hight light edittext https://stackoverflow.com/questions/14327412/set-focus-on-edittext
+getDialog().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE); //key board
+
+https://stackoverflow.com/questions/29446879/facebook-sdk-v4-loginbutton-ignores-xml-customizations/29479735#29479735

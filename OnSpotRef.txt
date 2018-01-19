@@ -549,6 +549,7 @@ https://stackoverflow.com/questions/31391413/cant-change-the-height-of-my-facebo
 	android:textSize="20sp"
 	android:textStyle="bold"
 	android:paddingLeft|Top="15dp"
+	android:drawablePadding="40dp"
 	android:layout_marginRight|Bottom="20dp"/>
 
 facebook:login_text="LOGIN"
@@ -556,7 +557,7 @@ https://stackoverflow.com/questions/31327897/custom-facebook-login-button-androi
 public void onClick(View v) { //use own btn fb to replace facebook btn
     if (v == fb) {        loginButton.performClick();
     
-button with gradient color and round corner : create shape.xml in drawable folder like shape.xml
+button with gradient color and round corner : create shape.xml in drawable folder like mshape.xml
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
   <stroke android:width="2dp"
@@ -577,17 +578,35 @@ myactivity.xml
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" 
     android:text="@string/Shape"
-    android:background="@drawable/shape"/>  
+    android:background="@drawable/mshape"/>  
     
 edittext with border and round corner: Create a border.xml in Drawable folder
 <?xml version="1.0" encoding="utf-8"?>
-<shape
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    [android:shape="rectangle"]>
-    <corners        android:radius="2dp"        />
-    <solid android:color="#ffffff"        />
-    <stroke        android:width="2dip"        android:color="#000" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true"
+        android:state_focused="true">
+        <shape>
+            <corners
+                android:radius="2dp"/>
+            <solid
+                android:color="#ffffff"/>
+            <stroke
+                android:width="2dp"
+                android:color="@color/colorAccent" />
+        </shape>
+    </item>
+    <item android:state_enabled="true">
+        <shape>
+            <corners
+                android:radius="2dp"/>
+            <solid
+                android:color="#ffffff"/>
+            <stroke
+                android:width="2dp"
+                android:color="@color/colorGrey" />
+        </shape>
+    </item>
+</selector>
  <EditText        android:background="@drawable/border"/> 
  https://stackoverflow.com/questions/23417443/change-border-color-when-edittext-is-focused
 

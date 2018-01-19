@@ -541,4 +541,44 @@ https://stackoverflow.com/questions/40998914/how-to-change-a-drawableleft-icon-s
 edit.requestFocus(); //hight light edittext https://stackoverflow.com/questions/14327412/set-focus-on-edittext
 getDialog().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE); //key board
 
-https://stackoverflow.com/questions/29446879/facebook-sdk-v4-loginbutton-ignores-xml-customizations/29479735#29479735
+https://stackoverflow.com/questions/31391413/cant-change-the-height-of-my-facebook-login-button-android
+https://stackoverflow.com/questions/31327897/custom-facebook-login-button-android
+public void onClick(View v) { //use own btn fb to replace facebook btn
+    if (v == fb) {        loginButton.performClick();
+    
+button with gradient color and round corner : create shape.xml in drawable folder like shape.xml
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+  <stroke android:width="2dp"
+    android:color="#FFFFFF"/>
+  <gradient 
+    android:angle="225"
+    android:startColor="#DD2ECCFA"
+    android:endColor="#DD000000"/>
+<corners
+    android:bottomLeftRadius="7dp"
+    android:bottomRightRadius="7dp"
+    android:topLeftRadius="7dp"
+   android:topRightRadius="7dp" />
+</shape>
+myactivity.xml
+<Button
+    android:id="@+id/btn_Shap"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" 
+    android:text="@string/Shape"
+    android:background="@drawable/shape"/>  
+    
+edittext with border and round corner: Create a border.xml in Drawable folder
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    [android:shape="rectangle"]>
+    <corners        android:radius="2dp"        />
+    <solid android:color="#ffffff"        />
+    <stroke        android:width="2dip"        android:color="#000" />
+</shape>
+ <EditText        android:background="@drawable/border"/>   
+
+<parent | child  gravity | layout_gravityarranges positon related to border, center = center_horizontal + center_vertical
+ 

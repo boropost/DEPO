@@ -459,7 +459,7 @@ click top bar proj > device = iphone | new / edit schema > regen with new proj n
 proj | src | symbol (type) | find (search) | issue (error) | test | debug | breakpoint |report (activity) navigator
 click proj (switch sub proj up down btn) > general {bundle (package) ID =com.boropost.app | signing team > add account = Apple ID | app icon launchImage | linked framework lib}                               
 					> info = info.plist 
-                                         > build settings  { deployment | linking | info.plist | signing| version| compiler ...}
+                                         > build settings  { deployment | linking | info.plist | signing| version| compiler: Bridging-Header file |...}
 rightclick proj folder > addfiles (auto update project.pbxproj) 
 per project xxx.xcodeproj/project.pbxproj has all settings, after change, run to auto fix red items on proj nav
 
@@ -485,6 +485,13 @@ optional variable Int? default to nil
 var positions = [Int]() 
 positions.append(val) // not positions[i] =val
 
+main.stroyboard : drag in new VC from lower right [bottom find box by name], hold rightclick from tab bar controller to it to create a rel, cmd-c tableview under view from existing VC and cmd-v to new VC, 
+
+tabBar > id (attr | size) inspector > + runtime att > 
+<tabBarz> <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+
+add img set : 24 48 72 | 96 120
+
 https://www.weheartswift.com/firebase-101/
 push|modal segue (show|modally) child viewcontroller under same navigation controller as parent VC that must|not embed in a NC, it inherit|not nav bar in|not nav stack 
 TasksTableViewController{ tasksReference.observe(.value {task = Task(snapshot: item); self.tableView.reloadData() > refresh whole dataset is too expensive than insert|
@@ -499,6 +506,8 @@ in existing Swift app, add MyFUITableViewDataSource|MyFUIArray.h/m accepting que
 
 AppDelegate: FIRDatabase.database().persistenceEnabled = true //writes the data locally to the device while network interruptions
 FirebaseDatabase.getInstance().setPersistenceEnabled(true); //Android
+
+internal var postType : Int!|?= 0|nil (must init prop)
 
 self.yourArray.insert(msg, at: 0)
 self.tblView.beginUpdates()
@@ -611,4 +620,5 @@ edittext with border and round corner: Create a border.xml in Drawable folder
  https://stackoverflow.com/questions/23417443/change-border-color-when-edittext-is-focused
 
 <parent | child  gravity | layout_gravityarranges positon related to border, center = center_horizontal + center_vertical
+
  

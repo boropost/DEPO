@@ -527,13 +527,13 @@ ref.observeEventType(.Value, withBlock: { snapshot in
      }
 })
 
-https://stackoverflow.com/questions/40855215/new-fuitableviewdatasource-how-to-use-swift-3
-https://stackoverflow.com/questions/30774671/uitableview-with-more-than-one-custom-cells-with-swift  //prototype cell in story board 
 https://firebase.googleblog.com/2015/10/best-practices-for-ios-uiviewcontroller_6.html
 
 
 https://medium.com/@andycherkashyn/everything-you-need-to-know-about-ios-uitableview-79b766bf1a42 //indexPath.section
 https://blog.apoorvmote.com/uitableview-with-multiple-sections-ios-swift/
+
+Circular UIImageView in UITableView
 
 REFACTOR
 PositionUtil.convertPosition{
@@ -543,6 +543,19 @@ PositionUtil.convertPosition{
             positions.append(abs(lat%10*10)+abs(lgt%10))
 ints.xml	    
 --- <integer name="location_precision">1000</integer><!--0.001 100m/300ft-->
+
+newpost.act
+startActivityForResult
+creditcard.act //charge amt base on recurring weeks
+Intent data = new Intent();
+data.putExtra("recur", "Data 1 value");
+setResult(RESULT_OK, data);
+finish();
+newpost.act
+onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+        if (data.hasExtra("recur")) {
+            Toast.makeText(this, data.getExtras().getString("recur"),
 
 https://stackoverflow.com/questions/40998914/how-to-change-a-drawableleft-icon-size-on-a-button
 <EditText     android:drawableLeft="@drawable/ic_username"    android:drawableStart="@drawable/ic_username"  android:drawablePadding=10dp > //The padding between the drawables and the text

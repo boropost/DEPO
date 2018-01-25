@@ -556,6 +556,7 @@ onActivityResult(int requestCode, int resultCode, Intent data) {
     if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
         if (data.hasExtra("recur")) {
             Toast.makeText(this, data.getExtras().getString("recur"),
+https://stackoverflow.com/questions/24401480/getting-devices-country-code-phone-number
 
 https://stackoverflow.com/questions/40998914/how-to-change-a-drawableleft-icon-size-on-a-button
 <EditText     android:drawableLeft="@drawable/ic_username"    android:drawableStart="@drawable/ic_username"  android:drawablePadding=10dp > //The padding between the drawables and the text

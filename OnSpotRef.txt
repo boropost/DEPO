@@ -544,6 +544,11 @@ PositionUtil.convertPosition{
 ints.xml	    
 --- <integer name="location_precision">1000</integer><!--0.001 100m/300ft-->
 
+I am not a robot https://android.jlelse.eu/using-googles-recaptcha-with-android-b44097771987
+https://www.google.com/recaptcha/admin#androidsignup
+Site key 6LdBrUIUAAAAAImEux3A23mWlbVm8paCnWbLoK8D 
+Secret key 6LdBrUIUAAAAAPmDPCIjrpWojeBRMpY9-ueXYeRJ
+
 newpost.act
 startActivityForResult
 creditcard.act //charge amt base on recurring weeks

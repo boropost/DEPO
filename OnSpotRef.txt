@@ -545,6 +545,9 @@ ints.xml
 --- <integer name="location_precision">1000</integer><!--0.001 100m/300ft-->
 
 I am not a robot https://android.jlelse.eu/using-googles-recaptcha-with-android-b44097771987
+http://android-er.blogspot.com/2017/06/example-using-safetynet-recaptcha-api.html
+
+https://developer.android.com/training/safetynet/recaptcha.html
 https://www.google.com/recaptcha/admin#androidsignup
 Site key 6LdBrUIUAAAAAImEux3A23mWlbVm8paCnWbLoK8D 
 Secret key 6LdBrUIUAAAAAPmDPCIjrpWojeBRMpY9-ueXYeRJ

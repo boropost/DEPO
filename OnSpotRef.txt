@@ -451,8 +451,9 @@ http://android-er.blogspot.com/2012/12/a-simple-example-using-google-maps.html  
 https://developers.google.com/maps/documentation/android-api/
 
 IOS
-Finder > applications > utilities > console : cd Desktop/RichBost/Depo/Firebase/
-install cocoapods.org by sudo gem install cocoapods (dep mgmt) > pod init (if no create Podfile > add pod 'Firebase/Core' > pod install (all deps spec in Podfile) > XCODE open other project > .xcworkspace {group:DatabaseExample|Pods.xcodeproj}
+Command-Option-Esc > force close app
+Finder > applications > utilities > terminal : cd Desktop/RichBost/Depo/ios/boropost
+install cocoapods.org by sudo gem install cocoapods (dep mgmt) > pod init (if no create Podfile > add pod 'Firebase/Core' pod 'FirebaseUI[/Database Auth Facebook Phone]' > pod install (all deps spec in Podfile) > XCODE open other project > .xcworkspace {group:DatabaseExample|Pods.xcodeproj}
 Firebase > proj > add app  > ios > drag download .plist to XCODE proj root > do 
 click top bar proj > device = iphone | new / edit schema > regen with new proj name | build / run = debug/release  
 
@@ -491,6 +492,11 @@ tabBar > id (attr | size) inspector > + runtime att >
 <tabBarz> <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
 
 add img set : 24 48 72 | 96 120
+
+select controller and click |-o-| to define relative position top|bottom|lef|right to containing view or sibling in drop down, add constraint btn to list in constraints, old contraint need to be del explicitly, heigth|width  >= fill rest
+open Assistant Editor, hold down CTRL and click element on the storyboard and drag from structure/view to code panel (full not interface), select outlet|action from dropdown, and value changed|touch on from action dropdown 
+
+https://github.com/aclissold/CardView
 
 https://www.weheartswift.com/firebase-101/
 push|modal segue (show|modally) child viewcontroller under same navigation controller as parent VC that must|not embed in a NC, it inherit|not nav bar in|not nav stack 

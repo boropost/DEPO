@@ -539,6 +539,11 @@ https://firebase.googleblog.com/2015/10/best-practices-for-ios-uiviewcontroller_
 https://medium.com/@andycherkashyn/everything-you-need-to-know-about-ios-uitableview-79b766bf1a42 //indexPath.section
 https://blog.apoorvmote.com/uitableview-with-multiple-sections-ios-swift/
 
+https://medium.com/lean-localization/ios-localization-tutorial-938231f9f881
+proj: info tab [ localization { Use Base Internationalization = base.lproj(launchscreen/main.storyboard) |  + sel japan =  ja.lproj. 
+File->New->File:  iOS > Resource > Strings File Localizable.strings(base), click Japanese in right File Inspector create a new Localizable.strings(japan)  
+"Signup"="Sign Up". let signupButtonText = NSLocalizedString("Signup", comment: "")
+
 Circular UIImageView in UITableView
 
 REFACTOR
@@ -552,6 +557,7 @@ ints.xml
 
 I am not a robot https://android.jlelse.eu/using-googles-recaptcha-with-android-b44097771987
 http://android-er.blogspot.com/2017/06/example-using-safetynet-recaptcha-api.html
+https://medium.com/quick-code/using-googles-safetynet-recaptcha-api-with-android-48e2cf12f370
 
 https://developer.android.com/training/safetynet/recaptcha.html
 https://www.google.com/recaptcha/admin#androidsignup

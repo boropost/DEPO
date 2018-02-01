@@ -16,7 +16,7 @@ facebook login> get start SDK choose platform > android >[download Facebook SDK]
 proj build.gradle : repositories {    mavenCentral() //search mavenLocal() on machine  %USER_HOME% or %M2_HOME%\conf\settings.xml then mavenCentral() http://repo1.maven.org/maven2/
 app  build.gradle : dependencies {   compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 Package:com.google.firebase.quickstart.database
-Default Activity:com.google.firebase.quickstart.database.SignInActivity
+Default Activity:com.boropost.app.SignInActivity
 [Enable Single Sign On]
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -25,15 +25,15 @@ manifest
 <uses-permission android:name="android.permission.INTERNET"/>
 <meta-data  android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"
-app/src/main/res/values/ids.xml <string name="facebook_app_id">151027222121181</string> //copy ids.xml may to values-w820dp notvalues  
+app/src/main/res/values/ids.xml <string name="facebook_app_id">2048300435186962</string> //copy ids.xml may to values-w820dp notvalues  
 misssing .ApplicationId java.lang.NullPointerException at java.util.concurrent.ConcurrentHashMap.containsKey(ConcurrentHashMap.java:774)
  at com.facebook.internal.Utility.queryAppSettings(Utility.java:822)  
  at com.facebook.login.widget.LoginButton$1.run(LoginButton.java:489)
- 
- AppId/sec at settings basic
-add prod : login, Valid OAuth redirect URIs = https://auth/handler (from  firebase) 
-app domain : database-748b1.firebaseapp.com (from  firebase)//facebook err:Given URL is not allowed by the App config
-add platform>web >url :https://database-748b1.firebaseapp.com //match above
+
+Facebook settings basic AppId 2048300435186962/Secret 9da141129b37d740ce14e21780003fa0, set to  firebase/auth/facebook
+add prod : login, Valid OAuth redirect URIs = https://boropost-ea8ed.firebaseapp.com/__/auth/handler  (from  firebase/auth/facebook) 
+app domain : boropost-ea8ed.firebaseapp.com (from  firebase)//facebook err:Given URL is not allowed by the App config
+add platform>web >url :https://boropost-ea8ed.firebaseapp.com //match above
 keyhash: +/FJAETJ76lTOXIlN1408IxftdM=
 //cd ~/.android : keytool -exportcert -alias androiddebugkey -keystore debug.keystore | openssl sha1 -binary | openssl base64
 password: android, wont prompt pwd if not at ~/.android, pwd gen diff key, 
@@ -41,8 +41,8 @@ password: android, wont prompt pwd if not at ~/.android, pwd gen diff key,
 https://apps.twitter.com/  richcluo@gmail.com
 eanble permissions:Request email addresses from users (must provide Privacy Policy URL n Terms of Service URL) and click generate access token (revoke and regen if changed), Has access to your email address will be on approved list of the app at https://twitter.com/settings/applications forapp user to receive email in FirebaseAuth.getInstance().getCurrentUser().getEmail(), otherwise - stored as email 
 app/src/main/res/values/ids.xml
-    <string name="twitter_consumer_key">jf1QXxq65V5gM6sTlJjw5m7Ow</string>
-    <string name="twitter_consumer_secret">mPI3b5Yk20woNnta9kwTnIRFVPoykYGgN98k1tpoVeuENXRUcu</string>
+    <string name="twitter_consumer_key">M9M7U5fWz96A1Ws831ay2Sdbw</string>
+    <string name="twitter_consumer_secret">ASkumIVN6l9gnEejooKc3GMfFOVi13Otu8ArAnxOYY4bNLUBSa</string>
 https://dev.twitter.com/twitterkit/android/installation
 proj build.gradle : repositories {  jcenter() 
 app build.gradle : dependencies { compile 'com.twitter.sdk.android:twitter:3.0.0'//all

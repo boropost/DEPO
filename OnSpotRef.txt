@@ -43,6 +43,7 @@ eanble permissions:Request email addresses from users (must provide Privacy Poli
 app/src/main/res/values/ids.xml
     <string name="twitter_consumer_key">M9M7U5fWz96A1Ws831ay2Sdbw</string>
     <string name="twitter_consumer_secret">ASkumIVN6l9gnEejooKc3GMfFOVi13Otu8ArAnxOYY4bNLUBSa</string>
+    set to  firebase/auth/twitter
 https://dev.twitter.com/twitterkit/android/installation
 proj build.gradle : repositories {  jcenter() 
 app build.gradle : dependencies { compile 'com.twitter.sdk.android:twitter:3.0.0'//all

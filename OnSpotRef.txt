@@ -37,7 +37,7 @@ add platform>web >url :https://boropost-ea8ed.firebaseapp.com //match above
 keyhash: +/FJAETJ76lTOXIlN1408IxftdM=
 //cd ~/.android : keytool -exportcert -alias androiddebugkey -keystore debug.keystore | openssl sha1 -binary | openssl base64
 password: android, wont prompt pwd if not at ~/.android, pwd gen diff key
-App review : make public 
+App review : make public, Privacy Policy URL= https://github.com/boropost/app/blob/master/PrivacyPolicy
 
 https://apps.twitter.com/  richcluo@gmail.com
 eanble permissions:Request email addresses from users (must provide Privacy Policy URL n Terms of Service URL) and click generate access token (revoke and regen if changed), Has access to your email address will be on approved list of the app at https://twitter.com/settings/applications forapp user to receive email in FirebaseAuth.getInstance().getCurrentUser().getEmail(), otherwise - stored as email 

@@ -497,6 +497,11 @@ add img set : 24 48 72 | 96 120
 
 select controller and click |-o-| to define relative position top|bottom|lef|right to containing view or sibling in drop down, add constraint btn to list in constraints, old contraint need to be del explicitly, heigth|width  >= fill rest
 open Assistant Editor, hold down CTRL and click element on the storyboard and drag from structure/view to code panel (full not interface), select outlet|action from dropdown, and value changed|touch on from action dropdown 
+interfacebuilder to staticly add default UITableViewCell to UITableView, or create a custom viewcell for repeating display by
+add a empty view template, drag a UITableViewCell in it, drag label ... in it map to PostTableViewCell.xib id inspector set custome class to PostTableViewCell.swift, drag element in xib to swift to create referencing, set to tableview in program by 
+    let nib = UINib(nibName: "PostTableViewCell", bundle: nil)
+    tableView.register(nib, forCellReuseIdentifier: identifier)
+
 
 https://github.com/aclissold/CardView
 
@@ -516,7 +521,7 @@ AppDelegate: FIRDatabase.database().persistenceEnabled = true //writes the data 
 FirebaseDatabase.getInstance().setPersistenceEnabled(true); //Android
 
 internal var postType : Int!|?= 0|nil (must init prop)
-
+expression inspect + DatabaseReference.url, click i btn to print value in output window
 self.yourArray.insert(msg, at: 0)
 self.tblView.beginUpdates()
 self.tblView.insertRows(at: [IndexPath.init(row: 0|self.yourArray.count-1, section: 0)], with: .automatic) //insert at top|bottom
@@ -534,6 +539,18 @@ ref.observeEventType(.Value, withBlock: { snapshot in
           }
      }
 })
+
+//PostListViewController
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    guard let indexPath: IndexPath = sender as? IndexPath else { return }
+    guard let detail: PostDetailTableViewController = segue.destination as? PostDetailTableViewController else {
+      return
+    }
+    if let dataSource = dataSource {
+        //pass post key to PostDetailTableViewController
+      detail.postKey = dataSource.snapshot(at: indexPath.row).key
+    }
+  }
 
 https://firebase.googleblog.com/2015/10/best-practices-for-ios-uiviewcontroller_6.html
 

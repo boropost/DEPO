@@ -484,7 +484,7 @@ AnyObject = NSString //ref type or Any = "t" //value type
 
 let | var = im|mutable, func(s1: String){ var s2=s1 //argument is immutable
 optional variable Int? default to nil
-
+if(faves == nil || faves![uid] == nil) same as  if (faves?[uid] != nil)
 var positions = [Int]() 
 positions.append(val) // not positions[i] =val
 

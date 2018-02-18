@@ -460,7 +460,7 @@ Firebase > proj > add app  > ios > drag download .plist to XCODE proj root > do
 click top bar proj > device = iphone | new / edit schema > regen with new proj name | build / run = debug/release  
 
 proj | src | symbol (type) | find (search) | issue (error) | test | debug | breakpoint |report (activity) navigator
-click proj (switch sub proj up down btn) > general {bundle (package) ID =com.boropost.app | signing team > add account = Apple ID | app icon launchImage | linked framework lib}                               
+click proj (switch sub proj up down btn) > general {bundle (package) ID =com.boropost.app | signing team > add account = Apple ID (if cert expired: acct dropdown > add account | xcode > pref > accounts > mgr cert > + cert for ios dev > mach pwd: Vkaldho123!)| app icon launchImage | linked framework lib}                               
 					> info = info.plist 
                                          > build settings  { deployment | linking | info.plist | signing| version| compiler: Bridging-Header file |...}
 rightclick proj folder > addfiles (auto update project.pbxproj) 
@@ -496,8 +496,7 @@ tabBar > id (attr | size) inspector > + runtime att >
 
 add img set : 24 48 72 | 96 120
 
-select controller and click |-o-| to define relative position top|bottom|lef|right to containing view or sibling in drop down, add constraint btn to list in constraints, old contraint need to be del explicitly, heigth|width  >= fill rest
-open Assistant Editor, hold down CTRL and click element on the storyboard and drag from structure/view to code panel (full not interface), select outlet|action from dropdown, and value changed|touch on from action dropdown 
+select element[s by cmd key] and click |-o-| [|=] to define relative|align position top|bottom|lef|right to containing view or sibling in drop down, add constraint btn to list in constraints, old contraint need to be del explicitly to eliminate conflict, heigth|width  >= fill rest open Assistant Editor, hold down CTRL and click element on the storyboard and drag from structure/view to code panel (switch btw mannual to auto list full classs not interface file), select outlet|action from dropdown, and value changed|touch on from action dropdown 
 interfacebuilder to staticly add default UITableViewCell to UITableView, or create a custom viewcell for repeating display by
 add a empty view template, drag a UITableViewCell in it, drag label ... in it map to PostTableViewCell.xib id inspector set custome class to PostTableViewCell.swift, drag element in xib to swift to create referencing, set to tableview in program by 
     let nib = UINib(nibName: "PostTableViewCell", bundle: nil)

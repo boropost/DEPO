@@ -456,6 +456,7 @@ IOS
 Command-Option-Esc > force close app
 Finder > applications > utilities > terminal : cd Desktop/RichBost/Depo/ios/boropost
 install cocoapods.org by sudo gem install cocoapods (dep mgmt) > pod init (if no create Podfile > add pod 'Firebase/Core' pod 'FirebaseUI[/Database Auth Facebook Phone]' > pod install (all deps spec in Podfile) > XCODE open other project > .xcworkspace {group:DatabaseExample|Pods.xcodeproj}
+import FirebaseStorage //after pod 'Firebase/Storage'
 Firebase > proj > add app  > ios > drag download .plist to XCODE proj root > do 
 click top bar proj > device = iphone | new / edit schema > regen with new proj name | build / run = debug/release  
 
@@ -468,7 +469,7 @@ per project xxx.xcodeproj/project.pbxproj has all settings, after change, run to
 
 debug view at breakpoint> rightclick var > add exp = var.description | watch var | edit value | view value as type
 nsobject click (i) > content
-
+select text > top menu : editor > structure > reindent
 build >Codesign wants to access key "access" in your keychain > mac pwd >always allow
 
 support files >main.storyboard (all ui)
@@ -563,6 +564,7 @@ proj: info tab [ localization { Use Base Internationalization = base.lproj(launc
 File->New->File:  iOS > Resource > Strings File Localizable.strings(base), click Japanese in right File Inspector create a new Localizable.strings(japan)  
 "Signup"="Sign Up". let signupButtonText = NSLocalizedString("Signup", comment: "")
 
+http://www.codingexplorer.com/choosing-images-with-uiimagepickercontroller-in-swift/
 Circular UIImageView in UITableView
 
 REFACTOR

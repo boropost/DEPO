@@ -679,4 +679,12 @@ edittext with border and round corner: Create a border.xml in Drawable folder
 
 <parent | child  gravity | layout_gravityarranges positon related to border, center = center_horizontal + center_vertical
 
+full screen img
+xxxhdpi	1280×1920
+xxhdpi	960×1600
+xhdpi	640×960
+hdpi	480×800
+mdpi	320×480
+ldpi	240×320
+
  

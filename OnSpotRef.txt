@@ -459,11 +459,10 @@ install cocoapods.org by sudo gem install cocoapods (dep mgmt) > pod init (if no
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
-
-target 'MyApp' do
   pod 'Firebase/Storage'
   ...
-  pod 'Kingfisher', '~> 4.0'
+  pod 'SDWebImage', '~> 4.0'
+target 'MyApp' do
 end
 import FirebaseStorage //after pod 'Firebase/Storage'
 Firebase > proj > add app  > ios > drag download .plist to XCODE proj root > do 

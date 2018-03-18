@@ -456,6 +456,15 @@ IOS
 Command-Option-Esc > force close app
 Finder > applications > utilities > terminal : cd Desktop/RichBost/Depo/ios/boropost
 install cocoapods.org by sudo gem install cocoapods (dep mgmt) > pod init (if no create Podfile > add pod 'Firebase/Core' pod 'FirebaseUI[/Database Auth Facebook Phone]' > pod install (all deps spec in Podfile) > XCODE open other project > .xcworkspace {group:DatabaseExample|Pods.xcodeproj}
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+target 'MyApp' do
+  pod 'Firebase/Storage'
+  ...
+  pod 'Kingfisher', '~> 4.0'
+end
 import FirebaseStorage //after pod 'Firebase/Storage'
 Firebase > proj > add app  > ios > drag download .plist to XCODE proj root > do 
 click top bar proj > device = iphone | new / edit schema > regen with new proj name | build / run = debug/release  

@@ -505,7 +505,7 @@ tabBar > id (attr | size) inspector > + runtime att >
 
 add img set : 24 48 72 | 96 120
 
-select element[s by cmd key] and click |-o-| [|=] to define relative|align position top|bottom|lef|right to containing view or sibling in drop down, add constraint btn to list in constraints, old contraint need to be del explicitly to eliminate conflict, heigth|width  >= fill rest open Assistant Editor, hold down CTRL and click element on the storyboard and drag from structure/view to code panel (switch btw mannual to auto list full classs not interface file), select outlet|action from dropdown, and value changed|touch on from action dropdown 
+select element[s by cmd key] and click|shift(on baseline item or superview in tree) |-o-| [|=] to define relative|align position top|bottom|lef|right to containing view or sibling in drop down, add constraint btn to list in constraints, old contraint need to be del explicitly to eliminate conflict, heigth|width  >= fill rest open Assistant Editor, hold down CTRL and click element on the storyboard and drag from structure/view to code panel (switch btw mannual to auto list full classs not interface file), select outlet|action from dropdown, and value changed|touch on from action dropdown 
 interfacebuilder to staticly add default UITableViewCell to UITableView, or create a custom viewcell for repeating display by
 add a empty view template, drag a UITableViewCell in it, drag label ... in it map to PostTableViewCell.xib id inspector set custome class to PostTableViewCell.swift, drag element in xib to swift to create referencing, set to tableview in program by 
     let nib = UINib(nibName: "PostTableViewCell", bundle: nil)
@@ -528,6 +528,8 @@ in existing Swift app, add MyFUITableViewDataSource|MyFUIArray.h/m accepting que
 
 AppDelegate: FIRDatabase.database().persistenceEnabled = true //writes the data locally to the device while network interruptions
 FirebaseDatabase.getInstance().setPersistenceEnabled(true); //Android
+
+add View Controller from ([]) to MainStory (title={display on top bar} custom class={xxx.swift}), add navigation item to VC (title={display on top bar}), CTRL-Click an item on source VC and drag to dest VC, release mouse and select the type of relationship from the prompt up (segue {show/modal}, click header VC to drag it 
 
 internal var postType : Int!|?= 0|nil (must init prop)
 expression inspect + DatabaseReference.url, click i btn to print value in output window

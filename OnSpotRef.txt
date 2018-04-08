@@ -39,6 +39,16 @@ keyhash: +/FJAETJ76lTOXIlN1408IxftdM=
 password: android, wont prompt pwd if not at ~/.android, pwd gen diff key
 App review : make public, Privacy Policy URL= https://github.com/boropost/app/blob/master/PrivacyPolicy
 
+IOS
+add platform > IOS > bundle id = com.boropost.app | single sign on = true
+podfile : pod 'FBSDKLoginKit'
+info.plist : add row
+FacebookAppID (string)=2048300435186962 FacebookDisplayName (string)=Bost 
+URL Types (array)> URL Schemas (array)> item = fb2048300435186962
+LSApplicationQueriesSchemes (array)> item = fbauth2
+import FBSDKLoginKit
+
+
 https://apps.twitter.com/  richcluo@gmail.com
 eanble permissions:Request email addresses from users (must provide Privacy Policy URL n Terms of Service URL) and click generate access token (revoke and regen if changed), Has access to your email address will be on approved list of the app at https://twitter.com/settings/applications forapp user to receive email in FirebaseAuth.getInstance().getCurrentUser().getEmail(), otherwise - stored as email 
 app/src/main/res/values/ids.xml

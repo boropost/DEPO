@@ -442,6 +442,7 @@ https://developers.google.com/android/reference/com/google/android/gms/maps/mode
 com.google.android.gms.maps.model.Circle  Polygon
 https://github.com/googlemaps/android-samples/blob/master/ApiDemos/app/src/main/java/com/example/mapdemo/CircleDemoActivity.java
 https://developers.google.com/maps/documentation/android-api/signup to get api key (https://console.developers.google.com/apis/credentials/wizard?api=maps-android-backend.googleapis.com&project=boropost-ea8ed select a key >restriction > Android|IOS APP>  package|bundleid=com.boropost.app SHAI=FB:F1:49:00:44:C9:EF:A9:53:39:72:25:37:5E:34:F0:8C:5F:B5:D3) 
+Library > google map Android | IOS >enable
 <application/>        
 	    <meta-data
             android:name="com.google.android.geo.API_KEY"

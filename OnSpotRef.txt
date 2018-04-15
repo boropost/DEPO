@@ -71,6 +71,33 @@ TwitterConfig config = new TwitterConfig.Builder(this)
         setContentView(R.layout.activity_sign_in);
 com.twitter.sdk.android.core.TwitterCore.getInstance().getSessionManager().getActiveSession().getAuthToken().token|secret; 
 
+IOS
+URL Types (array)> URL Schemas (array)> item = twitterkit-M9M7U5fWz96A1Ws831ay2Sdbw //twitter_consumer_key
+LSApplicationQueriesSchemes (array)> item = twitter item = twitterauth
+import import TwitterKit
+
+Info.plist (facebook + twitter)
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1012799131250-decc1b9341lbil0rpttft48btp9a4s6n</string>
+				<string>fb2048300435186962</string>
+				<string>twitterkit-M9M7U5fWz96A1Ws831ay2Sdbw</string>
+			</array>
+		</dict>
+	</array>
+	
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbauth2</string>
+		<string>twitter</string>
+		<string>twitterauth</string>
+	</array>
+
 GIT BASH
 keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"
 //[Storing C:/Users/holly/.android/debug.keystore]

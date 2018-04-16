@@ -615,6 +615,8 @@ File->New->File:  iOS > Resource > Strings File Localizable.strings(base), click
 http://www.codingexplorer.com/choosing-images-with-uiimagepickercontroller-in-swift/
 Circular UIImageView in UITableView
 
+floating button https://stackoverflow.com/questions/37073935/how-to-add-floating-button-on-top-of-the-uitableview
+
 REFACTOR
 PositionUtil.convertPosition{
         var i: Int  = 0

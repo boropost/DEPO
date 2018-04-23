@@ -506,7 +506,7 @@ import FirebaseStorage //after pod 'Firebase/Storage'
 Firebase > proj > add app  > ios > drag download .plist to XCODE proj root > do 
 click top bar proj > device = iphone | new / edit schema > regen with new proj name | build / run = debug/release  
 
-proj | src | symbol (type) | find (search) | issue (error) | test | debug | breakpoint |report (activity) navigator
+proj | src | symbol (type) | find (text|ref|regexp|def|call hier) | issue (error) | test | debug | breakpoint |report (activity) navigator
 click proj (switch sub proj up down btn) > general {bundle (package) ID =com.boropost.app | signing team > add account = Apple ID (if cert expired: acct dropdown > add account | xcode > pref > accounts > mgr cert > + cert for ios dev > mach pwd: Vkaldho123!)| app icon launchImage | linked framework lib}                               
 					> info = info.plist 
                                          > build settings  { deployment | linking | info.plist | signing| version| compiler: Bridging-Header file |...}
@@ -567,8 +567,8 @@ in existing Swift app, add MyFUITableViewDataSource|MyFUIArray.h/m accepting que
 AppDelegate: FIRDatabase.database().persistenceEnabled = true //writes the data locally to the device while network interruptions
 FirebaseDatabase.getInstance().setPersistenceEnabled(true); //Android
 
-add View Controller from ([]) to MainStory (title={display on top bar} custom class={xxx.swift}), add navigation item to VC (title={display on top bar}), CTRL-Click an item on source VC and drag to dest VC, release mouse and select the type of relationship from the prompt up (segue {show/modal}, click header VC to drag it 
-
+add View Controller from ([]) to MainStory (title={display on top bar} custom class={xxx.swift}), add navigation item to VC (title={display on top bar}), CTRL-Click an item on source VC and drag to dest VC, release mouse and select the type of relationship from the prompt up (segue {show/modal}, auto add nav bar to dest from src,click header VC to drag it 
+check isInitVC mark it as -> starting VC (only one)
 internal var postType : Int!|?= 0|nil (must init prop)
 expression inspect + DatabaseReference.url, click i btn to print value in output window
 self.yourArray.insert(msg, at: 0)

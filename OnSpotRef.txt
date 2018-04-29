@@ -98,6 +98,10 @@ Info.plist (facebook + twitter)
 		<string>twitterauth</string>
 	</array>
 
+'TwitterKitResources.bundle resources file not found. Please re-install TwitterKit with CocoaPods to ensure it is properly set-up.'
+1. "Clean" project by pressing cmd+shift+k on keyboard.
+2. "Clean build folder" by pressing cmd+shift+option+k on keyboard.
+
 GIT BASH
 keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"
 //[Storing C:/Users/holly/.android/debug.keystore]

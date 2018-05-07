@@ -622,6 +622,10 @@ http://www.codingexplorer.com/choosing-images-with-uiimagepickercontroller-in-sw
 Circular UIImageView in UITableView
 
 floating button https://stackoverflow.com/questions/37073935/how-to-add-floating-button-on-top-of-the-uitableview
+IB UIbutton > Attribute inspector + runtime attribute
+layer.cornerRadius = height=width/2  //round
+layer.shadowOffset = size {5,5}  //3D
+layer.shadowOpacity = 0.2 //transparent
 
 REFACTOR
 PositionUtil.convertPosition{

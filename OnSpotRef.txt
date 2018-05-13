@@ -552,7 +552,7 @@ interfacebuilder to add default UITableViewCell to UITableView (content=dynamic 
     let nib = UINib(nibName: "PostTableViewCell", bundle: nil)
     tableView.register(nib, forCellReuseIdentifier: identifier)
 
-add tablecell to tableview (content=static cell), set cell Accessory= Detail Disclosure for > ctrl-drag to next VC to create segue as action accessory =present modal
+add tablecell to tableview (content=static cell), set cell Accessory= Detail Disclosure, selection=None (otherwise show (i) and need click twice) for > ctrl-drag to next VC to create segue (click anywhere in cell) | accessory action (click arrow in cell) (transition=flip horizon to rotate) as present modal | popover 
 
 https://github.com/aclissold/CardView
 
@@ -571,8 +571,7 @@ in existing Swift app, add MyFUITableViewDataSource|MyFUIArray.h/m accepting que
 AppDelegate: FIRDatabase.database().persistenceEnabled = true //writes the data locally to the device while network interruptions
 FirebaseDatabase.getInstance().setPersistenceEnabled(true); //Android
 
-add View Controller from ([]) to MainStory (title={display on top bar} custom class={xxx.swift}), add navigation item to VC (title={display on top bar}), CTRL-Click an item on source VC and drag to dest VC, release mouse and select the type of relationship from the prompt up (segue {show/modal}, auto add nav bar to dest from src,click header VC to drag it 
-check isInitVC mark it as -> starting VC (only one)
+add View Controller from ([]) to MainStory (title={display on top bar} custom class={xxx.swift}), add navigation item to VC (title={display on top bar}), CTRL-Click an btn on source VC and drag to dest VC, release mouse and select the type of relationship from the prompt up (segue {show/modal, anchor=btn}, auto add nav bar to dest from src,click header VC to drag it check isInitVC mark it as -> starting VC (only one)
 internal var postType : Int!|?= 0|nil (must init prop) 
 
 internal var postType : Int!|?= 0|nil (must init prop)

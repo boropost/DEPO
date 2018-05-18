@@ -558,6 +558,7 @@ https://github.com/aclissold/CardView
 
 https://www.weheartswift.com/firebase-101/
 push|modal segue (show|modally) child viewcontroller under same navigation controller as parent VC that must|not embed in a NC, it inherit|not nav bar in|not nav stack 
+navgation item > back button = (text) to add back btn displayed on child VC is define in parent VC apply to all children 
 TasksTableViewController{ tasksReference.observe(.value {task = Task(snapshot: item); self.tableView.reloadData() > refresh whole dataset is too expensive than insert|
 
 reloadRowsAtIndexPaths >tableView{TasksTableViewCell.titleLabel.text  = self.tasks[indexPath.row].title 
@@ -572,6 +573,8 @@ AppDelegate: FIRDatabase.database().persistenceEnabled = true //writes the data 
 FirebaseDatabase.getInstance().setPersistenceEnabled(true); //Android
 
 add View Controller from ([]) to MainStory (title={display on top bar} custom class={xxx.swift}), add navigation item to VC (title={display on top bar}), CTRL-Click an btn on source VC and drag to dest VC, release mouse and select the type of relationship from the prompt up (segue {show/modal, anchor=btn}, auto add nav bar to dest from src,click header VC to drag it check isInitVC mark it as -> starting VC (only one)
+change child view Mode to Aspect Fill whole parent view
+
 internal var postType : Int!|?= 0|nil (must init prop) 
 
 internal var postType : Int!|?= 0|nil (must init prop)

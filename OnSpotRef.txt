@@ -534,7 +534,7 @@ http://www.codingexplorer.com/choosing-images-with-uiimagepickercontroller-in-sw
 AnyObject = NSString //ref type or Any = "t" //value type
 
 let | var = im|mutable, func(s1: String){ var s2=s1 //argument is immutable
-optional variable Int? default to nil
+optional variable Int? default to nil, var!.func() will trigger run time error if var is nil,  but if use ? it will fail gracefully
 if(faves == nil || faves![uid] == nil) same as  if (faves?[uid] != nil)
 faves = fav as? Dictionary<String, Bool> //faves: Dictionary<String, Bool>? fav: Any
 var positions = [Int]() 

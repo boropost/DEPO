@@ -620,8 +620,7 @@ proj: info tab [ localization { Use Base Internationalization = base.lproj(launc
 File->New->File:  iOS > Resource > Strings File Localizable.strings(base), click Japanese in right File Inspector create a new Localizable.strings(japan)  
 "Signup"="Sign Up". let signupButtonText = NSLocalizedString("Signup", comment: "")
 
-http://www.codingexplorer.com/choosing-images-with-uiimagepickercontroller-in-swift/
-Circular UIImageView in UITableView
+Notifications are sounds/vibrations, alerts/banners, or badges that notify the user of something even when the app is not running in the foreground.
 
 floating button https://stackoverflow.com/questions/37073935/how-to-add-floating-button-on-top-of-the-uitableview
 IB UIbutton > Attribute inspector + runtime attribute
@@ -750,60 +749,3 @@ mdpi	320×480
 ldpi	240×320
 
  
-
-Exception java.lang.IllegalStateException: Must initialize Twitter before using getInstance()
-com.twitter.sdk.android.core.Twitter.checkInitialized (Twitter.java:143)
-com.twitter.sdk.android.core.Twitter.getInstance (Twitter.java:151)
-com.twitter.sdk.android.core.TwitterCore.getInstance (TwitterCore.java:88)
-com.boropost.app.MainActivity.onOptionsItemSelected (MainActivity.java:143)
-android.app.Activity.onMenuItemSelected (Activity.java:2943)
-android.support.v4.app.FragmentActivity.onMenuItemSelected (FragmentActivity.java:4
-
-[Fixed]
-Exception java.lang.IllegalArgumentException: Invalid target position
-android.support.v7.widget.RecyclerView$SmoothScroller.start (RecyclerView.java:10950)
-android.support.v7.widget.RecyclerView$LayoutManager.startSmoothScroll (RecyclerView.java:7743)
-android.support.v7.widget.LinearLayoutManager.smoothScrollToPosition (LinearLayoutManager.java:451)
-android.support.v7.widget.RecyclerView.smoothScrollToPosition (RecyclerView.java:1592)
-com.boropost.app.fragment.PostFragment$1.onChildChanged (PostFragment.java:123)
-com.firebase.ui.database.FirebaseRecyclerAdapter$1.onChildChanged (FirebaseRecyclerAdapter.java:98)
-com.firebase.ui.database.FirebaseArray.notifyChangedListeners (FirebaseArray.java:118)
-com.firebase.ui.database.FirebaseArray.notifyChangedListeners (FirebaseArray.java:113)
-com.firebase.ui.database.FirebaseArray.onChildRemoved (FirebaseArray.java:86)
-
-signout?
-Exception java.lang.IllegalArgumentException: View=com.android.internal.policy.PhoneWindow$DecorView{b49772e V.E...... R......D 0,0-1368,464} not attached to window manager
-android.view.WindowManagerGlobal.findViewLocked (WindowManagerGlobal.java:424)
-android.view.WindowManagerGlobal.removeView (WindowManagerGlobal.java:350)
-android.view.WindowManagerImpl.removeViewImmediate (WindowManagerImpl.java:118)
-android.app.Dialog.dismissDialog (Dialog.java:373)
-android.app.Dialog.dismiss (Dialog.java:356)
-com.boropost.app.utility.DialogUtil.dismissProgressDialog (DialogUtil.java:67)
-com.boropost.app.SignInActivity$3.onDataChange (SignInActivity.java:336)
-
-user info not loaded so author name is blank
-Exception java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String com.boropost.app.models.User.getEmail()' on a null object reference
-com.boropost.app.CreditCardActivity$2.onClick (CreditCardActivity.java:94)
-
-on start
-Exception java.lang.NullPointerException:
-com.boropost.app.MainActivity$5.onTabSelected (MainActivity.java:420)
-android.support.design.widget.TabLayout.dispatchTabSelected (TabLayout.java:1164)
-android.support.design.widget.TabLayout.selectTab (TabLayout.java:1157)
-android.support.design.widget.TabLayout.selectTab (TabLayout.java:1127)
-android.support.design.widget.TabLayout.populateFromPagerAdapter (TabLayout.java:916)
-android.support.design.widget.TabLayout.setPagerAdapter (TabLayout.java:900)
-android.support.design.widget.TabLayout$AdapterChangeListener.onAdapterChanged (TabLayout.java:2230)
-android.support.v4.view.ViewPager.setAdapter (ViewPager.java:549)
-com.boropost.app.MainActivity.createView (MainActivity.java:387)
-com.boropost.app.MainActivity.updatePosition (MainActivity.java:342)
-com.boropost.app.MainActivity.access$100 (MainActivity.java:65)
-com.boropost.app.MainActivity$3.onLocationChanged (MainActivity.java:232)
-
-on refresh location (auto/manual) maybe fixed by not persist app state
-Exception java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.ImageView.setImageResource(int)' on a null object reference
-com.boropost.app.MainActivity$5.onTabSelected (MainActivity.java:420)
-com.boropost.app.MainActivity.createView (MainActivity.java:387)
-com.boropost.app.MainActivity.updatePosition (MainActivity.java:342)
-com.boropost.app.MainActivity.access$100 (MainActivity.java:65)
-com.boropost.app.MainActivity$3.onLocationChanged (MainActivity.java:232)

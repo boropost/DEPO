@@ -215,6 +215,15 @@ postsQuery.addChildEventListener(new ChildEventListener() {
 });
 msgRef.orderByChild("date").endAt(3)
 http://cliffordhall.com/2017/04/using-firebase-cloud-functions-manage-compound-key-index/
+https://github.com/GoogleCloudPlatform/nodejs-docs-samples/tree/master/functions
+https://cloud.google.com/functions/docs/tutorials/http  //http trigger cloud function
+enable cloud API > sel boropost , [...]function will be active in console
+Install and initialize the Cloud SDK. https://cloud.google.com/sdk/docs/
+Install Node.js and the Google Cloud Client Library for Node.js https://cloud.google.com/nodejs/docs/setup : skip install nvm (no windows), download https://nodejs.org/en/ install include npm package mgr 
+
+https://firebase.google.com/docs/admin/setup
+firebase console > boropost settings > service account tab > admin sdk > gen new privatw key > .json file
+https://firebase.google.com/docs/database/admin/start
 
 DatabaseReference extends Query extends Object
 Query.equalTo, orderByChild(String path)|Key|value() also in dbRef js, limitToFirst|last  start|endAt getRef() need order, keepSynced(auto download),  add|removeChild|ValueEventListener|addListenerForSingleValueEvent 

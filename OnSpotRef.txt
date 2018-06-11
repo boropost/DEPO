@@ -228,10 +228,37 @@ https://cloud.google.com/functions/docs/tutorials/http  //http trigger cloud fun
 enable cloud API > sel boropost , [...]function will be active in console
 Install and initialize the Cloud SDK. https://cloud.google.com/sdk/docs/
 Install Node.js and the Google Cloud Client Library for Node.js https://cloud.google.com/nodejs/docs/setup : skip install nvm (no windows), download https://nodejs.org/en/ install include npm package mgr 
-
+https://firebase.google.com/docs/functions/get-started
 https://firebase.google.com/docs/admin/setup
 firebase console > boropost settings > service account tab > admin sdk > gen new privatw key > .json file
 https://firebase.google.com/docs/database/admin/start
+
+var functions = require('firebase-functions'); //$ npm install -g firebase-tools
+const admin = require('firebase-admin'); //$ npm install firebase-admin --save
+admin.initializeApp(functions.config().firebase);
+var dbRef = functions.database.ref('/leaderboard');
+exports.dbRefOnWriteEvent = dbRef.onWrite(event => { 
+    var ref = admin.database().ref("/leaderboard");
+    ref.orderByChild("score").once("value", function(dataSnapshot) {
+        var i = 0;
+        dataSnapshot.forEach(function(childSnapshot) {
+          var childRef = childSnapshot.ref;
+          var r = (dataSnapshot.numChildren() - i);
+          childRef.update({rank: r},function(error) {
+              if (error != null)
+                console.log("update error: " + error);
+          });
+          i++;
+        });
+    });
+});
+order with index 
+"leaderboard": {
+  ".indexOn": [ "/score", "/rank" ]
+}
+
+exports.listenOnWrite = functions.database.ref('/foo/{id}').onWrite(event => { console.log("match....");}) //cloud func
+firebase.database().ref("/foo/").on('child_added', function (postSnapshot) { var id = postSnapshot.key;}); //node.js using Admin SDK.
 
 DatabaseReference extends Query extends Object
 Query.equalTo, orderByChild(String path)|Key|value() also in dbRef js, limitToFirst|last  start|endAt getRef() need order, keepSynced(auto download),  add|removeChild|ValueEventListener|addListenerForSingleValueEvent 

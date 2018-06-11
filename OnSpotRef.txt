@@ -215,6 +215,14 @@ postsQuery.addChildEventListener(new ChildEventListener() {
 });
 msgRef.orderByChild("date").endAt(3)
 http://cliffordhall.com/2017/04/using-firebase-cloud-functions-manage-compound-key-index/
+
+var ref = new Firebase('https://yours.firebaseio.com/path/to/items/');
+var now = Date.now();
+var cutoff = now - 2 * 60 * 60 * 1000;
+var old = ref.orderByChild('timestamp').endAt(cutoff).limitToLast(1);
+var listener = old.on('child_added', function(snapshot) {
+    snapshot.ref().remove();
+});
 https://github.com/GoogleCloudPlatform/nodejs-docs-samples/tree/master/functions
 https://cloud.google.com/functions/docs/tutorials/http  //http trigger cloud function
 enable cloud API > sel boropost , [...]function will be active in console

@@ -216,13 +216,6 @@ postsQuery.addChildEventListener(new ChildEventListener() {
 msgRef.orderByChild("date").endAt(3)
 http://cliffordhall.com/2017/04/using-firebase-cloud-functions-manage-compound-key-index/
 
-var ref = new Firebase('https://yours.firebaseio.com/path/to/items/');
-var now = Date.now();
-var cutoff = now - 2 * 60 * 60 * 1000;
-var old = ref.orderByChild('timestamp').endAt(cutoff).limitToLast(1);
-var listener = old.on('child_added', function(snapshot) {
-    snapshot.ref().remove();
-});
 https://github.com/GoogleCloudPlatform/nodejs-docs-samples/tree/master/functions
 
 https://cloud.google.com/functions/docs/tutorials/http  //http trigger cloud function
@@ -241,38 +234,64 @@ https://firebase.google.com/docs/database/admin/start
 
 https://firebase.google.com/docs/functions/get-started //npm install -g firebase-tools, firebase login,  C:\Depo\App\Android\CloudFunc\Bost>firebase init functions, pick boropost project : install all lib \functions\node_modules\ and   
 functions\index.js:
-var functions = require('firebase-functions'); //$ npm install -g firebase-tools
+const functions = require('firebase-functions'); //$ npm install -g firebase-tools
 const admin = require('firebase-admin'); //$ npm install firebase-admin --save //to access the Firebase Realtime Database
 //ignore Warning, FIREBASE_CONFIG environment variable is missing, which is used for admin.initializeApp() by GOOGLE_APPLICATION_CREDENTIALS 
-var serviceAccount = require("./boropost-ea8ed.json"); // store boropost-ea8ed.json at same dir as index.js
+// store boropost-ea8ed.json at same dir as index.js
+const admin = require('firebase-admin');
+const serviceAccount = require("./boropost-ea8ed-firebase-adminsdk-140ib-682f0b6fce.json");
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://boropost-ea8ed.firebaseio.com"
 });
 
-//admin.initializeApp(functions.config().firebase);
-var dbRef = functions.database.ref('/leaderboard');
-exports.dbRefOnWriteEvent = dbRef.onWrite(event => { 
-    var ref = admin.database().ref("/leaderboard");
-    ref.orderByChild("score").once("value", function(dataSnapshot) {
-        var i = 0;
-        dataSnapshot.forEach(function(childSnapshot) {
-          var childRef = childSnapshot.ref;
-          var r = (dataSnapshot.numChildren() - i);
-          childRef.update({rank: r},function(error) {
-              if (error != null)
-                console.log("update error: " + error);
-          });
-          i++;
+exports.expirePostDaily = functions.https.onRequest((request, response) => {
+    let dt = new Date();
+    //getUTCMonth() return 0-11
+    let month = dt.getUTCMonth()+1;
+    var monthStr;
+    if (month < 10) {
+        monthStr = '0' + month.toString();
+    } else {
+        monthStr = month.toString();
+    }
+    let exp = dt.getUTCFullYear().toString() + monthStr + dt.getUTCDate().toString()
+    const ref = admin.database().ref("/hist");
+    ref.orderByKey().endAt(exp).once('value').then(topSnap => {
+        topSnap.forEach(function(midSnap) {
+            console.log("start deleting hist/" + midSnap.key);
+            midSnap.forEach(function(subSnap) {
+                let path = subSnap.val();
+                let i = path.indexOf("post-img");
+                if(i >= 0){//storage
+                    const bucket = admin.storage().bucket("boropost-ea8ed.appspot.com");
+                    bucket.file(path).delete().then(function() {
+                        //console.log("succeed deleting " + path);
+                      }).catch(function(error) {
+                        console.log("failed deleting " + path + " : " + error);
+                      });
+                } else {
+                    var subRef = admin.database().ref(path);
+                    subRef.remove().then(function() {
+                        //console.log("succeed deleting " + path);
+                      }).catch(function(error) {
+                        console.log("failed deleting " + path + " : " + error);
+                      });
+                }
+                subSnap.ref.remove().then(function() {// not ref()
+                    //console.log("succeed deleting hist/" + path);
+                  }).catch(function(error) {
+                    console.log("failed deleting hist/" + path + " : " + error);
+                  });
+            });
         });
-    });
+    }).catch(e => console.log(e));
+    response.send("expirePostDaily is executed!");
 });
-order with index 
-"leaderboard": {
-  ".indexOn": [ "/score", "/rank" ]
-}
 
-functions>gcloud beta functions deploy dbRefOnWriteEvent --trigger-http //deploy as http, return url: https://us-central1-boropost-ea8ed.cloudfunctions.net/dbRefOnWriteEvent exe by browser (curl/webget not in windows), and listed on firebase console [...]function and log, sel to delete and gcloud beta functions delete dbRefOnWriteEven
+functions>gcloud beta functions deploy expirePostDaily --trigger-http //deploy as http, 
+return url: https://us-central1-boropost-ea8ed.cloudfunctions.net/expirePostDaily exe by browser (curl/webget not in windows), and listed on firebase console [...]function and log, gcloud beta functions delete expirePostDaily
 
 exports.listenOnWrite = functions.database.ref('/foo/{id}').onWrite(event => { console.log("match....");}) //cloud func
 firebase.database().ref("/foo/").on('child_added', function (postSnapshot) { var id = postSnapshot.key;}); //node.js using Admin SDK.

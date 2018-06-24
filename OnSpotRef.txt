@@ -292,6 +292,44 @@ exports.expirePostDaily = functions.https.onRequest((request, response) => {
 
 functions>gcloud beta functions deploy expirePostDaily --trigger-http //deploy as http, 
 return url: https://us-central1-boropost-ea8ed.cloudfunctions.net/expirePostDaily exe by browser (curl/webget not in windows), and listed on firebase console [...]function and log, gcloud beta functions delete expirePostDaily
+Mac 
+vim com.bost.expirePostDaily.plist
+sudo cp com.bost.expirePostDaily.plist /Library/LaunchDaemons/
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.bost.expirePostDaily</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/hollykaldrovics/bin/expirePostDaily.sh</string> 
+	//wget https://us-central1-boropost-ea8ed.cloudfunctions.net/expirePostDaily
+	//date >> /tmp/expirePostDaily.out
+    </array>
+    //<key>StartInterval</key>
+    //<integer>60</integer> seconds
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Day</key>
+        <integer>1</integer>
+        <key>Hour</key>
+        <integer>0</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardErrorPath</key>
+    <string>/tmp/expirePostDaily.err</string>
+    <key>StandardOutPath</key>
+    <string>/tmp/expirePostDaily.out</string>
+</dict>
+</plist>
+
+chown root:wheel com.bost.expirePostDaily.plist //chmod 664  if not rw-r-r-r
+launchctl load com.bost.expirePostDaily.plist //tmp/expirePostDaily.out is created run as root after reboot, 
+launchctl unload com.bost.expirePostDaily.plist 
 
 exports.listenOnWrite = functions.database.ref('/foo/{id}').onWrite(event => { console.log("match....");}) //cloud func
 firebase.database().ref("/foo/").on('child_added', function (postSnapshot) { var id = postSnapshot.key;}); //node.js using Admin SDK.
